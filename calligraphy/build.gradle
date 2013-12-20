@@ -22,7 +22,7 @@ android {
         versionCode 4
         versionName "0.4.0"
     }
-    
+
     release {
         runProguard false
         proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
@@ -30,5 +30,18 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:+'
 }
+
+android.libraryVariants.all { variant ->
+    def name = variant.buildType.name
+
+    // Only attach a jar for non-debug build types.
+    if (!name.equals(com.android.builder.BuilderConstants.DEBUG)) {
+        def task = project.tasks.create "jar${name.capitalize()}", Jar
+        task.dependsOn variant.javaCompile
+        task.from variant.javaCompile.destinationDir
+        artifacts.add('archives', task);
+    }
+}
+
+apply from: file("deploy.gradle")

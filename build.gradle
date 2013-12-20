@@ -1,1 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+    version = "0.4.0-SNAPSHOT"
+}

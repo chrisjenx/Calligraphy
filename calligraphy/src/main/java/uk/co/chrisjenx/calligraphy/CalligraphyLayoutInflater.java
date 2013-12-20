@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -16,6 +17,7 @@ class CalligraphyLayoutInflater extends LayoutInflater {
             "android.webkit."
     };
     private static final String sTextViewClassName = TextView.class.getSimpleName();
+    private static final String sButtonClassName = Button.class.getSimpleName();
 
     protected CalligraphyLayoutInflater(Context context) {
         super(context);
@@ -55,7 +57,7 @@ class CalligraphyLayoutInflater extends LayoutInflater {
 
     private final void textViewFilter(final View view, final String name, final AttributeSet attrs) {
         if (view == null) return;
-        if (sTextViewClassName.equals(name)) {
+        if (sTextViewClassName.equals(name) || sButtonClassName.equals(name)) {
             String textViewFont = CalligraphyUtils.pullFontFamily(getContext(), attrs);
             CalligraphyUtils.applyFontToTextView(getContext(), (TextView) view, CalligraphyConfig.get(), textViewFont);
         }

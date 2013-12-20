@@ -10,7 +10,6 @@ apply plugin: 'android'
 
 repositories {
     mavenCentral()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 android {
@@ -32,6 +31,6 @@ android {
 }
 
 dependencies {
-    compile project(':calligraphy')
-//    compile "uk.co.chrisjenx.calligraphy:calligraphy:0.4.0-SNAPSHOT"
+//    compile project(':calligraphy')
+    compile "uk.co.chrisjenx.calligraphy:calligraphy:0.5.+"
 }

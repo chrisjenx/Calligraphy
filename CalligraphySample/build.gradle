@@ -10,6 +10,7 @@ apply plugin: 'android'
 
 repositories {
     mavenCentral()
+    maven { url "https://oss.sonatype.org/content/groups/staging" }
 }
 
 android {

@@ -30,7 +30,6 @@ afterEvaluate { project ->
                     name 'Calligraphy'
                     packaging 'jar'
                     artifactId 'calligraphy'
-                    groupId 'uk.co.chrisjenx.calligraphy'
                     url 'https://github.com/chrisjenx/Calligraphy'
                     description 'Android Library which makes setting custom fonts app wide super-sane'
                     inceptionYear '2013'

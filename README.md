@@ -27,7 +27,7 @@ protected void onCreate(Bundle savedInstanceState) {
 }
 ```
 
-*Important*
+###*Important*
 
 Wrap the Activity Context:
 
@@ -41,7 +41,8 @@ protected void attachBaseContext(Context newBase) {
 Your good to go!
 
 
-## Custom font per TextView
+---
+#### Custom font per TextView
 Of course:
 
 ```xml
@@ -52,7 +53,7 @@ Of course:
     android:fontFamily="fonts/Roboto-Bold.ttf"/>
 ```
 
-## Custom font in styles
+#### Custom font in styles
 No problem:
 
 ```xml

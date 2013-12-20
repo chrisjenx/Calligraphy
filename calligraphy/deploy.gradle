@@ -2,7 +2,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 def isReleaseBuild() {
-    !version.contains("SNAPSHOT")
+    ext.isReleaseVersion
 }
 
 def sonatypeRepositoryUrl
@@ -11,6 +11,7 @@ if (isReleaseBuild()) {
     println "RELEASE BUILD $version"
     sonatypeRepositoryUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
 } else {
+    version += "-SNAPSHOT"
     println "DEBUG BUILD $version"
     sonatypeRepositoryUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
 }

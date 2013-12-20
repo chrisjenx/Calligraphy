@@ -16,6 +16,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CalligraphyConfig.initDefault("fonts/Roboto-ThinItalic.ttf");
+
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {

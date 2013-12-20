@@ -55,7 +55,7 @@ public final class CalligraphyUtils {
         if (context == null || attrs == null) return null;
         final TypedArray a = context.obtainStyledAttributes(attrs, R_styleable_TextView);
         // Use the thickness specified, zero being the default
-        final String fontFamily = a.getNonResourceString(TextView_fontFamily);
+        final String fontFamily = a.getString(TextView_fontFamily);
         a.recycle();
 
         return fontFamily;

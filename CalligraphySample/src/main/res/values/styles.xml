@@ -5,4 +5,8 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="TextFontFamily">
+        <item name="android:fontFamily">fonts/RobotoCondensed-Regular.ttf</item>
+    </style>
+
 </resources>

@@ -17,10 +17,16 @@ public final class CalligraphyUtils {
     }
 
     public static final void applyFontToTextView(final Context context, final TextView textView, final String filePath) {
-        if(textView == null) return;
+        if(textView == null || context == null) return;
         final AssetManager assetManager = context.getAssets();
         final Typeface typeface = TypefaceUtils.load(assetManager, filePath);
         applyFontToTextView(textView, typeface);
+    }
+
+    public static final void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config) {
+        if(context == null || textView == null || config == null) return;
+        if(!config.isFontSet()) return;
+        applyFontToTextView(context, textView, config.getFontPath());
     }
 
     private CalligraphyUtils() {

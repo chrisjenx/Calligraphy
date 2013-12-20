@@ -10,7 +10,7 @@ import android.widget.TextView;
  * Created by chris on 19/12/2013
  * Project: Calligraphy
  */
-public class CalligraphyLayoutInflater extends LayoutInflater {
+class CalligraphyLayoutInflater extends LayoutInflater {
     private static final String[] sClassPrefixList = {
             "android.widget.",
             "android.webkit."
@@ -54,8 +54,9 @@ public class CalligraphyLayoutInflater extends LayoutInflater {
     }
 
     private final void textViewFilter(final View view, final String name) {
-        if(view == null) return;
+        if (view == null) return;
         if (sTextViewClassName.equals(name)) {
+            CalligraphyUtils.applyFontToTextView(getContext(), (TextView) view, CalligraphyConfig.get());
         }
     }
 }

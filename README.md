@@ -7,7 +7,7 @@ Are you fed up of Custom views to set fonts? Or traversing the ViewTree to find 
 
 ##Getting started
 
-Include the dependency:
+Include the dependency: (not yet pushed to maven)
 
 ```java
 dependencies {

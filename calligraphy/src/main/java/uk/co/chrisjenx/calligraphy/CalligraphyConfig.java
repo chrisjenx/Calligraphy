@@ -11,7 +11,8 @@ public class CalligraphyConfig {
     private static CalligraphyConfig mInstance;
 
     /**
-     * Init the Calligraphy Config file.
+     * Init the Calligraphy Config file. Each time you call this you set a new default. Of course setting this multiple
+     * times during runtime could have undesired effects.
      *
      * @param defaultFontAssetPath a path to a font file in the assets folder, e.g. "fonts/roboto-light.ttf",
      *                             passing null will default to the device font-family.

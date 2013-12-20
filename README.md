@@ -9,20 +9,21 @@ Are you fed up of Custom views to set fonts? Or traversing the ViewTree to find 
 
 ##Getting started
 
-[Download from Maven (.jar)](https://oss.sonatype.org/content/groups/public/uk/co/chrisjenx/calligraphy/calligraphy/)
+[Download from Maven (.jar)](https://oss.sonatype.org/content/groups/public/uk/co/chrisjenx/calligraphy/calligraphy/0.5.0/calligraphy-0.5.0.jar)
 
 __OR__
 
-Include the dependency: (currently just a snapshot)
+Include the dependency: (Waiting to be synced with MavenCentral.)
 
 ```java
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/groups/staging" }
+}
 dependencies {
     compile 'uk.co.chrisjenx.calligraphy:calligraphy:0.5.+'
 }
 ```
-
-*Use `compile "uk.co.chrisjenx.calligraphy:calligraphy:0.5.0-SNAPSHOT"` until staged.*
-(You will also need to add `maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }` to your repositories. See the sample build.gradle.
 
 Add your custom fonts to `assets/` all font definition is relative to this path.
 

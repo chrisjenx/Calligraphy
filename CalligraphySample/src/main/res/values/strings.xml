@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">My Module</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="default_text">\nThis is text set by the default Calligraphy config.\n</string>
+    <string name="defined_fontfamily">\nThis has a font family set to Roboto Bold.\n</string>
+    <string name="defined_incorrect">\nThis has a font family set to a font file that does not exist, it goes back to the default.\n</string>
 
 </resources>

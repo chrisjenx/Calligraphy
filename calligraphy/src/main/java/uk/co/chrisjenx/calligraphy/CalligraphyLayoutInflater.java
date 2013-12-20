@@ -36,7 +36,7 @@ class CalligraphyLayoutInflater extends LayoutInflater {
             try {
                 View view = createView(name, prefix, attrs);
                 if (view != null) {
-                    textViewFilter(view, name);
+                    textViewFilter(view, name, attrs);
                     return view;
                 }
             } catch (ClassNotFoundException e) {
@@ -53,10 +53,11 @@ class CalligraphyLayoutInflater extends LayoutInflater {
         return new CalligraphyLayoutInflater(this, newContext);
     }
 
-    private final void textViewFilter(final View view, final String name) {
+    private final void textViewFilter(final View view, final String name, final AttributeSet attrs) {
         if (view == null) return;
         if (sTextViewClassName.equals(name)) {
-            CalligraphyUtils.applyFontToTextView(getContext(), (TextView) view, CalligraphyConfig.get());
+            String textViewFont = CalligraphyUtils.pullFontFamily(getContext(), attrs);
+            CalligraphyUtils.applyFontToTextView(getContext(), (TextView) view, CalligraphyConfig.get(), textViewFont);
         }
     }
 }

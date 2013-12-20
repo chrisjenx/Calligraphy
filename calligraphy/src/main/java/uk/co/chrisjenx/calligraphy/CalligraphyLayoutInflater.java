@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 /**
  * Created by chris on 19/12/2013
@@ -14,6 +15,7 @@ public class CalligraphyLayoutInflater extends LayoutInflater {
             "android.widget.",
             "android.webkit."
     };
+    private static final String sTextViewClassName = TextView.class.getSimpleName();
 
     protected CalligraphyLayoutInflater(Context context) {
         super(context);
@@ -34,6 +36,7 @@ public class CalligraphyLayoutInflater extends LayoutInflater {
             try {
                 View view = createView(name, prefix, attrs);
                 if (view != null) {
+                    textViewFilter(view, name);
                     return view;
                 }
             } catch (ClassNotFoundException e) {
@@ -48,5 +51,11 @@ public class CalligraphyLayoutInflater extends LayoutInflater {
     @Override
     public LayoutInflater cloneInContext(Context newContext) {
         return new CalligraphyLayoutInflater(this, newContext);
+    }
+
+    private final void textViewFilter(final View view, final String name) {
+        if(view == null) return;
+        if (sTextViewClassName.equals(name)) {
+        }
     }
 }

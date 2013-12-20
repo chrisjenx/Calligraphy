@@ -5,6 +5,8 @@ Custom fonts in Android the easy way.
 
 Are you fed up of Custom views to set fonts? Or traversing the ViewTree to find TextViews? Yeah me too.
 
+![alt text](https://github.com/chrisjenx/Calligraphy/raw/master/screenshot.png "ScreenShot Of Font Samples")
+
 ##Getting started
 
 Include the dependency: (not yet pushed to maven)

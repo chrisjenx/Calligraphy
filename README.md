@@ -17,11 +17,11 @@ Include the dependency: (currently just a snapshot)
 
 ```java
 dependencies {
-    compile 'uk.co.chrisjenx.calligraphy:calligraphy:0.4.+'
+    compile 'uk.co.chrisjenx.calligraphy:calligraphy:0.5.+'
 }
 ```
 
-*Use `compile "uk.co.chrisjenx.calligraphy:calligraphy:0.4.0-SNAPSHOT"` until staged.*
+*Use `compile "uk.co.chrisjenx.calligraphy:calligraphy:0.5.0-SNAPSHOT"` until staged.*
 (You will also need to add `maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }` to your repositories. See the sample build.gradle.
 
 Add your custom fonts to `assets/` all font definition is relative to this path.
@@ -76,9 +76,6 @@ No problem:
 ## Why piggyback off of fontFamily attribute?
 Means the the library can compile down to a jar instead of an aar, as it is not dependant on any resources.
 (This may of course change in the future if we run into issues)
-
-## ButtonView support
-Comming soon!
 
 ## CustomText/Button View support
 Coming soon!

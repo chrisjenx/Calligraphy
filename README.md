@@ -17,6 +17,9 @@ dependencies {
 }
 ```
 
+*Use `compile "uk.co.chrisjenx.calligraphy:calligraphy:0.4.0-SNAPSHOT"` until staged.*
+(You will also need to add `maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }` to your repositories. See the sample build.gradle.
+
 Add your custom fonts to `assets/` all font definition is relative to this path.
 
 Define your default font using `CalligraphyConfig`.

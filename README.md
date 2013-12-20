@@ -47,7 +47,7 @@ protected void attachBaseContext(Context newBase) {
 }
 ```
 
-Your good to go!
+You're good to go!
 
 
 ---

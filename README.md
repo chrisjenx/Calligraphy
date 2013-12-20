@@ -9,7 +9,11 @@ Are you fed up of Custom views to set fonts? Or traversing the ViewTree to find 
 
 ##Getting started
 
-Include the dependency: (not yet pushed to maven)
+[Download from Maven (.jar)](https://oss.sonatype.org/content/groups/public/uk/co/chrisjenx/calligraphy/calligraphy/)
+
+__OR__
+
+Include the dependency: (currently just a snapshot)
 
 ```java
 dependencies {

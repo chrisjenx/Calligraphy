@@ -7,4 +7,7 @@
     <string name="defined_incorrect">\nThis has a font family set to a font file that does not exist, it goes back to the default.\n</string>
     <string name="defined_in_style">\nThis has the font family defined in the style as Roboto Condensed. (Font family in Styles is only supported API16+)\n</string>
 
+    <string name="button_default">Default Font</string>
+    <string name="button_defined">Defined Button</string>
+
 </resources>

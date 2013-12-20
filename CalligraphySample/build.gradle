@@ -32,6 +32,6 @@ android {
 }
 
 dependencies {
-//    compile project(':calligraphy')
-    compile "uk.co.chrisjenx.calligraphy:calligraphy:0.4.0-SNAPSHOT"
+    compile project(':calligraphy')
+//    compile "uk.co.chrisjenx.calligraphy:calligraphy:0.4.0-SNAPSHOT"
 }

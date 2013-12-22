@@ -29,7 +29,6 @@ public class MainActivity extends Activity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        CalligraphyConfig.initDefault("fonts/Roboto-ThinItalic.ttf");
         super.attachBaseContext(new CalligraphyContextWrapper(newBase));
     }
 

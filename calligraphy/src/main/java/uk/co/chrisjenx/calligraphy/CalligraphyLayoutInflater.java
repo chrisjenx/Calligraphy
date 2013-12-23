@@ -1,6 +1,8 @@
 package uk.co.chrisjenx.calligraphy;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.TextView;
  * Project: Calligraphy
  */
 class CalligraphyLayoutInflater extends LayoutInflater {
+
     private static final String[] sClassPrefixList = {
             "android.widget.",
             "android.webkit."
@@ -38,7 +41,6 @@ class CalligraphyLayoutInflater extends LayoutInflater {
             try {
                 View view = createView(name, prefix, attrs);
                 if (view != null) {
-                    textViewFilter(view, name, attrs);
                     return view;
                 }
             } catch (ClassNotFoundException e) {
@@ -50,16 +52,23 @@ class CalligraphyLayoutInflater extends LayoutInflater {
         return super.onCreateView(name, attrs);
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @Override
+    protected View onCreateView(View parent, String name, AttributeSet attrs) throws ClassNotFoundException {
+        return textViewFilter(super.onCreateView(parent, name, attrs), name, attrs);
+    }
+
     @Override
     public LayoutInflater cloneInContext(Context newContext) {
         return new CalligraphyLayoutInflater(this, newContext);
     }
 
-    private final void textViewFilter(final View view, final String name, final AttributeSet attrs) {
-        if (view == null) return;
+    private View textViewFilter(final View view, final String name, final AttributeSet attrs) {
+        if (view == null) return null;
         if (sTextViewClassName.equals(name) || sButtonClassName.equals(name)) {
             String textViewFont = CalligraphyUtils.pullFontFamily(getContext(), attrs);
             CalligraphyUtils.applyFontToTextView(getContext(), (TextView) view, CalligraphyConfig.get(), textViewFont);
         }
+        return view;
     }
 }

@@ -12,10 +12,6 @@ import android.widget.TextView;
  * Project: Calligraphy
  */
 class CalligraphyLayoutInflater extends LayoutInflater {
-    private static final String[] sClassPrefixList = {
-            "android.widget.",
-            "android.webkit."
-    };
     private static final String sTextViewClassName = TextView.class.getSimpleName();
     private static final String sButtonClassName = Button.class.getSimpleName();
 
@@ -34,20 +30,7 @@ class CalligraphyLayoutInflater extends LayoutInflater {
      */
     @Override
     protected View onCreateView(String name, AttributeSet attrs) throws ClassNotFoundException {
-        for (String prefix : sClassPrefixList) {
-            try {
-                View view = createView(name, prefix, attrs);
-                if (view != null) {
-                    textViewFilter(view, name, attrs);
-                    return view;
-                }
-            } catch (ClassNotFoundException e) {
-                // In this case we want to let the base class take a crack
-                // at it.
-            }
-        }
-
-        return super.onCreateView(name, attrs);
+        return textViewFilter(super.onCreateView(name, attrs), name, attrs);
     }
 
     @Override
@@ -55,11 +38,12 @@ class CalligraphyLayoutInflater extends LayoutInflater {
         return new CalligraphyLayoutInflater(this, newContext);
     }
 
-    private final void textViewFilter(final View view, final String name, final AttributeSet attrs) {
-        if (view == null) return;
+    private View textViewFilter(final View view, final String name, final AttributeSet attrs) {
+        if (view == null) return null;
         if (sTextViewClassName.equals(name) || sButtonClassName.equals(name)) {
             String textViewFont = CalligraphyUtils.pullFontFamily(getContext(), attrs);
             CalligraphyUtils.applyFontToTextView(getContext(), (TextView) view, CalligraphyConfig.get(), textViewFont);
         }
+        return view;
     }
 }

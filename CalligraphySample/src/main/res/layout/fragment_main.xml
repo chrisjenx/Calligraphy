@@ -8,7 +8,8 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:orientation="vertical"
-        tools:context="uk.co.chrisjenx.calligraphy.sample.MainActivity$PlaceholderFragment">
+        tools:context="uk.co.chrisjenx.calligraphy.sample.MainActivity$PlaceholderFragment"
+        tools:ignore="MissingPrefix">
 
     <TextView
             android:text="@string/default_text"
@@ -19,13 +20,13 @@
             android:text="@string/defined_fontfamily"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="fonts/Roboto-Bold.ttf"/>
+            fontFamilyPath="fonts/Roboto-Bold.ttf"/>
 
     <TextView
             android:text="@string/defined_incorrect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="fonts/Roboto-None.ttf"/>
+            fontFamilyPath="fonts/Roboto-None.ttf"/>
 
     <TextView
             android:text="@string/defined_in_style"
@@ -34,7 +35,7 @@
             style="@style/TextFontFamily"/>
 
     <Button
-            android:text="@string/button_default"
+            android:text="Themed Button"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -45,6 +46,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="fonts/Roboto-Bold.ttf"/>
+            fontFamilyPath="fonts/Roboto-Bold.ttf"/>
+
+
 
 </LinearLayout>

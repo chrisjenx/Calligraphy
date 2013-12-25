@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -21,23 +20,21 @@ import android.widget.ToggleButton;
  * Created by chris on 19/12/2013
  * Project: Calligraphy
  */
-class CalligraphyLayoutInflater extends LayoutInflater {
+public class CalligraphyLayoutInflater extends LayoutInflater {
     private static final String[] sClassPrefixList = {
             "android.widget.",
             "android.webkit."
     };
-    private static final String sTextViewClassName = TextView.class.getSimpleName();
-    private static final String sButtonClassName = Button.class.getSimpleName();
     private static final Map<Class<? extends TextView>, Integer> sStyles=
         new HashMap<Class<? extends TextView>, Integer>() {
             {
-                put(TextView.class, android.R.attr.textViewStyle);
-                put(AutoCompleteTextView.class, android.R.attr.autoCompleteTextViewStyle);
                 put(Button.class, android.R.attr.buttonStyle);
+                put(TextView.class, android.R.attr.textViewStyle);
                 put(CheckBox.class, android.R.attr.checkboxStyle);
                 put(EditText.class, android.R.attr.editTextStyle);
                 put(RadioButton.class, android.R.attr.radioButtonStyle);
                 put(ToggleButton.class, android.R.attr.buttonStyleToggle);
+                put(AutoCompleteTextView.class, android.R.attr.autoCompleteTextViewStyle);
             }
         };
 
@@ -48,7 +45,7 @@ class CalligraphyLayoutInflater extends LayoutInflater {
         this.mAttributeId = attributeId;
     }
 
-    protected CalligraphyLayoutInflater(LayoutInflater original, Context newContext, int attributeId) {
+    public CalligraphyLayoutInflater(LayoutInflater original, Context newContext, int attributeId) {
         super(original, newContext);
         this.mAttributeId = attributeId;
     }
@@ -64,7 +61,7 @@ class CalligraphyLayoutInflater extends LayoutInflater {
             try {
                 View view = createView(name, prefix, attrs);
                 if (view != null) {
-                    textViewFilter(view, name, attrs);
+                    textViewFilter(view, attrs);
                     return view;
                 }
             } catch (ClassNotFoundException e) {
@@ -81,7 +78,7 @@ class CalligraphyLayoutInflater extends LayoutInflater {
         return new CalligraphyLayoutInflater(this, newContext, mAttributeId);
     }
 
-    private final void textViewFilter(final View view, final String name, final AttributeSet attrs) {
+    private void textViewFilter(final View view, final AttributeSet attrs) {
         if (view == null || !(view instanceof TextView)) return;
         final TextView textView = (TextView)view;
 

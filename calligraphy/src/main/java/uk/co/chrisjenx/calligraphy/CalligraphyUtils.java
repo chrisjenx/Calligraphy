@@ -1,8 +1,5 @@
 package uk.co.chrisjenx.calligraphy;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
@@ -19,11 +16,6 @@ import android.widget.TextView;
  */
 public final class CalligraphyUtils {
 
-    private static final Map<String, Typeface> sTypefaceCache = new HashMap<String, Typeface>();
-
-    private CalligraphyUtils() {
-    }
-
     public static boolean applyFontToTextView(final TextView textView, final Typeface typeface) {
         if (textView == null || typeface == null) return false;
         textView.setTypeface(typeface);
@@ -33,12 +25,7 @@ public final class CalligraphyUtils {
     public static boolean applyFontToTextView(final Context context, final TextView textView, final String filePath) {
         if (textView == null || context == null) return false;
         final AssetManager assetManager = context.getAssets();
-        final Typeface typeface = sTypefaceCache.containsKey(filePath)
-            ? sTypefaceCache.get(filePath)
-            : TypefaceUtils.load(assetManager, filePath);
-        if (!sTypefaceCache.containsKey(filePath)) {
-            sTypefaceCache.put(filePath, typeface);
-        }
+        final Typeface typeface = TypefaceUtils.load(assetManager, filePath);
         return applyFontToTextView(textView, typeface);
     }
 
@@ -56,7 +43,7 @@ public final class CalligraphyUtils {
         applyFontToTextView(context, textView, config);
     }
 
-    static final String pullFontFamily(Context context, int attributeId, AttributeSet attrs) {
+    static String pullFontFamily(Context context, int attributeId, AttributeSet attrs) {
         final String attributeName = context.getResources().getResourceEntryName(attributeId);
         final int stringResourceId = attrs.getAttributeResourceValue(null, attributeName, -1);
         return stringResourceId > 0
@@ -64,7 +51,7 @@ public final class CalligraphyUtils {
             : attrs.getAttributeValue(null, attributeName);
     }
 
-    static final String pullFontFamilyFromStyle(Context context, int attributeId, AttributeSet attrs) {
+    static String pullFontFamilyFromStyle(Context context, int attributeId, AttributeSet attrs) {
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, new int[]{attributeId});
         try {
             return typedArray.getString(0);
@@ -73,7 +60,7 @@ public final class CalligraphyUtils {
         }
     }
 
-    static final String pullFontFamilyFromTheme(Context context, int attributeId, int styleId) {
+    static String pullFontFamilyFromTheme(Context context, int attributeId, int styleId) {
         final Resources.Theme theme = context.getTheme();
         final TypedValue value = new TypedValue();
 
@@ -84,5 +71,8 @@ public final class CalligraphyUtils {
         }finally {
             typedArray.recycle();
         }
+    }
+
+    private CalligraphyUtils() {
     }
 }

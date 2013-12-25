@@ -20,13 +20,15 @@
             android:text="@string/defined_fontfamily"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fontFamilyPath="fonts/Roboto-Bold.ttf"/>
+            android:fontFamily="fonts/Roboto-Bold.ttf"
+            font="fonts/Roboto-Bold.ttf"/>
 
     <TextView
             android:text="@string/defined_incorrect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fontFamilyPath="fonts/Roboto-None.ttf"/>
+            android:fontFamily="fonts/Roboto-None.ttf"
+            font="fonts/Roboto-None.ttf"/>
 
     <TextView
             android:text="@string/defined_in_style"
@@ -35,7 +37,7 @@
             style="@style/TextFontFamily"/>
 
     <Button
-            android:text="Themed Button"
+            android:text="@string/button_theme"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -46,8 +48,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fontFamilyPath="fonts/Roboto-Bold.ttf"/>
-
-
+            android:fontFamily="fonts/Roboto-Bold.ttf"
+            font="fonts/Roboto-Bold.ttf"/>
 
 </LinearLayout>

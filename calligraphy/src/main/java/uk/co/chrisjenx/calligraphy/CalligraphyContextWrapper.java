@@ -18,6 +18,11 @@ public class CalligraphyContextWrapper extends ContextWrapper {
         this.mAttributeId = attributeId;
     }
 
+    public CalligraphyContextWrapper(Context base) {
+        super(base);
+        this.mAttributeId = android.R.attr.fontFamily;
+    }
+
     @Override
     public Object getSystemService(String name) {
         if (LAYOUT_INFLATER_SERVICE.equals(name)) {

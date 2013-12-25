@@ -9,5 +9,8 @@
 
     <string name="button_default">Default Font</string>
     <string name="button_defined">Defined Button</string>
+    <string name="button_theme">Themed Button</string>
+    <string name="param_fontFamily">Use fonFamily param</string>
+    <string name="action_param_custom">Use custom param</string>
 
 </resources>

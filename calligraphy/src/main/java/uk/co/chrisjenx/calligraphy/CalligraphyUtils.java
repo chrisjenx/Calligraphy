@@ -32,18 +32,12 @@ public final class CalligraphyUtils {
         return applyFontToTextView(textView, typeface);
     }
 
-    public static final void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config) {
-        if (context == null || textView == null || config == null) return;
-        if (!config.isFontSet()) return;
-        applyFontToTextView(context, textView, config.getFontPath());
-    }
-
-    public static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config, final String textViewFont) {
-        if (context == null || textView == null || config == null) return;
-        if (!TextUtils.isEmpty(textViewFont) && applyFontToTextView(context, textView, textViewFont)) {
+    public static void applyFontToTextView(final Context context, final TextView textView, final String font, final String fallback) {
+        if (context == null || textView == null) return;
+        if (!TextUtils.isEmpty(font) && applyFontToTextView(context, textView, font)) {
             return;
         }
-        applyFontToTextView(context, textView, config);
+        applyFontToTextView(context, textView, fallback);
     }
 
     /**

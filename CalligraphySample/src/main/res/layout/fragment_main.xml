@@ -33,6 +33,11 @@
             android:layout_height="wrap_content"
             style="@style/TextFontFamily"/>
 
+    <uk.co.chrisjenx.calligraphy.sample.CustomTextView
+            android:text="@string/defined_custom_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     <Button
             android:text="@string/button_default"
             android:layout_gravity="center_horizontal"

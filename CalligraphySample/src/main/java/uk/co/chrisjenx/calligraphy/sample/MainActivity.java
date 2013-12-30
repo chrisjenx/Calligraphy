@@ -1,9 +1,9 @@
 package uk.co.chrisjenx.calligraphy.sample;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +19,6 @@ public class MainActivity extends Activity {
         CalligraphyConfig.initDefault("fonts/Roboto-ThinItalic.ttf");
 
         setContentView(R.layout.activity_main);
-
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
     }
 
     @Override
@@ -36,16 +30,9 @@ public class MainActivity extends Activity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle state) {
+            return inflater.inflate(R.layout.fragment_main, container, false);
         }
     }
-
 }

@@ -9,7 +9,7 @@ Are you fed up of Custom views to set fonts? Or traversing the ViewTree to find 
 
 ##Getting started
 
-[Download from Maven (.jar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/calligraphy/0.5.0/calligraphy-0.5.0.jar)
+[Download from Maven Central (.jar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/calligraphy/0.6.0/calligraphy-0.6.0.jar)
 
 __OR__
 
@@ -17,7 +17,7 @@ Include the dependency:
 
 ```java
 dependencies {
-    compile 'uk.co.chrisjenx.calligraphy:calligraphy:0.5.+'
+    compile 'uk.co.chrisjenx.calligraphy:calligraphy:0.6.+'
 }
 ```
 

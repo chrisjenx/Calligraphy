@@ -5,7 +5,7 @@ allprojects {
     }
 
     group = 'uk.co.chrisjenx.calligraphy'
-    version = "0.5.0"
+    version = "0.6.0"
 
     ext.isReleaseVersion = has("release")
 }

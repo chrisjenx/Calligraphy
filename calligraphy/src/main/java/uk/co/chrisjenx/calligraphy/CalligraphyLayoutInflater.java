@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
  * Project: Calligraphy
  */
 class CalligraphyLayoutInflater extends LayoutInflater {
+
     protected CalligraphyLayoutInflater(Context context) {
         super(context);
         setUpLayoutFactory();

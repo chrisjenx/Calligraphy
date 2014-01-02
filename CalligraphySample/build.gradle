@@ -10,12 +10,11 @@ apply plugin: 'android'
 
 repositories {
     mavenCentral()
-    maven { url "https://oss.sonatype.org/content/groups/staging" }
 }
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.0"
+    buildToolsVersion "19.0.1"
 
     defaultConfig {
         minSdkVersion 8
@@ -33,6 +32,6 @@ android {
 
 dependencies {
     compile project(':calligraphy')
-    compile 'com.android.support:support-v4:13.0.0'
+    compile 'com.android.support:support-v4:19.0.+'
 //    compile "uk.co.chrisjenx.calligraphy:calligraphy:0.5.+"
 }

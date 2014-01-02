@@ -26,6 +26,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="fonts/Roboto-None.ttf"/>
+    <TextView
+            android:text="@string/defined_incorrect2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="fonts/Roboto-None.ttf"/>
 
     <TextView
             android:text="@string/defined_in_style"

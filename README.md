@@ -74,5 +74,6 @@ No problem:
 Means the the library can compile down to a jar instead of an aar, as it is not dependant on any resources.
 (This may of course change in the future if we run into issues)
 
-## CustomText/Button View support
-Coming soon!
+#Colaborators
+
+- [@mironov-nsk](https://github.com/mironov-nsk)

@@ -21,7 +21,7 @@ public class CalligraphyConfig {
         mInstance = new CalligraphyConfig(defaultFontAssetPath);
     }
 
-    static CalligraphyConfig get() {
+    public static CalligraphyConfig get() {
         if (mInstance == null)
             throw new IllegalStateException("You must initDefault for CalligraphyConfig, if you are going to use the CalligraphyContextWrapper");
         return mInstance;

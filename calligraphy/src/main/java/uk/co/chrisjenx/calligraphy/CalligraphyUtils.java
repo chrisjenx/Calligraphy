@@ -3,6 +3,7 @@ package uk.co.chrisjenx.calligraphy;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.TypedArray;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.AttributeSet;

@@ -22,6 +22,7 @@ public final class CalligraphyUtils {
     public static final boolean applyFontToTextView(final TextView textView, final Typeface typeface) {
         if (textView == null || typeface == null) return false;
         textView.setTypeface(typeface);
+        textView.setPaintFlags(textView.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG);
         return true;
     }
 

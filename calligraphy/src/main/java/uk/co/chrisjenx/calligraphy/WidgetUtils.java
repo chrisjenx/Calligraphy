@@ -12,7 +12,7 @@ import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.TypedValue;
 
-public class WidgetHelper {
+public class WidgetUtils {
 
 	private static final int FONT_SIZE_SP = 18;
 	private static final int TEXT_COLOR = Color.BLACK;

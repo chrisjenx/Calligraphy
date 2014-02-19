@@ -1,15 +1,4 @@
-/**
-* in the widget layout you should use ImageViews instead of TextViews
-* then you can draw text onto a Bitmap and set it to that ImageView like this:
-*
-* remoteView.setImageViewBitmap(R.id.imageViewId,
-*		BitmapHelper.drawText(Context, Text, SizeInSP, Color, isBold, isRTL));
-*
-* or use any of the overrides
-**/
-
-
-package uk.co.chrisjenx.calligraphy;
+package com.intorias.calligraphy;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -20,62 +9,59 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.util.TypedValue;
 
 public class WidgetHelper {
 
-	private static final int DEFAULT_FONT_SIZE_SP = 18;
-	private static final int DEFAULT_TEXT_COLOR = Color.BLACK;
-	private static final boolean DEFAULT_DIRECTION = false; // false = LTR, true = RTL
+	private static final int FONT_SIZE_SP = 18;
+	private static final int TEXT_COLOR = Color.BLACK;
+	private static final boolean IS_RTL = false;
 	private static final boolean DEBUG_MODE = false;
-	
 
 	public static Bitmap drawText(Context context, String text) {
-		return drawText(context, text, DEFAULT_FONT_SIZE_SP,
-				DEFAULT_TEXT_COLOR, false, DEFAULT_DIRECTION);
+		return drawText(context, text, FONT_SIZE_SP);
 	}
 
 	public static Bitmap drawText(Context context, String text, int fontSizeSP) {
-		return drawText(context, text, fontSizeSP, Color.BLACK, false,
-				DEFAULT_DIRECTION);
+		return drawText(context, text, fontSizeSP, TEXT_COLOR);
 	}
 
 	public static Bitmap drawText(Context context, String text, int fontSizeSP,
 			int color) {
-		return drawText(context, text, fontSizeSP, color, false,
-				DEFAULT_DIRECTION);
+		return drawText(context, text, fontSizeSP, color, false);
 	}
 
 	public static Bitmap drawText(Context context, String text, int fontSizeSP,
 			int color, boolean bold) {
-		return drawText(context, text, fontSizeSP, color, bold,
-				DEFAULT_DIRECTION);
-	}
-
-  //i did this one cause i had a lot of numbers, we can get rid of it or...
-  //do more of it.
-	public static Bitmap drawText(Context context, int number, int fontSizeSP,
-			int color, boolean bold, boolean isRTL) {
-		return drawText(context, String.valueOf(number), fontSizeSP, color,
-				bold, isRTL);
+		return drawText(context, text, fontSizeSP, color, bold, IS_RTL);
 	}
 
 	public static Bitmap drawText(Context context, String text, int fontSizeSP,
 			int color, boolean bold, boolean isRTL) {
+		
+		String fontName = CalligraphyConfig.get().getFontPath();
+		return drawText(context, text, fontSizeSP, color, bold, isRTL, fontName);
+	}
 
-		// i use roboto-condensed for latin text and b-yekan for persian.
-		// we should probably talk about this.
-		String fontName = isRTL ? "BYEKAN.TTF" : "ROBOTO.TTF";
+	public static Bitmap drawText(Context context, String text, int fontSizeSP,
+			int color, boolean bold, boolean isRTL, String fontName) {
+		
+		if (TextUtils.isEmpty(fontName)) {
+			return drawText(context, text, fontSizeSP, color, bold, isRTL);
+		}
+		
 		Typeface typeface = Typeface.createFromAsset(context.getAssets(),
 				fontName);
-		
+		return drawText(context, text, fontSizeSP, color, bold, isRTL, typeface);
+	}
+
+	public static Bitmap drawText(Context context, String text, int fontSizeSP,
+			int color, boolean bold, boolean isRTL, Typeface typeface) {
+
 		int fontSizePX = convertDiptoPix(context, fontSizeSP);
-		
-		Paint paint = new Paint();
-		//this is a must
-		paint.setAntiAlias(true);
-		//this is a must if you have tiny text or really thin font like i do
-		paint.setSubpixelText(true);
+
+		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.SUBPIXEL_TEXT_FLAG);
 		paint.setStyle(Style.FILL);
 		paint.setTypeface(typeface);
 		paint.setTextSize(fontSizePX);
@@ -86,25 +72,22 @@ public class WidgetHelper {
 		int width = (int) (paint.measureText(text) + padding * 2);
 		int height = (int) (fontSizePX + padding * 2);
 
-		//some might wanna use Config.ARGB_8888, but this is way more efficient
 		Bitmap result = Bitmap.createBitmap(width, height, Config.ARGB_4444);
 		Canvas canvas = new Canvas(result);
 
 		int theY = fontSizePX;
-		
+
 		if (isRTL) {
 			paint.setTextAlign(Align.RIGHT);
 			padding = width - padding;
-			
-			//1.3 is just a magic number that fixes b-yekan's baseline problems
+
 			theY = (int) (theY / 1.3);
 		}
-		
-		//fills the bitmap with inverted "color" for debugging
-		if(DEBUG_MODE) {
-			canvas.drawColor(color^0x00FFFFFF);
+
+		if (DEBUG_MODE) {
+			canvas.drawColor(color ^ 0x00FFFFFF);
 		}
-		
+
 		canvas.drawText(text, padding, theY, paint);
 
 		return result;

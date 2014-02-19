@@ -12,15 +12,18 @@ public class CalligraphyContextWrapper extends ContextWrapper {
 
     private LayoutInflater mInflater;
 
-    public CalligraphyContextWrapper(Context base) {
+    private final int mAttributeId;
+
+    public CalligraphyContextWrapper(Context base, int attributeId) {
         super(base);
+        mAttributeId = attributeId;
     }
 
     @Override
     public Object getSystemService(String name) {
         if (LAYOUT_INFLATER_SERVICE.equals(name)) {
             if (mInflater == null) {
-                mInflater = new CalligraphyLayoutInflater(LayoutInflater.from(getBaseContext()), this);
+                mInflater = new CalligraphyLayoutInflater(LayoutInflater.from(getBaseContext()), this, mAttributeId);
             }
             return mInflater;
         }

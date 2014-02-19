@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioButton;
@@ -28,7 +27,6 @@ class CalligraphyFactory implements LayoutInflater.Factory {
         {
             put(TextView.class, android.R.attr.textViewStyle);
             put(Button.class, android.R.attr.buttonStyle);
-            put(CheckedTextView.class, android.R.attr.checkedTextViewStyle);
             put(EditText.class, android.R.attr.editTextStyle);
             put(AutoCompleteTextView.class, android.R.attr.autoCompleteTextViewStyle);
             put(MultiAutoCompleteTextView.class, android.R.attr.autoCompleteTextViewStyle);

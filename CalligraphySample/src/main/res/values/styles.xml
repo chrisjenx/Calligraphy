@@ -6,14 +6,14 @@
         <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
     </style>
 
-    <style name="TextFontFamily">
-        <item name="android:fontFamily">fonts/RobotoCondensed-Regular.ttf</item>
-    </style>
-
     <style name="AppTheme.Widget"/>
 
     <style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
-        <item name="android:fontFamily">fonts/RobotoCondensed-Regular.ttf</item>
+        <item name="fontPath">fonts/Roboto-ThinItalic.ttf</item>
+    </style>
+
+    <style name="TextFontFamily">
+        <item name="fontPath">fonts/RobotoCondensed-Regular.ttf</item>
     </style>
 
 </resources>

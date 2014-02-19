@@ -68,11 +68,44 @@ No problem:
 </style>
 ```
 
+#### Custom font defined in Theme
+```xml
+<style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
+</style>
+
+<style name="AppTheme.Widget"/>
+
+<style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
+    <item name="android:fontFamily">fonts/Roboto-ThinItalic.ttf</item>
+</style>
+```
+
+#### Custom attribute
+Defined your custom attribute name in your `attr.xml` (We don't ship calligraphy with one).
+
+```xml
+<attr name="fontPath"/>
+```
+
+Then define in one of the places listed above, e.g:
+
+```xml
+<TextView
+    android:text="@string/hello_world"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    fontPath="fonts/Roboto-Bold.ttf"/>
+```
+
+
 #FAQ
 
 ## Why piggyback off of fontFamily attribute?
 Means the the library can compile down to a jar instead of an aar, as it is not dependant on any resources.
 (This may of course change in the future if we run into issues)
+
+As of 0.7+ you are able to define your own custom attributeId.
 
 #Colaborators
 

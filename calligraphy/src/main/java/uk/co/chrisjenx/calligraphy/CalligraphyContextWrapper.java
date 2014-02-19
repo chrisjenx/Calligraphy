@@ -14,6 +14,11 @@ public class CalligraphyContextWrapper extends ContextWrapper {
 
     private final int mAttributeId;
 
+    public CalligraphyContextWrapper(Context base) {
+        super(base);
+        mAttributeId = android.R.attr.fontFamily;
+    }
+
     public CalligraphyContextWrapper(Context base, int attributeId) {
         super(base);
         mAttributeId = attributeId;

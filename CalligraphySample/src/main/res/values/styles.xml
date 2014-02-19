@@ -9,11 +9,17 @@
     <style name="AppTheme.Widget"/>
 
     <style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
+        <!-- Custom Attr-->
         <item name="fontPath">fonts/Roboto-ThinItalic.ttf</item>
+        <!-- Or Default FontFamily-->
+        <item name="android:fontFamily">fonts/Roboto-ThinItalic.ttf</item>
     </style>
 
     <style name="TextFontFamily">
+        <!-- Custom Attr-->
         <item name="fontPath">fonts/RobotoCondensed-Regular.ttf</item>
+        <!-- Or Default FontFamily-->
+        <item name="android:fontFamily">fonts/RobotoCondensed-Regular.ttf</item>
     </style>
 
 </resources>

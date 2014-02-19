@@ -1,4 +1,4 @@
-package com.intorias.calligraphy;
+package uk.co.chrisjenx.calligraphy;
 
 import android.content.Context;
 import android.graphics.Bitmap;

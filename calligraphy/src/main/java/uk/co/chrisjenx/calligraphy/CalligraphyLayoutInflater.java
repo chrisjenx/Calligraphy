@@ -21,7 +21,7 @@ class CalligraphyLayoutInflater extends LayoutInflater {
 
     private void setUpLayoutFactory() {
         if (!(getFactory() instanceof CalligraphyFactory)) {
-            setFactory(new CalligraphyFactory(getFactory()));
+            setFactory(new CalligraphyFactory(getFactory(), 0));
         }
     }
 

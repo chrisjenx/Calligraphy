@@ -2,11 +2,13 @@ package uk.co.chrisjenx.calligraphy;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.widget.TextView;
 
 /**
@@ -14,11 +16,6 @@ import android.widget.TextView;
  * Project: Calligraphy
  */
 public final class CalligraphyUtils {
-
-    private static final int[] R_styleable_TextView = new int[]{
-        /* 0 */android.R.attr.fontFamily,
-    };
-    private static final int TextView_fontFamily = 0;
 
     public static final boolean applyFontToTextView(final TextView textView, final Typeface typeface) {
         if (textView == null || typeface == null) return false;
@@ -48,19 +45,34 @@ public final class CalligraphyUtils {
         applyFontToTextView(context, textView, config);
     }
 
-    /**
-     * Pulls out the fontFamily from the attributes to see if the user has set a custom font
-     *
-     * @return
-     */
-    static final String pullFontFamily(Context context, AttributeSet attrs) {
-        if (context == null || attrs == null) return null;
-        final TypedArray a = context.obtainStyledAttributes(attrs, R_styleable_TextView);
-        // Use the thickness specified, zero being the default
-        final String fontFamily = a.getString(TextView_fontFamily);
-        a.recycle();
+    static final String pullFontPath(Context context, AttributeSet attrs, int attributeId) {
+        final String attributeName = context.getResources().getResourceEntryName(attributeId);
+        final int stringResourceId = attrs.getAttributeResourceValue(null, attributeName, -1);
+        return stringResourceId > 0
+                ? context.getString(stringResourceId)
+                : attrs.getAttributeValue(null, attributeName);
+    }
 
-        return fontFamily;
+    static final String pullFontPathFromStyle(Context context, AttributeSet attrs, int attributeId) {
+        final TypedArray typedArray = context.obtainStyledAttributes(attrs, new int[]{attributeId});
+        try {
+            return typedArray.getString(0);
+        } finally {
+            typedArray.recycle();
+        }
+    }
+
+    static final String pullFontPathFromTheme(Context context, int styleId, int attributeId) {
+        final Resources.Theme theme = context.getTheme();
+        final TypedValue value = new TypedValue();
+
+        theme.resolveAttribute(styleId, value, true);
+        final TypedArray typedArray = theme.obtainStyledAttributes(value.resourceId, new int[]{attributeId});
+        try {
+            return typedArray.getString(0);
+        } finally {
+            typedArray.recycle();
+        }
     }
 
     private CalligraphyUtils() {

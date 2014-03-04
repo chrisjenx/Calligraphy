@@ -9,24 +9,28 @@ import android.view.LayoutInflater;
  */
 class CalligraphyLayoutInflater extends LayoutInflater {
 
-    protected CalligraphyLayoutInflater(Context context) {
+    private final int mAttributeId;
+
+    protected CalligraphyLayoutInflater(Context context, int attributeId) {
         super(context);
+        mAttributeId = attributeId;
         setUpLayoutFactory();
     }
 
-    protected CalligraphyLayoutInflater(LayoutInflater original, Context newContext) {
+    protected CalligraphyLayoutInflater(LayoutInflater original, Context newContext, int attributeId) {
         super(original, newContext);
+        mAttributeId = attributeId;
         setUpLayoutFactory();
     }
 
     private void setUpLayoutFactory() {
         if (!(getFactory() instanceof CalligraphyFactory)) {
-            setFactory(new CalligraphyFactory(getFactory()));
+            setFactory(new CalligraphyFactory(getFactory(), mAttributeId));
         }
     }
 
     @Override
     public LayoutInflater cloneInContext(Context newContext) {
-        return new CalligraphyLayoutInflater(this, newContext);
+        return new CalligraphyLayoutInflater(this, newContext, mAttributeId);
     }
 }

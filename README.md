@@ -110,3 +110,4 @@ As of 0.7+ you are able to define your own custom attributeId.
 #Colaborators
 
 - [@mironov-nsk](https://github.com/mironov-nsk)
+- [@Roman Zhilich](https://github.com/RomanZhilich)

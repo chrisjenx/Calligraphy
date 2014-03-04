@@ -2,7 +2,7 @@
 
 #0.7.0 (WIP)
 - Added Anti-aliasing support
-- Added custom font attribute support
+- Added custom font attribute support - Thanks [@Roman Zhilich](https://github.com/RomanZhilich)
 
 #0.6.0 (02/01/2014)
 - Supports all Android implementations of `TextView`

@@ -15,7 +15,7 @@ __OR__
 
 Include the dependency:
 
-```java
+```groovy
 dependencies {
     compile 'uk.co.chrisjenx.calligraphy:calligraphy:0.6.+'
 }

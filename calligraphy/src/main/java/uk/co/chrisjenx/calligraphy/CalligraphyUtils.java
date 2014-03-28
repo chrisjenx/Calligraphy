@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.TextView;
 
@@ -54,12 +55,41 @@ public final class CalligraphyUtils {
     }
 
     static final String pullFontPathFromStyle(Context context, AttributeSet attrs, int attributeId) {
-        final TypedArray typedArray = context.obtainStyledAttributes(attrs, new int[]{attributeId});
+        final TypedArray typedArray = context.obtainStyledAttributes(attrs, new int[]{attributeId, android.R.attr.textAppearance});
         try {
-            return typedArray.getString(0);
+            // First defined attribute
+            String fontFromAttribute = typedArray.getString(0);
+            Log.i("CAL", "font style " + fontFromAttribute);
+            fontFromAttribute = null;
+            if (TextUtils.isEmpty(fontFromAttribute)) {
+                // Not in the style look in Attributes, second in the attrs[]
+                fontFromAttribute = pullFontPathFromTextAppearance(context, typedArray.getResourceId(1, -1), attributeId);
+            }
+            return fontFromAttribute;
         } finally {
             typedArray.recycle();
         }
+    }
+
+    static final String pullFontPathFromTextAppearance(final Context context, final int appearanceResId, final int attributeId) {
+//        Log.i("CAL", "font appearance id " + String.valueOf(appearanceResId));
+//        if (appearanceResId != -1) {
+//            final Resources.Theme theme = context.getTheme();
+//            theme.obtainStyledAttributes()
+//            final TypedArray appearance = context.obtainStyledAttributes(appearanceResId, new int[]{attributeId, android.R.attr.fontFamily, android.R.attr.textSize});
+//            Log.i("CAL", "font appearance array " + String.valueOf(appearance) + " ");
+//            for (int i = 0; i < appearance.getIndexCount(); i++) {
+//                Log.i("CAL", "font appearance name " + appearance.getString(i));
+//                Log.i("CAL", "font appearance name " + appearance.getResourceId(i, -1));
+//            }
+//            try {
+//                return appearance.getString(0);
+//            } finally {
+//                appearance.recycle();
+//            }
+//        }
+        //TODO: Fix
+        return null;
     }
 
     static final String pullFontPathFromTheme(Context context, int styleId, int attributeId) {

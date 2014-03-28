@@ -6,7 +6,7 @@
         <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
     </style>
 
-    <style name="AppTheme.Widget"/>
+    <style name="AppTheme.Widget" />
 
     <style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
         <!-- Custom Attr-->
@@ -20,6 +20,17 @@
         <item name="fontPath">fonts/RobotoCondensed-Regular.ttf</item>
         <!-- Or Default FontFamily-->
         <item name="android:fontFamily">fonts/RobotoCondensed-Regular.ttf</item>
+    </style>
+
+    <style name="AppThemeWidgetTextViewAppearanceStyle">
+        <item name="android:textAppearance">@style/TextAppearance.FontFamily</item>
+        <item name="fontPath">fonts/RobotoCondensed-Regular.ttf</item>
+    </style>
+
+    <style name="TextAppearance.FontFamily" parent="android:TextAppearance">
+        <item name="fontPath">fonts/RobotoCondensed-Regular.ttf</item>
+        <item name="android:fontFamily">fonts/RobotoCondensed-Regular.ttf</item>
+        <item name="android:textColor">#444</item>
     </style>
 
 </resources>

@@ -9,3 +9,7 @@ allprojects {
 
     ext.isReleaseVersion = has("release")
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}

@@ -9,7 +9,7 @@ Are you fed up of Custom views to set fonts? Or traversing the ViewTree to find 
 
 ##Getting started
 
-[Download from Maven Central (.jar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/calligraphy/0.6.0/calligraphy-0.6.0.jar)
+[Download from Maven Central (.jar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/0.7.0/calligraphy-0.7.0.jar)
 
 __OR__
 
@@ -17,9 +17,10 @@ Include the dependency:
 
 ```groovy
 dependencies {
-    compile 'uk.co.chrisjenx.calligraphy:calligraphy:0.6.+'
+    compile 'uk.co.chrisjenx:calligraphy:0.7.+'
 }
 ```
+__IMPORTANT:__ The Maven artifact group id is now `uk.co.chrisjenx` __NOT__ `uk.co.chrisjenx.calligraphy` (this changed in 0.7+)
 
 Add your custom fonts to `assets/` all font definition is relative to this path.
 
@@ -82,7 +83,7 @@ No problem:
 ```
 
 #### Custom attribute
-Defined your custom attribute name in your `attr.xml` (We don't ship calligraphy with one).
+Defined your custom attribute name in your `attr.xml` (We don't ship calligraphy with one, this is so it can stay a jar).
 
 ```xml
 <attr name="fontPath"/>

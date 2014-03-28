@@ -1,6 +1,8 @@
 #Changelog
 
-#0.7.0 (WIP)
+#0.8.0 (WIP)
+
+#0.7.0 (28/01/2014)
 - Added Anti-aliasing support
 - Added custom font attribute support - Thanks [@Roman Zhilich](https://github.com/RomanZhilich)
 - Changed Maven groupId to `uk.co.chrisjenx` artifact is now `calligraphy`. `compile 'uk.co.chrisjenx:calligraphy:0.+'`

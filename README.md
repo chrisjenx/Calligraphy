@@ -89,6 +89,15 @@ Defined your custom attribute name in your `attr.xml` (We don't ship calligraphy
 <attr name="fontPath"/>
 ```
 
+Wrap the Activity Context:
+
+```java
+@Override
+protected void attachBaseContext(Context newBase) {
+    super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.fontPath));
+}
+```
+
 Then define in one of the places listed above, e.g:
 
 ```xml
@@ -97,15 +106,6 @@ Then define in one of the places listed above, e.g:
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     fontPath="fonts/Roboto-Bold.ttf"/>
-```
-
-Wrap the Activity Context:
-
-```java
-@Override
-protected void attachBaseContext(Context newBase) {
-    super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.fontPath));
-}
 ```
 
 

@@ -89,6 +89,15 @@ Defined your custom attribute name in your `attr.xml` (We don't ship calligraphy
 <attr name="fontPath"/>
 ```
 
+Wrap the Activity Context:
+
+```java
+@Override
+protected void attachBaseContext(Context newBase) {
+    super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.fontPath));
+}
+```
+
 Then define in one of the places listed above, e.g:
 
 ```xml

@@ -99,6 +99,15 @@ Then define in one of the places listed above, e.g:
     fontPath="fonts/Roboto-Bold.ttf"/>
 ```
 
+Wrap the Activity Context:
+
+```java
+@Override
+protected void attachBaseContext(Context newBase) {
+    super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.fontPath));
+}
+```
+
 
 #FAQ
 

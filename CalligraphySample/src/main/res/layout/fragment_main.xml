@@ -1,56 +1,67 @@
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:orientation="vertical"
-        tools:ignore="MissingPrefix"
-        tools:context="uk.co.chrisjenx.calligraphy.sample.MainActivity$PlaceholderFragment">
+        tools:context="uk.co.chrisjenx.calligraphy.sample.MainActivity$PlaceholderFragment"
+        tools:ignore="MissingPrefix">
 
-    <TextView
-            android:text="@string/default_theme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    <TextView
-            android:text="@string/defined_fontfamily"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fontPath="fonts/Roboto-Bold.ttf"/>
+            android:text="@string/default_theme" />
 
-    <TextView
-            android:text="@string/defined_incorrect"
+        <TextView
+            fontPath="fonts/Roboto-Bold.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fontPath="fonts/Roboto-None.ttf"/>
+            android:text="@string/defined_fontfamily" />
 
-    <TextView
-            android:text="@string/defined_in_style"
+        <TextView
+            fontPath="fonts/Roboto-None.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextFontFamily"/>
+            android:text="@string/defined_incorrect" />
 
-    <uk.co.chrisjenx.calligraphy.sample.CustomTextView
-            android:text="@string/defined_custom_view"
+        <TextView
+            style="@style/TextFontFamily"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/defined_in_style" />
 
-    <Button
-            android:text="@string/button_default"
+        <TextView
+            style="@style/AppThemeWidgetTextViewAppearanceStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/defined_in_style" />
+
+        <uk.co.chrisjenx.calligraphy.sample.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/defined_custom_view" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:text="@string/button_default" />
 
-    <Button
-            android:text="@string/button_defined"
+        <Button
+            fontPath="fonts/Roboto-Bold.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="12dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fontPath="fonts/Roboto-Bold.ttf"/>
-
-</LinearLayout>
+            android:text="@string/button_defined" />
+    </LinearLayout>
+</ScrollView>

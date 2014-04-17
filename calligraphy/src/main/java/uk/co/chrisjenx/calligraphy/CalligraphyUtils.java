@@ -16,11 +16,33 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
 
+import static uk.co.chrisjenx.calligraphy.ReflectionUtils.getStaticFieldValue;
+
 /**
  * Created by chris on 20/12/2013
  * Project: Calligraphy
  */
 public final class CalligraphyUtils {
+
+    static final int[] R_Styleable_TextView;
+    static final int[] R_Styleable_TextAppearance;
+    static final int R_Styleable_TextView_textAppearance;
+    static final int R_Styleable_TextAppearance_fontFamily;
+
+    static {
+        Class<?> styleableClass = ReflectionUtils.getClass("com.android.internal.R$styleable");
+        if (styleableClass != null) {
+            R_Styleable_TextView = getStaticFieldValue(styleableClass, "TextView", null);
+            R_Styleable_TextAppearance = getStaticFieldValue(styleableClass, "TextAppearance", null);
+            R_Styleable_TextView_textAppearance = getStaticFieldValue(styleableClass, "TextView_textAppearance", -1);
+            R_Styleable_TextAppearance_fontFamily = getStaticFieldValue(styleableClass, "TextAppearance_fontFamily", -1);
+        } else {
+            R_Styleable_TextView = null;
+            R_Styleable_TextAppearance = null;
+            R_Styleable_TextView_textAppearance = -1;
+            R_Styleable_TextAppearance_fontFamily = -1;
+        }
+    }
 
     /**
      * Applies a custom typeface span to the text.
@@ -105,14 +127,40 @@ public final class CalligraphyUtils {
 
     static String pullFontPathFromStyle(Context context, AttributeSet attrs, int attributeId) {
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, new int[]{attributeId});
-        try {
-            return typedArray.getString(0);
-        } catch (Exception ignore) {
-            // Failed for some reason.
-            return null;
-        } finally {
-            typedArray.recycle();
+        if (typedArray != null) {
+            try {
+                // First defined attribute
+                String fontFromAttribute = typedArray.getString(0);
+                if (!TextUtils.isEmpty(fontFromAttribute)) {
+                    return fontFromAttribute;
+                }
+            } catch (Exception ignore) {
+                // Failed for some reason.
+            } finally {
+                typedArray.recycle();
+            }
         }
+        return pullFontPathFromTextAppearance(context, attrs);
+    }
+
+    static final String pullFontPathFromTextAppearance(final Context context, AttributeSet attrs) {
+        if (R_Styleable_TextView == null || R_Styleable_TextAppearance == null
+                || R_Styleable_TextView_textAppearance == -1 || R_Styleable_TextAppearance_fontFamily == -1) {
+            return null;
+        }
+
+        TypedArray textViewAttrs = context.obtainStyledAttributes(attrs, R_Styleable_TextView);
+        if (textViewAttrs == null) {
+            return null;
+        }
+
+        int textAppearanceId = textViewAttrs.getResourceId(R_Styleable_TextView_textAppearance, -1);
+        TypedArray textAppearanceAttrs = context.obtainStyledAttributes(textAppearanceId, R_Styleable_TextAppearance);
+        if (textAppearanceAttrs == null) {
+            return null;
+        }
+
+        return textAppearanceAttrs.getString(R_Styleable_TextAppearance_fontFamily);
     }
 
     static String pullFontPathFromTheme(Context context, int styleId, int attributeId) {

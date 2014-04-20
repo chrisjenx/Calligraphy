@@ -1,6 +1,7 @@
 package uk.co.chrisjenx.calligraphy;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -98,7 +99,12 @@ class CalligraphyFactory implements LayoutInflater.Factory {
             // Since we're not using namespace it's a little bit tricky
 
             // Try view xml attributes
-            String textViewFont = CalligraphyUtils.pullFontPath(context, attrs, mAttributeId);
+            String textViewFont = null;
+            try {
+                textViewFont = CalligraphyUtils.pullFontPath(context, attrs, mAttributeId);
+            } catch (Resources.NotFoundException e) {
+                // invalid attribute ID
+            }
 
             // Try view style attributes
             if (TextUtils.isEmpty(textViewFont)) {

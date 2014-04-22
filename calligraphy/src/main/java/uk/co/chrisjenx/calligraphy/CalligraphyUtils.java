@@ -45,8 +45,14 @@ public final class CalligraphyUtils {
         applyFontToTextView(context, textView, config);
     }
 
-    static final String pullFontPath(Context context, AttributeSet attrs, int attributeId) throws Resources.NotFoundException {
-        final String attributeName = context.getResources().getResourceEntryName(attributeId);
+    static final String pullFontPath(Context context, AttributeSet attrs, int attributeId) {
+        String attributeName;
+        try {
+            attributeName = context.getResources().getResourceEntryName(attributeId);
+        } catch (Resources.NotFoundException e) {
+            // invalid attribute ID
+            return null;
+        }
         final int stringResourceId = attrs.getAttributeResourceValue(null, attributeName, -1);
         return stringResourceId > 0
                 ? context.getString(stringResourceId)

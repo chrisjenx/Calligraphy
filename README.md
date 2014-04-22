@@ -9,7 +9,7 @@ Are you fed up of Custom views to set fonts? Or traversing the ViewTree to find 
 
 ##Getting started
 
-[Download from Maven Central (.jar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/0.7.0/calligraphy-0.7.0.jar)
+[Download from Maven Central (.jar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/0.7.0/calligraphy-0.7.1.jar)
 
 __OR__
 
@@ -121,3 +121,4 @@ As of 0.7+ you are able to define your own custom attributeId.
 
 - [@mironov-nsk](https://github.com/mironov-nsk)
 - [@Roman Zhilich](https://github.com/RomanZhilich)
+- [@Smuldr](https://github.com/Smuldr)

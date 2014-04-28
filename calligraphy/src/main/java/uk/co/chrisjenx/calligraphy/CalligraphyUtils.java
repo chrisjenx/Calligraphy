@@ -34,7 +34,7 @@ public final class CalligraphyUtils {
             if (!(s instanceof Spannable)) {
                 s = new SpannableString(s);
             }
-            ((Spannable) s).setSpan(new CalligraphyTypefaceSpan(typeface), 0, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ((Spannable) s).setSpan(TypefaceUtils.getSpan(typeface), 0, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         return s;
     }
@@ -68,14 +68,14 @@ public final class CalligraphyUtils {
         return true;
     }
 
-    public static final boolean applyFontToTextView(final Context context, final TextView textView, final String filePath) {
+    public static boolean applyFontToTextView(final Context context, final TextView textView, final String filePath) {
         if (textView == null || context == null) return false;
         final AssetManager assetManager = context.getAssets();
         final Typeface typeface = TypefaceUtils.load(assetManager, filePath);
         return applyFontToTextView(textView, typeface);
     }
 
-    public static final void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config) {
+    public static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config) {
         if (context == null || textView == null || config == null) return;
         if (!config.isFontSet()) return;
         applyFontToTextView(context, textView, config.getFontPath());
@@ -89,7 +89,7 @@ public final class CalligraphyUtils {
         applyFontToTextView(context, textView, config);
     }
 
-    static final String pullFontPath(Context context, AttributeSet attrs, int attributeId) {
+    static String pullFontPath(Context context, AttributeSet attrs, int attributeId) {
         String attributeName;
         try {
             attributeName = context.getResources().getResourceEntryName(attributeId);
@@ -103,7 +103,7 @@ public final class CalligraphyUtils {
                 : attrs.getAttributeValue(null, attributeName);
     }
 
-    static final String pullFontPathFromStyle(Context context, AttributeSet attrs, int attributeId) {
+    static String pullFontPathFromStyle(Context context, AttributeSet attrs, int attributeId) {
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, new int[]{attributeId});
         try {
             return typedArray.getString(0);
@@ -115,7 +115,7 @@ public final class CalligraphyUtils {
         }
     }
 
-    static final String pullFontPathFromTheme(Context context, int styleId, int attributeId) {
+    static String pullFontPathFromTheme(Context context, int styleId, int attributeId) {
         final Resources.Theme theme = context.getTheme();
         final TypedValue value = new TypedValue();
 

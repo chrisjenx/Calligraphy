@@ -17,10 +17,29 @@ import android.widget.TextView;
  */
 public final class CalligraphyUtils {
 
-    public static final boolean applyFontToTextView(final TextView textView, final Typeface typeface) {
+    private static Integer sActionBarTitleId = null;
+    private static Integer sActionBarSubTitleId = null;
+
+    /**
+     * Applies a Typeface to a TextView
+     *
+     * @param textView Not null, TextView or child of.
+     * @param typeface Not null, Typeface to apply to the TextView.
+     * @return true if applied otherwise false.
+     */
+    public static boolean applyFontToTextView(final TextView textView, final Typeface typeface) {
         if (textView == null || typeface == null) return false;
         textView.setTypeface(typeface);
         textView.setPaintFlags(textView.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG);
+
+        if (isTextViewInActionBar(textView))
+            textView.post(new Runnable() {
+                @Override
+                public void run() {
+                    textView.setTypeface(typeface);
+                }
+            });
+
         return true;
     }
 
@@ -81,6 +100,25 @@ public final class CalligraphyUtils {
         }
     }
 
+    /**
+     * Does a dirty search to see if the TextView is part of the ActionBar.
+     * This could fail on some devices...
+     *
+     * @param textView checks this textview.
+     */
+    @SuppressWarnings("ConstantConditions")
+    static final boolean isTextViewInActionBar(TextView textView) {
+        if (textView == null) return false;
+        if (sActionBarTitleId == null)
+            sActionBarTitleId = textView.getResources().getIdentifier("action_bar_title", "id", "android");
+        if (sActionBarSubTitleId == null)
+            sActionBarSubTitleId = textView.getResources().getIdentifier("action_bar_subtitle", "id", "android");
+
+        return sActionBarTitleId != null && textView.getId() == sActionBarTitleId ||
+                sActionBarSubTitleId != null && textView.getId() == sActionBarSubTitleId;
+    }
+
     private CalligraphyUtils() {
     }
+
 }

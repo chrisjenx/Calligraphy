@@ -2,6 +2,8 @@ package uk.co.chrisjenx.calligraphy.sample;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -19,6 +21,14 @@ public class MainActivity extends FragmentActivity {
         CalligraphyConfig.initDefault("fonts/Roboto-ThinItalic.ttf");
 
         setContentView(R.layout.activity_main);
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setTitle("Calligraphy changed");
+                getActionBar().setSubtitle("Added subtitle");
+            }
+        }, 1000);
     }
 
     @Override

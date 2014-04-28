@@ -2,6 +2,7 @@
 
 #0.8.0 (WIP)
 - Added ActionBar Title/SubTitle support.
+- Toast support via default style/or TextView theme style.
 
 #0.7.1 (22/04/2014)
 - Fixed Resources not found Exception - [@Smuldr](https://github.com/Smuldr)

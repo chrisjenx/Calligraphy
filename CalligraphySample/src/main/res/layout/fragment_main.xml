@@ -1,56 +1,58 @@
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:orientation="vertical"
-        tools:ignore="MissingPrefix"
-        tools:context="uk.co.chrisjenx.calligraphy.sample.MainActivity$PlaceholderFragment">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="uk.co.chrisjenx.calligraphy.sample.MainActivity$PlaceholderFragment"
+    tools:ignore="MissingPrefix">
 
     <TextView
-            android:text="@string/default_theme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/default_theme"/>
 
     <TextView
-            android:text="@string/defined_fontfamily"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fontPath="fonts/Roboto-Bold.ttf"/>
+        fontPath="fonts/Roboto-Bold.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/defined_fontfamily"/>
 
     <TextView
-            android:text="@string/defined_incorrect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fontPath="fonts/Roboto-None.ttf"/>
+        fontPath="fonts/Roboto-None.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/defined_incorrect"/>
 
     <TextView
-            android:text="@string/defined_in_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextFontFamily"/>
+        style="@style/TextFontFamily"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/defined_in_style"/>
 
     <uk.co.chrisjenx.calligraphy.sample.CustomTextView
-            android:text="@string/defined_custom_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/defined_custom_view"/>
 
     <Button
-            android:text="@string/button_default"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        android:id="@+id/button_default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/button_default"/>
 
     <Button
-            android:text="@string/button_defined"
-            android:layout_marginTop="12dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fontPath="fonts/Roboto-Bold.ttf"/>
+        android:id="@+id/button_bold"
+        fontPath="fonts/Roboto-Bold.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:text="@string/button_defined"/>
 
 </LinearLayout>

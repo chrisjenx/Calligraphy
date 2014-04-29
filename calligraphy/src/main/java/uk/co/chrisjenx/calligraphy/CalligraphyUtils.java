@@ -6,7 +6,12 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
@@ -17,10 +22,49 @@ import android.widget.TextView;
  */
 public final class CalligraphyUtils {
 
-    public static final boolean applyFontToTextView(final TextView textView, final Typeface typeface) {
+    /**
+     * Applies a custom typeface span to the text.
+     *
+     * @param s        text to apply it too.
+     * @param typeface typeface to apply.
+     * @return Either the passed in Object or new Spannable with the typeface span applied.
+     */
+    public static CharSequence applyTypefaceSpan(CharSequence s, Typeface typeface) {
+        if (s != null && s.length() > 0) {
+            if (!(s instanceof Spannable)) {
+                s = new SpannableString(s);
+            }
+            ((Spannable) s).setSpan(new CalligraphyTypefaceSpan(typeface), 0, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return s;
+    }
+
+    /**
+     * Applies a Typeface to a TextView, its recommend you don't call this multiple times, as this
+     * adds a TextWatcher.
+     *
+     * @param textView Not null, TextView or child of.
+     * @param typeface Not null, Typeface to apply to the TextView.
+     * @return true if applied otherwise false.
+     */
+    public static boolean applyFontToTextView(final TextView textView, final Typeface typeface) {
         if (textView == null || typeface == null) return false;
-        textView.setTypeface(typeface);
         textView.setPaintFlags(textView.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG);
+        textView.setText(applyTypefaceSpan(textView.getText(), typeface), TextView.BufferType.SPANNABLE);
+        textView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                applyTypefaceSpan(s, typeface);
+            }
+        });
         return true;
     }
 
@@ -83,4 +127,5 @@ public final class CalligraphyUtils {
 
     private CalligraphyUtils() {
     }
+
 }

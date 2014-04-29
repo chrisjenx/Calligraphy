@@ -32,6 +32,8 @@ android {
 
 dependencies {
     compile project(':calligraphy')
-    compile 'com.android.support:support-v4:19.0.+'
+    compile 'com.android.support:support-v4:19.1.+'
 //    compile "uk.co.chrisjenx.calligraphy:calligraphy:0.5.+"
+
+    compile 'com.jakewharton:butterknife:5.+'
 }

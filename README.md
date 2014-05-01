@@ -112,7 +112,7 @@ Then define in one of the places listed above, e.g:
 #FAQ
 
 ## Why piggyback off of fontFamily attribute?
-Means the the library can compile down to a jar instead of an aar, as it is not dependant on any resources.
+Means that the library can compile down to a jar instead of an aar, as it is not dependant on any resources.
 (This may of course change in the future if we run into issues)
 
 As of 0.7+ you are able to define your own custom attributeId.

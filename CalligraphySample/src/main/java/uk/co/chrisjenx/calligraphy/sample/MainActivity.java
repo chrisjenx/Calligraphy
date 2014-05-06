@@ -21,7 +21,6 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CalligraphyConfig.initDefault("fonts/Roboto-ThinItalic.ttf");
 
         setContentView(R.layout.activity_main);
 
@@ -36,7 +35,7 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.fontPath));
+        super.attachBaseContext(new CalligraphyContextWrapper(newBase));
     }
 
     /**

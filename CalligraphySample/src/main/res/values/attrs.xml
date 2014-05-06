@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="fontPath"/>
+    <attr name="fontPath" format="string"/>
 </resources>

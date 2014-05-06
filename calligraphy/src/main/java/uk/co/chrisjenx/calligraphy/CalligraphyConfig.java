@@ -21,21 +21,68 @@ public class CalligraphyConfig {
         mInstance = new CalligraphyConfig(defaultFontAssetPath);
     }
 
+    /**
+     * Init only the custom attribute to lookup.
+     *
+     * @param defaultAttributeId the custom attribute to look for instead of fontFamily attribute.
+     * @see #initDefault(String, int)
+     */
+    public static void initDefault(int defaultAttributeId) {
+        mInstance = new CalligraphyConfig(defaultAttributeId);
+    }
+
+    /**
+     * Define the default font and the custom attribute to lookup globally.
+     *
+     * @param defaultFontAssetPath path to a font file in the assets folder, e.g. "fonts/roboto-light.ttf",
+     * @param defaultAttributeId   the custom attribute to look for instead of fontFamily attribute.
+     * @see #initDefault(String)
+     * @see #initDefault(int)
+     */
+    public static void initDefault(String defaultFontAssetPath, int defaultAttributeId) {
+        mInstance = new CalligraphyConfig(defaultFontAssetPath, defaultAttributeId);
+    }
+
+    /**
+     * If you are not going to set defaults, you don't really need to call this.
+     *
+     * I generally recommend calling {@link #initDefault(int)} though as that means you can use
+     * font-family to define stock fonts.
+     *
+     * @see #initDefault(String)
+     */
+    public static void initDefault() {
+        mInstance = new CalligraphyConfig();
+    }
+
     static CalligraphyConfig get() {
         if (mInstance == null)
-            throw new IllegalStateException("You must initDefault for CalligraphyConfig, if you are going to use the CalligraphyContextWrapper");
+            mInstance = new CalligraphyConfig();
         return mInstance;
     }
 
 
     private final String mFontPath;
     private final boolean mIsFontSet;
+    private final int mAttrId;
 
-    private CalligraphyConfig(String defaultFontAssetPath) {
-        this.mFontPath = defaultFontAssetPath;
-        mIsFontSet = !TextUtils.isEmpty(defaultFontAssetPath);
+    private CalligraphyConfig() {
+        this(null, 0);
     }
 
+    private CalligraphyConfig(int attrId) {
+        this(null, attrId);
+    }
+
+    private CalligraphyConfig(String defaultFontAssetPath) {
+        this(defaultFontAssetPath, 0);
+    }
+
+    private CalligraphyConfig(String defaultFontAssetPath, int attrId) {
+        this.mFontPath = defaultFontAssetPath;
+        mIsFontSet = !TextUtils.isEmpty(defaultFontAssetPath);
+        mAttrId = attrId;
+    }
 
     /**
      * @return mFontPath for text views might be null
@@ -49,5 +96,14 @@ public class CalligraphyConfig {
      */
     boolean isFontSet() {
         return mIsFontSet;
+    }
+
+    /**
+     * @return the custom attrId to look for, default to fontFamily if not set.
+     */
+    public int getAttrId() {
+        if (mAttrId == 0)
+            return android.R.attr.fontFamily;
+        return mAttrId;
     }
 }

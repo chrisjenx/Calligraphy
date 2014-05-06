@@ -14,11 +14,31 @@ public class CalligraphyContextWrapper extends ContextWrapper {
 
     private final int mAttributeId;
 
+    /**
+     * Uses the default configuration from {@link uk.co.chrisjenx.calligraphy.CalligraphyConfig}
+     *
+     * Remember if you are defining default in the
+     * {@link uk.co.chrisjenx.calligraphy.CalligraphyConfig} make sure this is initialised before
+     * the activity is created.
+     *
+     * @param base ContextBase to Wrap
+     */
     public CalligraphyContextWrapper(Context base) {
         super(base);
-        mAttributeId = android.R.attr.fontFamily;
+        mAttributeId = CalligraphyConfig.get().getAttrId();
     }
 
+    /**
+     * Override the default AttributeId, this will always take the custom attribute defined here
+     * and ignore the one set in {@link uk.co.chrisjenx.calligraphy.CalligraphyConfig}.
+     *
+     * Remember if you are defining default in the
+     * {@link uk.co.chrisjenx.calligraphy.CalligraphyConfig} make sure this is initialised before
+     * the activity is created.
+     *
+     * @param base        ContextBase to Wrap
+     * @param attributeId Attribute to lookup.
+     */
     public CalligraphyContextWrapper(Context base, int attributeId) {
         super(base);
         mAttributeId = attributeId;

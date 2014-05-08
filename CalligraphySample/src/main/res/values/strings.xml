@@ -11,4 +11,6 @@
     <string name="button_default">Default Font</string>
     <string name="button_defined">Bold Button</string>
 
+    <string name="widget_via_typeface">\nThis is defined manually by the SpannableTypeface\n</string>
+
 </resources>

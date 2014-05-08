@@ -43,18 +43,6 @@ public class CalligraphyConfig {
         mInstance = new CalligraphyConfig(defaultFontAssetPath, defaultAttributeId);
     }
 
-    /**
-     * If you are not going to set defaults, you don't really need to call this.
-     *
-     * I generally recommend calling {@link #initDefault(int)} though as that means you can use
-     * font-family to define stock fonts.
-     *
-     * @see #initDefault(String)
-     */
-    public static void initDefault() {
-        mInstance = new CalligraphyConfig();
-    }
-
     static CalligraphyConfig get() {
         if (mInstance == null)
             mInstance = new CalligraphyConfig();

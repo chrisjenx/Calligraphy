@@ -22,13 +22,14 @@ dependencies {
 ```
 __IMPORTANT:__ The Maven artifact group id is now `uk.co.chrisjenx` __NOT__ `uk.co.chrisjenx.calligraphy` (this changed in 0.7+)
 
+
 Add your custom fonts to `assets/` all font definition is relative to this path.
 
-Define your default font using `CalligraphyConfig`.
+Define your default font using `CalligraphyConfig`, in your `Application` class, unfortunatly `Activity#onCreate(Bundle)` is called _after_ `Activity#attachBaseContext(Context)` so the config needs to be defined before that.
 
 ```java
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+protected void onCreate() {
+    super.onCreate();
     CalligraphyConfig.initDefault("fonts/Roboto-Regular.ttf");
     //....
 }

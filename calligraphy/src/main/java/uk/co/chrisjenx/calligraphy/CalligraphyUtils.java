@@ -27,7 +27,6 @@ public final class CalligraphyUtils {
     static final int[] R_Styleable_TextView;
     static final int[] R_Styleable_TextAppearance;
     static final int R_Styleable_TextView_textAppearance;
-    static final int R_Styleable_TextAppearance_fontFamily;
 
     static {
         Class<?> styleableClass = ReflectionUtils.getClass("com.android.internal.R$styleable");
@@ -35,12 +34,10 @@ public final class CalligraphyUtils {
             R_Styleable_TextView = getStaticFieldValue(styleableClass, "TextView", null);
             R_Styleable_TextAppearance = getStaticFieldValue(styleableClass, "TextAppearance", null);
             R_Styleable_TextView_textAppearance = getStaticFieldValue(styleableClass, "TextView_textAppearance", -1);
-            R_Styleable_TextAppearance_fontFamily = getStaticFieldValue(styleableClass, "TextAppearance_fontFamily", -1);
         } else {
             R_Styleable_TextView = null;
             R_Styleable_TextAppearance = null;
             R_Styleable_TextView_textAppearance = -1;
-            R_Styleable_TextAppearance_fontFamily = -1;
         }
     }
 
@@ -111,21 +108,44 @@ public final class CalligraphyUtils {
         applyFontToTextView(context, textView, config);
     }
 
-    static String pullFontPath(Context context, AttributeSet attrs, int attributeId) {
-        String attributeName;
+    /**
+     * Tries to pull the Custom Attribute directly from the TextView.
+     *
+     * @param context     Activity Context
+     * @param attrs       View Attributes
+     * @param attributeId if -1 returns null.
+     * @return null if attribute is not defined or added to View
+     */
+    static String pullFontPathFromView(Context context, AttributeSet attrs, int attributeId) {
+        if (attributeId == -1)
+            return null;
+
+        final String attributeName;
         try {
             attributeName = context.getResources().getResourceEntryName(attributeId);
         } catch (Resources.NotFoundException e) {
             // invalid attribute ID
             return null;
         }
+
         final int stringResourceId = attrs.getAttributeResourceValue(null, attributeName, -1);
         return stringResourceId > 0
                 ? context.getString(stringResourceId)
                 : attrs.getAttributeValue(null, attributeName);
     }
 
+    /**
+     * Tries to pull the Font Path from the View Style as this is the next decendent after being
+     * defined in the View's xml.
+     *
+     * @param context     Activity Activity Context
+     * @param attrs       View Attributes
+     * @param attributeId if -1 returns null.
+     * @return null if attribute is not defined or found in the Style
+     */
     static String pullFontPathFromStyle(Context context, AttributeSet attrs, int attributeId) {
+        if (attributeId == -1)
+            return null;
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, new int[]{attributeId});
         if (typedArray != null) {
             try {
@@ -140,45 +160,54 @@ public final class CalligraphyUtils {
                 typedArray.recycle();
             }
         }
-        return pullFontPathFromTextAppearance(context, attrs, attributeId);
+        return null;
     }
 
+    /**
+     * Tries to pull the Font Path from the Text Appearance.
+     *
+     * @param context     Activity Context
+     * @param attrs       View Attributes
+     * @param attributeId if -1 returns null.
+     * @return returns null if attribute is not defined or if no TextAppearance is found.
+     */
     static String pullFontPathFromTextAppearance(final Context context, AttributeSet attrs, int attributeId) {
-        boolean usingFontFamily = attributeId == android.R.attr.fontFamily;
-
         if (R_Styleable_TextView == null
                 || R_Styleable_TextAppearance == null
                 || R_Styleable_TextView_textAppearance == -1
-                || (usingFontFamily && attributeId == -1)) {
+                || attributeId == -1) {
             return null;
         }
 
-        TypedArray textViewAttrs = context.obtainStyledAttributes(attrs, R_Styleable_TextView);
+        final TypedArray textViewAttrs = context.obtainStyledAttributes(attrs, R_Styleable_TextView);
         if (textViewAttrs == null) {
             return null;
         }
 
-        int textAppearanceId = textViewAttrs.getResourceId(R_Styleable_TextView_textAppearance, -1);
-        TypedArray textAppearanceAttrs = null;
-        try {
-            if (usingFontFamily) {
-                textAppearanceAttrs = context.obtainStyledAttributes(textAppearanceId, R_Styleable_TextAppearance);
-                if (textAppearanceAttrs == null) {
-                    return null;
-                }
-                return textAppearanceAttrs.getString(R_Styleable_TextAppearance_fontFamily);
-            } else {
-                textAppearanceAttrs = context.obtainStyledAttributes(textAppearanceId, new int[]{attributeId});
+        final int textAppearanceId = textViewAttrs.getResourceId(R_Styleable_TextView_textAppearance, -1);
+        final TypedArray textAppearanceAttrs = context.obtainStyledAttributes(textAppearanceId, new int[]{attributeId});
+        if (textAppearanceAttrs != null) {
+            try {
                 return textAppearanceAttrs.getString(0);
-            }
-        } finally {
-            if (textAppearanceAttrs != null) {
+            } finally {
                 textAppearanceAttrs.recycle();
             }
         }
+        return null;
     }
 
+    /**
+     * Last but not least, try to pull the Font Path from the Theme, which is defined.
+     *
+     * @param context     Activity Context
+     * @param styleId     Theme style id
+     * @param attributeId if -1 returns null.
+     * @return null if no theme or attribute defined.
+     */
     static String pullFontPathFromTheme(Context context, int styleId, int attributeId) {
+        if (styleId == -1 || attributeId == -1)
+            return null;
+
         final Resources.Theme theme = context.getTheme();
         final TypedValue value = new TypedValue();
 

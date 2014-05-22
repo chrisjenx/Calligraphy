@@ -42,7 +42,7 @@ class CalligraphyFactory implements LayoutInflater.Factory {
 
     public CalligraphyFactory(LayoutInflater.Factory factory, int attributeId) {
         this.factory = factory;
-        this.mAttributeId = attributeId == 0 ? android.R.attr.fontFamily : attributeId;
+        this.mAttributeId = attributeId;
     }
 
     @Override
@@ -98,11 +98,16 @@ class CalligraphyFactory implements LayoutInflater.Factory {
             // Since we're not using namespace it's a little bit tricky
 
             // Try view xml attributes
-            String textViewFont = CalligraphyUtils.pullFontPath(context, attrs, mAttributeId);
+            String textViewFont = CalligraphyUtils.pullFontPathFromView(context, attrs, mAttributeId);
 
             // Try view style attributes
             if (TextUtils.isEmpty(textViewFont)) {
                 textViewFont = CalligraphyUtils.pullFontPathFromStyle(context, attrs, mAttributeId);
+            }
+
+            // Try View TextAppearance
+            if (TextUtils.isEmpty(textViewFont)) {
+                textViewFont = CalligraphyUtils.pullFontPathFromTextAppearance(context, attrs, mAttributeId);
             }
 
             // Try theme attributes

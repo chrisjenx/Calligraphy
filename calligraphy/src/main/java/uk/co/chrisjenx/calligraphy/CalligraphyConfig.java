@@ -24,7 +24,7 @@ public class CalligraphyConfig {
     /**
      * Init only the custom attribute to lookup.
      *
-     * @param defaultAttributeId the custom attribute to look for instead of fontFamily attribute.
+     * @param defaultAttributeId the custom attribute to look for.
      * @see #initDefault(String, int)
      */
     public static void initDefault(int defaultAttributeId) {
@@ -34,8 +34,8 @@ public class CalligraphyConfig {
     /**
      * Define the default font and the custom attribute to lookup globally.
      *
-     * @param defaultFontAssetPath path to a font file in the assets folder, e.g. "fonts/roboto-light.ttf",
-     * @param defaultAttributeId   the custom attribute to look for instead of fontFamily attribute.
+     * @param defaultFontAssetPath path to a font file in the assets folder, e.g. "fonts/Roboto-light.ttf",
+     * @param defaultAttributeId   the custom attribute to look for.
      * @see #initDefault(String)
      * @see #initDefault(int)
      */
@@ -55,7 +55,7 @@ public class CalligraphyConfig {
     private final int mAttrId;
 
     private CalligraphyConfig() {
-        this(null, 0);
+        this(null, -1);
     }
 
     private CalligraphyConfig(int attrId) {
@@ -63,13 +63,13 @@ public class CalligraphyConfig {
     }
 
     private CalligraphyConfig(String defaultFontAssetPath) {
-        this(defaultFontAssetPath, 0);
+        this(defaultFontAssetPath, -1);
     }
 
     private CalligraphyConfig(String defaultFontAssetPath, int attrId) {
         this.mFontPath = defaultFontAssetPath;
         mIsFontSet = !TextUtils.isEmpty(defaultFontAssetPath);
-        mAttrId = attrId;
+        mAttrId = attrId != -1 ? attrId : -1;
     }
 
     /**
@@ -87,11 +87,9 @@ public class CalligraphyConfig {
     }
 
     /**
-     * @return the custom attrId to look for, default to fontFamily if not set.
+     * @return the custom attrId to look for, -1 if not set.
      */
     public int getAttrId() {
-        if (mAttrId == 0)
-            return android.R.attr.fontFamily;
         return mAttrId;
     }
 }

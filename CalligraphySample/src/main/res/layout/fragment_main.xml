@@ -25,7 +25,7 @@
             fontPath="fonts/Roboto-Bold.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/defined_fontfamily" />
+            android:text="@string/defined_fontpath_view" />
 
         <TextView
             fontPath="fonts/Roboto-None.ttf"
@@ -45,7 +45,14 @@
             android:layout_height="wrap_content"
             android:text="@string/defined_in_style" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.FontPath"
+            android:text="@string/defined_in_appears" />
+
         <uk.co.chrisjenx.calligraphy.sample.CustomTextView
+            fontPath="fonts/Oswald-Stencbab.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/defined_custom_view" />

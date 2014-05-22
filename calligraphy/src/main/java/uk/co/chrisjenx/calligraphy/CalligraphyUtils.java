@@ -143,39 +143,39 @@ public final class CalligraphyUtils {
         return pullFontPathFromTextAppearance(context, attrs, attributeId);
     }
 
-    static final String pullFontPathFromTextAppearance(final Context context, AttributeSet attrs, int attributeId) {
-      boolean usingFontFamily = attributeId == android.R.attr.fontFamily;
+    static String pullFontPathFromTextAppearance(final Context context, AttributeSet attrs, int attributeId) {
+        boolean usingFontFamily = attributeId == android.R.attr.fontFamily;
 
-      if (R_Styleable_TextView == null
-          || R_Styleable_TextAppearance == null
-          || R_Styleable_TextView_textAppearance == -1
-          || (usingFontFamily && attributeId == -1)) {
-        return null;
-      }
-
-      TypedArray textViewAttrs = context.obtainStyledAttributes(attrs, R_Styleable_TextView);
-      if (textViewAttrs == null) {
-          return null;
-      }
-
-      int textAppearanceId = textViewAttrs.getResourceId(R_Styleable_TextView_textAppearance, -1);
-      TypedArray textAppearanceAttrs = null;
-      try {
-        if (usingFontFamily) {
-          textAppearanceAttrs = context.obtainStyledAttributes(textAppearanceId, R_Styleable_TextAppearance);
-          if (textAppearanceAttrs == null) {
+        if (R_Styleable_TextView == null
+                || R_Styleable_TextAppearance == null
+                || R_Styleable_TextView_textAppearance == -1
+                || (usingFontFamily && attributeId == -1)) {
             return null;
-          }
-          return textAppearanceAttrs.getString(R_Styleable_TextAppearance_fontFamily);
-        } else {
-          textAppearanceAttrs = context.obtainStyledAttributes(textAppearanceId, new int[] { attributeId });
-          return textAppearanceAttrs.getString(0);
         }
-      } finally {
-        if (textAppearanceAttrs != null) {
-          textAppearanceAttrs.recycle();
+
+        TypedArray textViewAttrs = context.obtainStyledAttributes(attrs, R_Styleable_TextView);
+        if (textViewAttrs == null) {
+            return null;
         }
-      }
+
+        int textAppearanceId = textViewAttrs.getResourceId(R_Styleable_TextView_textAppearance, -1);
+        TypedArray textAppearanceAttrs = null;
+        try {
+            if (usingFontFamily) {
+                textAppearanceAttrs = context.obtainStyledAttributes(textAppearanceId, R_Styleable_TextAppearance);
+                if (textAppearanceAttrs == null) {
+                    return null;
+                }
+                return textAppearanceAttrs.getString(R_Styleable_TextAppearance_fontFamily);
+            } else {
+                textAppearanceAttrs = context.obtainStyledAttributes(textAppearanceId, new int[]{attributeId});
+                return textAppearanceAttrs.getString(0);
+            }
+        } finally {
+            if (textAppearanceAttrs != null) {
+                textAppearanceAttrs.recycle();
+            }
+        }
     }
 
     static String pullFontPathFromTheme(Context context, int styleId, int attributeId) {

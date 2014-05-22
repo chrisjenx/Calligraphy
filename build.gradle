@@ -5,12 +5,12 @@ allprojects {
     }
 
     group = 'uk.co.chrisjenx'
-    version = "0.8.0"
+    version = "1.0.0"
 
     ext.versionCodeInt = 9
     ext.isReleaseVersion = has("release")
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.11'
+    gradleVersion = '1.12'
 }

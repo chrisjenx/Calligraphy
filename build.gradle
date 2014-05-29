@@ -5,9 +5,9 @@ allprojects {
     }
 
     group = 'uk.co.chrisjenx'
-    version = "0.7.1"
+    version = "0.7.2"
 
-    ext.versionCodeInt = 7
+    ext.versionCodeInt = 8
     ext.isReleaseVersion = has("release")
 }
 

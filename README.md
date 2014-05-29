@@ -125,6 +125,19 @@ _You're good to go!_
 
 #FAQ
 
+### Font Resolution 
+
+The `CalligraphyFactory` looks for the font in a pretty specific order, for the _most part_ it's
+ very similar to how the Android framework resolves attributes.
+ 
+1. `View` xml - attr defined here will always take priority.
+2. `Style` xml - attr defined here is checked next.
+3. `TextAppearance` xml - attr is checked next, the only caveat to this is **IF** you have a font 
+ defined in the `Style` and a `TextAttribute` defined in the `View` the `Style` attribute is picked first!
+4. `Theme` - if defined this is used.
+5. `Default` - if defined in the `CalligraphyConfig` this is used of none of the above are found 
+**OR** if one of the above returns an invalid font. 
+
 ### Why *not* piggyback off of fontFamily attribute?
 
 We originally did, but it conflicted with users wanting to actually use that attribute, you now have 

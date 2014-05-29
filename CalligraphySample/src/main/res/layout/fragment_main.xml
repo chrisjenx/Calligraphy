@@ -43,13 +43,13 @@
             style="@style/AppTheme.Widget.TextViewAppearanceStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/defined_in_appears"/>
+            android:text="@string/defined_in_appears_style"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/defined_in_appears"
-            android:textAppearance="@style/TextAppearance.FontPath"/>
+            android:textAppearance="@style/TextAppearance.FontPathView"/>
 
         <uk.co.chrisjenx.calligraphy.sample.CustomTextView
             fontPath="fonts/Oswald-Stencbab.ttf"

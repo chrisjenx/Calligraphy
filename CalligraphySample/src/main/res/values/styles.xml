@@ -24,4 +24,10 @@
         <item name="fontPath">fonts/RobotoCondensed-Regular.ttf</item>
         <item name="android:textColor">#444</item>
     </style>
+
+    <style name="TextAppearance.FontPathView" parent="android:TextAppearance">
+        <!-- Custom Attr-->
+        <item name="fontPath">fonts/Oswald-Stencbab.ttf</item>
+        <item name="android:textColor">#444</item>
+    </style>
 </resources>

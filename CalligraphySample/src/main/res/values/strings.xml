@@ -7,7 +7,7 @@
     <string name="defined_incorrect">\nThis has a fontPath set to a font file that does not exist, it goes back to the default.\n</string>
     <string name="defined_in_style">\nThis has the font path defined in the style as Roboto Condensed.\n</string>
     <string name="defined_in_appears_style">\nThis has the font path defined in the Styles TextAppearance as Roboto Condensed.\n</string>
-    <string name="defined_in_appears">\nThis has the font path defined in the Views TextAppearance as Roboto Condensed.\n</string>
+    <string name="defined_in_appears">\nThis has the font path defined in the Views TextAppearance as Oswald.\n</string>
     <string name="defined_custom_view">This is a custom TextView with Oswald font.\n</string>
 
     <string name="button_default">Default Font</string>

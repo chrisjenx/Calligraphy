@@ -16,30 +16,11 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
 
-import static uk.co.chrisjenx.calligraphy.ReflectionUtils.getStaticFieldValue;
-
 /**
  * Created by chris on 20/12/2013
  * Project: Calligraphy
  */
 public final class CalligraphyUtils {
-
-    static final int[] R_Styleable_TextView;
-    static final int[] R_Styleable_TextAppearance;
-    static final int R_Styleable_TextView_textAppearance;
-
-    static {
-        Class<?> styleableClass = ReflectionUtils.getClass("com.android.internal.R$styleable");
-        if (styleableClass != null) {
-            R_Styleable_TextView = getStaticFieldValue(styleableClass, "TextView", null);
-            R_Styleable_TextAppearance = getStaticFieldValue(styleableClass, "TextAppearance", null);
-            R_Styleable_TextView_textAppearance = getStaticFieldValue(styleableClass, "TextView_textAppearance", -1);
-        } else {
-            R_Styleable_TextView = null;
-            R_Styleable_TextAppearance = null;
-            R_Styleable_TextView_textAppearance = -1;
-        }
-    }
 
     /**
      * Applies a custom typeface span to the text.
@@ -172,23 +153,30 @@ public final class CalligraphyUtils {
      * @return returns null if attribute is not defined or if no TextAppearance is found.
      */
     static String pullFontPathFromTextAppearance(final Context context, AttributeSet attrs, int attributeId) {
-        if (R_Styleable_TextView == null
-                || R_Styleable_TextAppearance == null
-                || R_Styleable_TextView_textAppearance == -1
-                || attributeId == -1) {
+        if (attributeId == -1) {
             return null;
         }
 
-        final TypedArray textViewAttrs = context.obtainStyledAttributes(attrs, R_Styleable_TextView);
-        if (textViewAttrs == null) {
-            return null;
+        int textAppearanceId = -1;
+        final TypedArray typedArrayAttr = context.obtainStyledAttributes(attrs, new int[]{android.R.attr.textAppearance});
+        if (typedArrayAttr != null) {
+            try {
+                textAppearanceId = typedArrayAttr.getResourceId(0, -1);
+            } catch (Exception ignored) {
+                // Failed for some reason
+                return null;
+            } finally {
+                typedArrayAttr.recycle();
+            }
         }
 
-        final int textAppearanceId = textViewAttrs.getResourceId(R_Styleable_TextView_textAppearance, -1);
         final TypedArray textAppearanceAttrs = context.obtainStyledAttributes(textAppearanceId, new int[]{attributeId});
         if (textAppearanceAttrs != null) {
             try {
                 return textAppearanceAttrs.getString(0);
+            } catch (Exception ignore) {
+                // Failed for some reason.
+                return null;
             } finally {
                 textAppearanceAttrs.recycle();
             }

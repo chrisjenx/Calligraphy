@@ -19,56 +19,59 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/default_theme" />
+            android:text="@string/default_theme"/>
 
         <TextView
             fontPath="fonts/Roboto-Bold.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/defined_fontpath_view" />
+            android:text="@string/defined_fontpath_view"/>
 
         <TextView
             fontPath="fonts/Roboto-None.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/defined_incorrect" />
+            android:text="@string/defined_incorrect"/>
 
         <TextView
-            style="@style/TextFontFamily"
+            style="@style/AppTheme.Widget.TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/defined_in_style" />
+            android:text="@string/defined_in_style"/>
 
         <TextView
-            style="@style/AppThemeWidgetTextViewAppearanceStyle"
+            style="@style/AppTheme.Widget.TextViewAppearanceStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/defined_in_style" />
+            android:text="@string/defined_in_appears"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.FontPath"
-            android:text="@string/defined_in_appears" />
+            android:text="@string/defined_in_appears"
+            android:textAppearance="@style/TextAppearance.FontPath"/>
 
         <uk.co.chrisjenx.calligraphy.sample.CustomTextView
             fontPath="fonts/Oswald-Stencbab.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/defined_custom_view" />
+            android:text="@string/defined_custom_view"/>
 
         <Button
+            android:id="@+id/button_default"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/button_default" />
+            android:text="@string/button_default"/>
 
         <Button
+            android:id="@+id/button_bold"
             fontPath="fonts/Roboto-Bold.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="12dp"
-            android:text="@string/button_defined" />
+            android:text="@string/button_defined"/>
+
     </LinearLayout>
 </ScrollView>

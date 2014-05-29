@@ -63,6 +63,9 @@ public final class CalligraphyUtils {
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, new int[]{attributeId});
         try {
             return typedArray.getString(0);
+        } catch (Exception ignore) {
+            // Failed for some reason.
+            return null;
         } finally {
             typedArray.recycle();
         }
@@ -76,6 +79,9 @@ public final class CalligraphyUtils {
         final TypedArray typedArray = theme.obtainStyledAttributes(value.resourceId, new int[]{attributeId});
         try {
             return typedArray.getString(0);
+        } catch (Exception ignore) {
+            // Failed for some reason.
+            return null;
         } finally {
             typedArray.recycle();
         }

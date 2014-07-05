@@ -11,7 +11,7 @@ Are you fed up of Custom views to set fonts? Or traversing the ViewTree to find 
 
 ### Dependency
 
-[Download from Maven Central (.jar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/0.7.2/calligraphy-0.7.2.jar)
+[Download from Maven Central (.jar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/1.0.0/calligraphy-1.0.0.jar)
 
 __OR__
 
@@ -41,8 +41,9 @@ The most common one is: `res/values/attrs.xml`
 
 ### Configuration
 
-Define your default font using `CalligraphyConfig`, in your `Application` class, unfortunately `Activity#onCreate(Bundle)` 
-is called _after_ `Activity#attachBaseContext(Context)` so the config needs to be defined before that.
+Define your default font using `CalligraphyConfig`, in your `Application` class, unfortunately 
+`Activity#onCreate(Bundle)` is called _after_ `Activity#attachBaseContext(Context)` so the config 
+needs to be defined before that.
 
 ```java
 protected void onCreate() {
@@ -51,8 +52,8 @@ protected void onCreate() {
     //....
 }
 ```
-_Note: You don't need to define a Config anymore (1.0.0+) but the library will do nothing. So define at least a default 
-font or attribute._
+_Note: You don't need to define `CalligraphyConfig` anymore (1.0.0+) but the library will apply
+no default font. I recommend defining at least a default font or attribute._
 
 ### Inject into Context
 

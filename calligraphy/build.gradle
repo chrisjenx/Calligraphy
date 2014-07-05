@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.10.+'
+        classpath 'com.android.tools.build:gradle:0.11.+'
     }
 }
 apply plugin: 'android-library'
@@ -37,7 +37,7 @@ android.libraryVariants.all { variant ->
     def name = variant.buildType.name
 
     // Only attach a jar for non-debug build types.
-    if (!name.equals(com.android.builder.BuilderConstants.DEBUG)) {
+    if (!name.equals("DEBUG")) {
         def task = project.tasks.create "jar${name.capitalize()}", Jar
         task.dependsOn variant.javaCompile
         task.from variant.javaCompile.destinationDir

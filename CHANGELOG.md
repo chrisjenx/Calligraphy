@@ -1,8 +1,12 @@
 #Changelog
 
-#0.8.0 (WIP)
+#1.0.0 (WIP)
 - Added ActionBar Title/SubTitle support.
 - Toast support via default style/or TextView theme style.
+- Removed FontFamily parsing as it lead to users not being able to use `fontFamily`
+- Added TextAppearance Support - Thanks [@codebutler](https://github.com/codebutler) & [@loganj](https://github.com/loganj)
+
+#0.8/9 (Skipped major API change)
 
 #0.7.1 (22/04/2014)
 - Fixed Resources not found Exception - [@Smuldr](https://github.com/Smuldr)

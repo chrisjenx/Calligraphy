@@ -9,6 +9,8 @@ Are you fed up of Custom views to set fonts? Or traversing the ViewTree to find 
 
 ##Getting started
 
+### Dependency
+
 [Download from Maven Central (.jar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/0.7.2/calligraphy-0.7.2.jar)
 
 __OR__
@@ -17,25 +19,42 @@ Include the dependency:
 
 ```groovy
 dependencies {
-    compile 'uk.co.chrisjenx:calligraphy:0.7.+'
+    compile 'uk.co.chrisjenx:calligraphy:1.0.+'
 }
 ```
-__IMPORTANT:__ The Maven artifact group id is now `uk.co.chrisjenx` __NOT__ `uk.co.chrisjenx.calligraphy` (this changed in 0.7+)
-
+### Fonts
 
 Add your custom fonts to `assets/` all font definition is relative to this path.
 
-Define your default font using `CalligraphyConfig`, in your `Application` class, unfortunatly `Activity#onCreate(Bundle)` is called _after_ `Activity#attachBaseContext(Context)` so the config needs to be defined before that.
+### Custom Attribute
+
+We don't package an `R.attr` with Calligraphy to keep it a Jar. So you will need to add your own Attr.
+
+The most common one is: `res/values/attrs.xml`
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="fontPath" format="string"/>
+</resources>
+```
+
+### Configuration
+
+Define your default font using `CalligraphyConfig`, in your `Application` class, unfortunately `Activity#onCreate(Bundle)` 
+is called _after_ `Activity#attachBaseContext(Context)` so the config needs to be defined before that.
 
 ```java
 protected void onCreate() {
     super.onCreate();
-    CalligraphyConfig.initDefault("fonts/Roboto-Regular.ttf");
+    CalligraphyConfig.initDefault("fonts/Roboto-Regular.ttf", R.attr.fontPath);
     //....
 }
 ```
+_Note: You don't need to define a Config anymore (1.0.0+) but the library will do nothing. So define at least a default 
+font or attribute._
 
-###*Important*
+### Inject into Context
 
 Wrap the Activity Context:
 
@@ -46,60 +65,12 @@ protected void attachBaseContext(Context newBase) {
 }
 ```
 
-You're good to go!
+_You're good to go!_
 
 
----
-#### Custom font per TextView
-Of course:
+## Usage
 
-```xml
-<TextView
-    android:text="@string/hello_world"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:fontFamily="fonts/Roboto-Bold.ttf"/>
-```
-
-#### Custom font in styles
-No problem:
-
-```xml
-<style name="TextViewCustomFont">
-    <item name="android:fontFamily">fonts/RobotoCondensed-Regular.ttf</item>
-</style>
-```
-
-#### Custom font defined in Theme
-```xml
-<style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-    <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
-</style>
-
-<style name="AppTheme.Widget"/>
-
-<style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
-    <item name="android:fontFamily">fonts/Roboto-ThinItalic.ttf</item>
-</style>
-```
-
-#### Custom attribute
-Defined your custom attribute name in your `attr.xml` (We don't ship calligraphy with one, this is so it can stay a jar).
-
-```xml
-<attr name="fontPath"/>
-```
-
-Wrap the Activity Context:
-
-```java
-@Override
-protected void attachBaseContext(Context newBase) {
-    super.attachBaseContext(new CalligraphyContextWrapper(newBase, R.attr.fontPath));
-}
-```
-
-Then define in one of the places listed above, e.g:
+### Custom font per TextView
 
 ```xml
 <TextView
@@ -109,20 +80,84 @@ Then define in one of the places listed above, e.g:
     fontPath="fonts/Roboto-Bold.ttf"/>
 ```
 
+### Custom font in TextAppearance
+
+
+```xml
+<style name="TextAppearance.FontPath" parent="android:TextAppearance">
+    <!-- Custom Attr-->
+    <item name="fontPath">fonts/RobotoCondensed-Regular.ttf</item>
+</style>
+```
+
+```xml
+<TextView
+    android:text="@string/hello_world"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="@style/TextAppearance_FontPath/>
+
+```
+
+### Custom font in Styles
+
+
+```xml
+<style name="TextViewCustomFont">
+    <item name="fontPath">fonts/RobotoCondensed-Regular.ttf</item>
+</style>
+```
+
+### Custom font defined in Theme
+
+```xml
+<style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
+</style>
+
+<style name="AppTheme.Widget"/>
+
+<style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
+    <item name="fontPath">fonts/Roboto-ThinItalic.ttf</item>
+</style>
+```
+
 
 #FAQ
 
-## Why piggyback off of fontFamily attribute?
-Means that the library can compile down to a jar instead of an aar, as it is not dependant on any resources.
-(This may of course change in the future if we run into issues)
+### Font Resolution 
 
-As of 0.7+ you are able to define your own custom attributeId.
+The `CalligraphyFactory` looks for the font in a pretty specific order, for the _most part_ it's
+ very similar to how the Android framework resolves attributes.
+ 
+1. `View` xml - attr defined here will always take priority.
+2. `Style` xml - attr defined here is checked next.
+3. `TextAppearance` xml - attr is checked next, the only caveat to this is **IF** you have a font 
+ defined in the `Style` and a `TextAttribute` defined in the `View` the `Style` attribute is picked first!
+4. `Theme` - if defined this is used.
+5. `Default` - if defined in the `CalligraphyConfig` this is used of none of the above are found 
+**OR** if one of the above returns an invalid font. 
+
+### Why *not* piggyback off of fontFamily attribute?
+
+We originally did, but it conflicted with users wanting to actually use that attribute, you now have 
+have to define a custom attribute.
+
+
+### Why not ship with custom attribute?
+
+No resources means that the library can compile down to a `jar` instead of an `aar`, as I know alot 
+of users are still not using Gradle yet.
+
+As of 1.0+ you *have* to define a custom attribute.
 
 #Colaborators
 
 - [@mironov-nsk](https://github.com/mironov-nsk)
 - [@Roman Zhilich](https://github.com/RomanZhilich)
 - [@Smuldr](https://github.com/Smuldr)
+- [@Codebutler](https://github.com/codebutler)
+- [@loganj](https://github.com/loganj)
 
 #Licence
 

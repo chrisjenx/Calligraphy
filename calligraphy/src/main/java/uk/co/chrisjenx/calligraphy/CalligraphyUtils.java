@@ -89,33 +89,113 @@ public final class CalligraphyUtils {
         applyFontToTextView(context, textView, config);
     }
 
-    static String pullFontPath(Context context, AttributeSet attrs, int attributeId) {
-        String attributeName;
+    /**
+     * Tries to pull the Custom Attribute directly from the TextView.
+     *
+     * @param context     Activity Context
+     * @param attrs       View Attributes
+     * @param attributeId if -1 returns null.
+     * @return null if attribute is not defined or added to View
+     */
+    static String pullFontPathFromView(Context context, AttributeSet attrs, int attributeId) {
+        if (attributeId == -1)
+            return null;
+
+        final String attributeName;
         try {
             attributeName = context.getResources().getResourceEntryName(attributeId);
         } catch (Resources.NotFoundException e) {
             // invalid attribute ID
             return null;
         }
+
         final int stringResourceId = attrs.getAttributeResourceValue(null, attributeName, -1);
         return stringResourceId > 0
                 ? context.getString(stringResourceId)
                 : attrs.getAttributeValue(null, attributeName);
     }
 
+    /**
+     * Tries to pull the Font Path from the View Style as this is the next decendent after being
+     * defined in the View's xml.
+     *
+     * @param context     Activity Activity Context
+     * @param attrs       View Attributes
+     * @param attributeId if -1 returns null.
+     * @return null if attribute is not defined or found in the Style
+     */
     static String pullFontPathFromStyle(Context context, AttributeSet attrs, int attributeId) {
-        final TypedArray typedArray = context.obtainStyledAttributes(attrs, new int[]{attributeId});
-        try {
-            return typedArray.getString(0);
-        } catch (Exception ignore) {
-            // Failed for some reason.
+        if (attributeId == -1)
             return null;
-        } finally {
-            typedArray.recycle();
+        final TypedArray typedArray = context.obtainStyledAttributes(attrs, new int[]{attributeId});
+        if (typedArray != null) {
+            try {
+                // First defined attribute
+                String fontFromAttribute = typedArray.getString(0);
+                if (!TextUtils.isEmpty(fontFromAttribute)) {
+                    return fontFromAttribute;
+                }
+            } catch (Exception ignore) {
+                // Failed for some reason.
+            } finally {
+                typedArray.recycle();
+            }
         }
+        return null;
     }
 
+    /**
+     * Tries to pull the Font Path from the Text Appearance.
+     *
+     * @param context     Activity Context
+     * @param attrs       View Attributes
+     * @param attributeId if -1 returns null.
+     * @return returns null if attribute is not defined or if no TextAppearance is found.
+     */
+    static String pullFontPathFromTextAppearance(final Context context, AttributeSet attrs, int attributeId) {
+        if (attributeId == -1) {
+            return null;
+        }
+
+        int textAppearanceId = -1;
+        final TypedArray typedArrayAttr = context.obtainStyledAttributes(attrs, new int[]{android.R.attr.textAppearance});
+        if (typedArrayAttr != null) {
+            try {
+                textAppearanceId = typedArrayAttr.getResourceId(0, -1);
+            } catch (Exception ignored) {
+                // Failed for some reason
+                return null;
+            } finally {
+                typedArrayAttr.recycle();
+            }
+        }
+
+        final TypedArray textAppearanceAttrs = context.obtainStyledAttributes(textAppearanceId, new int[]{attributeId});
+        if (textAppearanceAttrs != null) {
+            try {
+                return textAppearanceAttrs.getString(0);
+            } catch (Exception ignore) {
+                // Failed for some reason.
+                return null;
+            } finally {
+                textAppearanceAttrs.recycle();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Last but not least, try to pull the Font Path from the Theme, which is defined.
+     *
+     * @param context     Activity Context
+     * @param styleId     Theme style id
+     * @param attributeId if -1 returns null.
+     * @return null if no theme or attribute defined.
+     */
     static String pullFontPathFromTheme(Context context, int styleId, int attributeId) {
+        if (styleId == -1 || attributeId == -1)
+            return null;
+
         final Resources.Theme theme = context.getTheme();
         final TypedValue value = new TypedValue();
 

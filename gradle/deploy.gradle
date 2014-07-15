@@ -36,6 +36,7 @@ def getRepositoryUsername() {
 def getRepositoryPassword() {
     return hasProperty('sonatypePassword') ? sonatypePassword : ""
 }
+
 // Debug Build or Release?
 if (isReleaseBuild()) {
     println "RELEASE BUILD $version"

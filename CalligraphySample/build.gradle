@@ -15,7 +15,7 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 19
-        versionCode getProperty('VERSION_CODE').toInteger()
+        versionCode project.ext.versionCodeInt
         versionName version
     }
     buildTypes {

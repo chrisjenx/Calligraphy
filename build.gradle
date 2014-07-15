@@ -3,12 +3,10 @@ allprojects {
     repositories {
         mavenCentral()
     }
-
-    group = 'uk.co.chrisjenx'
-    version = "1.0.1"
-
-    ext.versionCodeInt = 10
+    // Is Release Build?
     ext.isReleaseVersion = has("release")
+    ext.versionCodeInt = getProperty('VERSION_CODE').toInteger()
+    version = VERSION_NAME
 }
 
 task wrapper(type: Wrapper) {

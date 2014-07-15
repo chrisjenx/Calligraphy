@@ -10,9 +10,9 @@ import java.util.HashMap;
  * A helper loading {@link android.graphics.Typeface} avoiding the leak of the font when loaded
  * by multiple calls to {@link android.graphics.Typeface#createFromAsset(android.content.res.AssetManager, String)}
  * on pre-ICS versions.
- * <p/>
+ * <p>
  * More details can be found here https://code.google.com/p/android/issues/detail?id=9904
- * <p/>
+ * <p>
  * Created by Chris Jenkins on 04/09/13.
  */
 public final class TypefaceUtils {

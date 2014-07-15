@@ -3,10 +3,10 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.11.+'
+        classpath 'com.android.tools.build:gradle:0.12.+'
     }
 }
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 
 repositories {
     mavenCentral()
@@ -19,7 +19,7 @@ android {
     defaultConfig {
         minSdkVersion 7
         targetSdkVersion 19
-        versionCode versionCodeInt
+        versionCode project.ext.versionCodeInt
         versionName version
     }
 
@@ -33,6 +33,9 @@ android {
 dependencies {
 }
 
+//
+// Attaches a Jar task to the archive artifact. Makes sure we upload a Jar file to maven.
+//
 android.libraryVariants.all { variant ->
     def name = variant.buildType.name
 
@@ -45,4 +48,4 @@ android.libraryVariants.all { variant ->
     }
 }
 
-apply from: file("deploy.gradle")
+apply from: '../gradle/deploy.gradle'

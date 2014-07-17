@@ -144,7 +144,6 @@ class CalligraphyFactory implements LayoutInflater.Factory {
                     ? sStyles.get(view.getClass())
                     : android.R.attr.textAppearance;
         }
-        Log.d("Factory", "TextViewStyle: " + styleIds[0] + " " + styleIds[1] + "");
         return styleIds;
     }
 }

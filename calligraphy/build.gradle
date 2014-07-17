@@ -31,8 +31,6 @@ android {
 }
 
 dependencies {
-    // We don't want to compile it in just allow us to use its id's
-    provided 'com.android.support:appcompat-v7:19.1.+'
 }
 
 //

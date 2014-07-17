@@ -34,7 +34,7 @@
             android:text="@string/defined_incorrect"/>
 
         <TextView
-            style="@style/AppTheme.Widget.TextView"
+            style="@style/AppTheme.Widget.TextView.Style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/defined_in_style"/>

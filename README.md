@@ -141,7 +141,7 @@ The `CalligraphyFactory` looks for the font in a pretty specific order, for the 
 
 ### Why *not* piggyback off of fontFamily attribute?
 
-We originally did, but it conflicted with users wanting to actually use that attribute, you now have 
+We originally did, but it conflicted with users wanting to actually use that attribute, you now 
 have to define a custom attribute.
 
 

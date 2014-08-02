@@ -74,10 +74,11 @@
             android:text="@string/checkbox_custom"/>
 
         <EditText
+            fontPath="fonts/Roboto-Bold.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            fontPath="fonts/Roboto-Bold.ttf"
+            android:layout_marginTop="16dp"
             android:hint="@string/edit_text_hint"/>
 
         <Button
@@ -85,6 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
             android:text="@string/button_default"/>
 
         <Button

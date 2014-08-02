@@ -54,9 +54,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/defined_in_appears"
-            android:singleLine="true"
             android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/defined_in_appears"
             android:textAppearance="@style/TextAppearance.FontPathView"/>
 
         <uk.co.chrisjenx.calligraphy.sample.CustomTextView
@@ -64,6 +64,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/defined_custom_view"/>
+
+        <CheckBox
+            fontPath="fonts/Oswald-Stencbab.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/checkbox_custom"/>
 
         <Button
             android:id="@+id/button_default"

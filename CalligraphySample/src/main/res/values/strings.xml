@@ -10,6 +10,8 @@
     <string name="defined_in_appears">\nThis has the font path defined in the Views TextAppearance as Oswald.\n</string>
     <string name="defined_custom_view">\nThis is a custom TextView with Oswald font.\n</string>
 
+    <string name="checkbox_custom">Custom Oswald checkbox</string>
+
     <string name="button_default">Default Font (show dialog)</string>
     <string name="button_defined">Bold Button (show toast)</string>
 

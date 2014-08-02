@@ -40,34 +40,68 @@ public final class CalligraphyUtils {
     }
 
     /**
-     * Applies a Typeface to a TextView, its recommend you don't call this multiple times, as this
-     * adds a TextWatcher.
+     * Applies a Typeface to a TextView.
+     * Defaults to false for deferring, if you are having issues with the textview keeping
+     * the custom Typeface, use
+     * {@link #applyFontToTextView(android.widget.TextView, android.graphics.Typeface, boolean)}
      *
      * @param textView Not null, TextView or child of.
      * @param typeface Not null, Typeface to apply to the TextView.
      * @return true if applied otherwise false.
+     * @see #applyFontToTextView(android.widget.TextView, android.graphics.Typeface, boolean)
      */
     public static boolean applyFontToTextView(final TextView textView, final Typeface typeface) {
+        return applyFontToTextView(textView, typeface, false);
+    }
+
+    /**
+     * Applies a Typeface to a TextView, if deferred,its recommend you don't call this multiple
+     * times, as this adds a TextWatcher.
+     *
+     * Deferring should really only be used on tricky views which get Typeface set by the system at
+     * weird times.
+     *
+     * @param textView Not null, TextView or child of.
+     * @param typeface Not null, Typeface to apply to the TextView.
+     * @param deferred If true we use Typefaces and TextChange listener to make sure font is always
+     *                 applied, but this sometimes conflicts with other
+     *                 {@link android.text.Spannable}'s.
+     * @return true if applied otherwise false.
+     * @see #applyFontToTextView(android.widget.TextView, android.graphics.Typeface)
+     */
+    public static boolean applyFontToTextView(final TextView textView, final Typeface typeface, boolean deferred) {
         if (textView == null || typeface == null) return false;
-        textView.setPaintFlags(textView.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG);
-        textView.setText(applyTypefaceSpan(textView.getText(), typeface), TextView.BufferType.SPANNABLE);
-        textView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+        textView.setPaintFlags(textView.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+        textView.setTypeface(typeface);
+        if (deferred) {
+            textView.setText(applyTypefaceSpan(textView.getText(), typeface), TextView.BufferType.SPANNABLE);
+            textView.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                applyTypefaceSpan(s, typeface);
-            }
-        });
+                @Override
+                public void afterTextChanged(Editable s) {
+                    applyTypefaceSpan(s, typeface);
+                }
+            });
+        }
         return true;
     }
 
+    /**
+     * Useful for manually fonts to a TextView. Will not default back to font
+     * set in {@link uk.co.chrisjenx.calligraphy.CalligraphyConfig}
+     *
+     * @param context  Context
+     * @param textView Not null, TextView to apply to.
+     * @param filePath if null/empty will do nothing.
+     * @return true if fonts been applied
+     */
     public static boolean applyFontToTextView(final Context context, final TextView textView, final String filePath) {
         if (textView == null || context == null) return false;
         final AssetManager assetManager = context.getAssets();
@@ -81,6 +115,15 @@ public final class CalligraphyUtils {
         applyFontToTextView(context, textView, config.getFontPath());
     }
 
+    /**
+     * Applies font to TextView. Will fall back to the default one if not set.
+     *
+     * @param context      context
+     * @param textView     textView to apply to.
+     * @param config       Default Config
+     * @param textViewFont nullable, will use Default Config if null or fails to find the
+     *                     defined font.
+     */
     public static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config, final String textViewFont) {
         if (context == null || textView == null || config == null) return;
         if (!TextUtils.isEmpty(textViewFont) && applyFontToTextView(context, textView, textViewFont)) {

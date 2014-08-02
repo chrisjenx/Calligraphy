@@ -4,7 +4,8 @@
 - Fixes ActionBar Title/SubTitle `textStyles`.
 - Fixes `textAllCaps` bug, now works correctly.
 - Fixes some `Spannable` issues reported, we are more careful what we apply spannables too now.
-- Fixes missing Typeface on hint text on `EditText`/`AutoComplete`. 
+- Fixes missing Typeface on hint text on `EditText`/`AutoComplete`.
+- Fixes empty source and javadoc jars on maven.
 
 #1.0.0 (05/07/2014)
 - Added ActionBar Title/SubTitle support.

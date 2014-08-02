@@ -69,7 +69,16 @@
             fontPath="fonts/Oswald-Stencbab.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/checkbox_custom"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            fontPath="fonts/Roboto-Bold.ttf"
+            android:hint="@string/edit_text_hint"/>
 
         <Button
             android:id="@+id/button_default"

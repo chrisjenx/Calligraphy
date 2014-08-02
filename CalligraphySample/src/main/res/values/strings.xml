@@ -12,6 +12,8 @@
 
     <string name="checkbox_custom">Custom Oswald checkbox</string>
 
+    <string name="edit_text_hint">Custom Roboto Bold Hint</string>
+
     <string name="button_default">Default Font (show dialog)</string>
     <string name="button_defined">Bold Button (show toast)</string>
 

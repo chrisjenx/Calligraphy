@@ -188,27 +188,71 @@ public final class CalligraphyUtils {
      * Last but not least, try to pull the Font Path from the Theme, which is defined.
      *
      * @param context     Activity Context
-     * @param styleId     Theme style id
+     * @param styleAttrId Theme style id
      * @param attributeId if -1 returns null.
      * @return null if no theme or attribute defined.
      */
-    static String pullFontPathFromTheme(Context context, int styleId, int attributeId) {
-        if (styleId == -1 || attributeId == -1)
+    static String pullFontPathFromTheme(Context context, int styleAttrId, int attributeId) {
+        if (styleAttrId == -1 || attributeId == -1)
             return null;
 
         final Resources.Theme theme = context.getTheme();
         final TypedValue value = new TypedValue();
 
-        theme.resolveAttribute(styleId, value, true);
+        theme.resolveAttribute(styleAttrId, value, true);
         final TypedArray typedArray = theme.obtainStyledAttributes(value.resourceId, new int[]{attributeId});
         try {
-            return typedArray.getString(0);
+            String font = typedArray.getString(0);
+            return font;
         } catch (Exception ignore) {
             // Failed for some reason.
             return null;
         } finally {
             typedArray.recycle();
         }
+    }
+
+    /**
+     * Last but not least, try to pull the Font Path from the Theme, which is defined.
+     *
+     * @param context        Activity Context
+     * @param styleAttrId    Theme style id
+     * @param subStyleAttrId the sub style from the theme to look up after the first style
+     * @param attributeId    if -1 returns null.
+     * @return null if no theme or attribute defined.
+     */
+    static String pullFontPathFromTheme(Context context, int styleAttrId, int subStyleAttrId, int attributeId) {
+        if (styleAttrId == -1 || attributeId == -1)
+            return null;
+
+        final Resources.Theme theme = context.getTheme();
+        final TypedValue value = new TypedValue();
+
+        theme.resolveAttribute(styleAttrId, value, true);
+        int subStyleResId = -1;
+        final TypedArray parentTypedArray = theme.obtainStyledAttributes(value.resourceId, new int[]{subStyleAttrId});
+        try {
+            subStyleResId = parentTypedArray.getResourceId(0, -1);
+        } catch (Exception ignore) {
+            // Failed for some reason.
+            return null;
+        } finally {
+            parentTypedArray.recycle();
+        }
+
+        if (subStyleResId == -1) return null;
+        final TypedArray subTypedArray = context.obtainStyledAttributes(subStyleResId, new int[]{attributeId});
+        if (subTypedArray != null) {
+            try {
+                return subTypedArray.getString(0);
+            } catch (Exception ignore) {
+                // Failed for some reason.
+                return null;
+            } finally {
+                subTypedArray.recycle();
+            }
+        }
+        return null;
     }
 
     private CalligraphyUtils() {

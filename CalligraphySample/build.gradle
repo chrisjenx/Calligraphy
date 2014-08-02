@@ -13,7 +13,7 @@ android {
     buildToolsVersion "19.1.0"
 
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 7
         targetSdkVersion 19
         versionCode project.ext.versionCodeInt
         versionName version
@@ -29,7 +29,7 @@ android {
 dependencies {
     compile project(':calligraphy')
     compile 'com.android.support:support-v4:19.1.+'
-//    compile "uk.co.chrisjenx.calligraphy:calligraphy:0.5.+"
+    compile 'com.android.support:appcompat-v7:19.1.+'
 
     compile 'com.jakewharton:butterknife:5.+'
 }

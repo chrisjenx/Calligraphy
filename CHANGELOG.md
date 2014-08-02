@@ -1,6 +1,12 @@
 #Changelog
 
-#1.0.0 (5/07/2014)
+#1.1.0 (02/08/2014)
+- Fixes ActionBar Title/SubTitle `textStyles`.
+- Fixes `textAllCaps` bug, now works correctly.
+- Fixes some `Spannable` issues reported, we are more careful what we apply spannables too now.
+- Fixes missing Typeface on hint text on `EditText`/`AutoComplete`. 
+
+#1.0.0 (05/07/2014)
 - Added ActionBar Title/SubTitle support.
 - Toast support via default style/or TextView theme style.
 - Removed FontFamily parsing as it lead to users not being able to use `fontFamily`

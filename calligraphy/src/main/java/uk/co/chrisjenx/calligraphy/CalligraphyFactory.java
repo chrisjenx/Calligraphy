@@ -38,6 +38,44 @@ class CalligraphyFactory implements LayoutInflater.Factory {
         }
     };
 
+    /**
+     * Some styles are in sub styles, such as actionBarTextStyle etc..
+     *
+     * @param view view to check.
+     * @return 2 element array, default to -1 unless a style has been found.
+     */
+    protected static int[] getStyleForTextView(View view) {
+        final int[] styleIds = new int[]{-1, -1};
+        // Try to find the specific actionbar styles
+        if (matchesResourceIdName(view, ACTION_BAR_TITLE)) {
+            styleIds[0] = android.R.attr.actionBarStyle;
+            styleIds[1] = android.R.attr.titleTextStyle;
+        } else if (matchesResourceIdName(view, ACTION_BAR_SUBTITLE)) {
+            styleIds[0] = android.R.attr.actionBarStyle;
+            styleIds[1] = android.R.attr.subtitleTextStyle;
+        }
+        if (styleIds[0] == -1) {
+            // Use TextAppearance as default style
+            styleIds[0] = sStyles.containsKey(view.getClass())
+                    ? sStyles.get(view.getClass())
+                    : android.R.attr.textAppearance;
+        }
+        return styleIds;
+    }
+
+    /**
+     * Use to match a view against a potential view id. Such as ActionBar title etc.
+     *
+     * @param view    not null view you want to see has resource matching name.
+     * @param matches not null resource name to match against. Its not case sensitive.
+     * @return true if matches false otherwise.
+     */
+    protected static boolean matchesResourceIdName(View view, String matches) {
+        if (view.getId() == View.NO_ID) return false;
+        final String resourceEntryName = view.getResources().getResourceEntryName(view.getId());
+        return resourceEntryName.equalsIgnoreCase(matches);
+    }
+
 
     private final LayoutInflater.Factory factory;
     private final int mAttributeId;
@@ -124,44 +162,6 @@ class CalligraphyFactory implements LayoutInflater.Factory {
             final boolean deferred = matchesResourceIdName(view, ACTION_BAR_TITLE) || matchesResourceIdName(view, ACTION_BAR_SUBTITLE);
             CalligraphyUtils.applyFontToTextView(context, (TextView) view, CalligraphyConfig.get(), textViewFont, deferred);
         }
-    }
-
-    /**
-     * Some styles are in sub styles, such as actionBarTextStyle etc..
-     *
-     * @param view view to check.
-     * @return 2 element array, default to -1 unless a style has been found.
-     */
-    protected static int[] getStyleForTextView(View view) {
-        final int[] styleIds = new int[]{-1, -1};
-        // Try to find the specific actionbar styles
-        if (matchesResourceIdName(view, ACTION_BAR_TITLE)) {
-            styleIds[0] = android.R.attr.actionBarStyle;
-            styleIds[1] = android.R.attr.titleTextStyle;
-        } else if (matchesResourceIdName(view, ACTION_BAR_SUBTITLE)) {
-            styleIds[0] = android.R.attr.actionBarStyle;
-            styleIds[1] = android.R.attr.subtitleTextStyle;
-        }
-        if (styleIds[0] == -1) {
-            // Use TextAppearance as default style
-            styleIds[0] = sStyles.containsKey(view.getClass())
-                    ? sStyles.get(view.getClass())
-                    : android.R.attr.textAppearance;
-        }
-        return styleIds;
-    }
-
-    /**
-     * Use to match a view against a potential view id. Such as ActionBar title etc.
-     *
-     * @param view    not null view you want to see has resource matching name.
-     * @param matches not null resource name to match against. Its not case sensitive.
-     * @return true if matches false otherwise.
-     */
-    protected static boolean matchesResourceIdName(View view, String matches) {
-        if (view.getId() == View.NO_ID) return false;
-        final String resourceEntryName = view.getResources().getResourceEntryName(view.getId());
-        return resourceEntryName.equalsIgnoreCase(matches);
     }
 
 

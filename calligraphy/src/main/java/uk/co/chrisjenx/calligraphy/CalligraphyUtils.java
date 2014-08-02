@@ -103,16 +103,24 @@ public final class CalligraphyUtils {
      * @return true if fonts been applied
      */
     public static boolean applyFontToTextView(final Context context, final TextView textView, final String filePath) {
+        return applyFontToTextView(context, textView, filePath, false);
+    }
+
+    static boolean applyFontToTextView(final Context context, final TextView textView, final String filePath, boolean deferred) {
         if (textView == null || context == null) return false;
         final AssetManager assetManager = context.getAssets();
         final Typeface typeface = TypefaceUtils.load(assetManager, filePath);
-        return applyFontToTextView(textView, typeface);
+        return applyFontToTextView(textView, typeface, deferred);
     }
 
-    public static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config) {
+    static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config) {
+        applyFontToTextView(context, textView, config, false);
+    }
+
+    static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config, boolean deferred) {
         if (context == null || textView == null || config == null) return;
         if (!config.isFontSet()) return;
-        applyFontToTextView(context, textView, config.getFontPath());
+        applyFontToTextView(context, textView, config.getFontPath(), deferred);
     }
 
     /**
@@ -125,11 +133,15 @@ public final class CalligraphyUtils {
      *                     defined font.
      */
     public static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config, final String textViewFont) {
+        applyFontToTextView(context, textView, config, textViewFont, false);
+    }
+
+    static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config, final String textViewFont, boolean deferred) {
         if (context == null || textView == null || config == null) return;
-        if (!TextUtils.isEmpty(textViewFont) && applyFontToTextView(context, textView, textViewFont)) {
+        if (!TextUtils.isEmpty(textViewFont) && applyFontToTextView(context, textView, textViewFont, deferred)) {
             return;
         }
-        applyFontToTextView(context, textView, config);
+        applyFontToTextView(context, textView, config, deferred);
     }
 
     /**

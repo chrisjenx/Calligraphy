@@ -136,7 +136,6 @@ class CalligraphyFactory implements LayoutInflater.Factory {
                 styleIds[0] = android.R.attr.actionBarStyle;
                 styleIds[1] = android.R.attr.subtitleTextStyle;
             }
-            Log.d("Factory", "TextViewID: " + resourceEntryName + "");
         }
         if (styleIds[0] == -1) {
             // Use TextAppearance as default style

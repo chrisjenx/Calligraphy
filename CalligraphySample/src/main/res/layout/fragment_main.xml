@@ -59,6 +59,13 @@
             android:text="@string/defined_in_appears"
             android:textAppearance="@style/TextAppearance.FontPathView"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/defined_in_appears_caps"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.FontPathView"/>
+
         <uk.co.chrisjenx.calligraphy.sample.CustomTextView
             fontPath="fonts/Oswald-Stencbab.ttf"
             android:layout_width="wrap_content"
@@ -69,13 +76,24 @@
             fontPath="fonts/Oswald-Stencbab.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/checkbox_custom"/>
+
+        <EditText
+            fontPath="fonts/Roboto-Bold.ttf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="@string/edit_text_hint"/>
 
         <Button
             android:id="@+id/button_default"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
             android:text="@string/button_default"/>
 
         <Button

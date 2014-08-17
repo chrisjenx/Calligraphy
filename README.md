@@ -96,7 +96,7 @@ _You're good to go!_
     android:text="@string/hello_world"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textAppearance="@style/TextAppearance_FontPath/>
+    android:textAppearance="@style/TextAppearance.FontPath"/>
 
 ```
 

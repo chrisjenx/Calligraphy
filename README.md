@@ -160,6 +160,12 @@ As of 1.0+ you *have* to define a custom attribute.
 - [@Codebutler](https://github.com/codebutler)
 - [@loganj](https://github.com/loganj)
 
+#Note
+
+This library was created because it is currently not possible to declare a custom font in XML files in Android.
+
+If you feel this should be possible to do, please star [this issue](https://code.google.com/p/android/issues/detail?id=1087) on the official Android bug tracker.
+
 #Licence
 
     Copyright 2013 Christopher Jenkins

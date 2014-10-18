@@ -24,7 +24,7 @@ dependencies {
 ```
 ### Fonts
 
-Add your custom fonts to `assets/` all font definition is relative to this path.
+Add your custom fonts to `assets/fonts/` all font definitions are relative to this path. 
 
 ### Custom Attribute
 

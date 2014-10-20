@@ -99,7 +99,7 @@ class CalligraphyFactory implements LayoutInflater.Factory {
     }
 
     protected static boolean parentIsToolbar(View view) {
-        return view.getParent() != null && (view.getParent() instanceof android.support.v7.widget.Toolbar);
+        return CalligraphyUtils.canCheckForToolbar() && view.getParent() != null && (view.getParent() instanceof Toolbar);
     }
 
     /**
@@ -215,7 +215,7 @@ class CalligraphyFactory implements LayoutInflater.Factory {
 
         // API21+ The ActionBar doesn't inflate default Title/SubTitle, we need to scan the
         // Toolbar(Which underlies the ActionBar) for its children.
-        if (view instanceof android.support.v7.widget.Toolbar) {
+        if (CalligraphyUtils.canCheckForToolbar() && view instanceof android.support.v7.widget.Toolbar) {
             final ViewGroup parent = (ViewGroup) view;
             parent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override

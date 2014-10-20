@@ -310,6 +310,25 @@ public final class CalligraphyUtils {
         return null;
     }
 
+    private static Boolean sToolbarCheck = null;
+
+    /**
+     * See if the user has added appcompat-v7, this is done at runtime, so we only check once.
+     *
+     * @return true if the v7.Toolbar is on the classpath
+     */
+    static boolean canCheckForToolbar() {
+        if (sToolbarCheck == null) {
+            try {
+                Class.forName("android.support.v7.widget.Toolbar", false, null);
+                sToolbarCheck = Boolean.TRUE;
+            } catch (ClassNotFoundException e) {
+                sToolbarCheck = Boolean.FALSE;
+            }
+        }
+        return sToolbarCheck;
+    }
+
     private CalligraphyUtils() {
     }
 

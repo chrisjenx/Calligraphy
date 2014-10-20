@@ -317,7 +317,7 @@ public final class CalligraphyUtils {
      *
      * @return true if the v7.Toolbar is on the classpath
      */
-    static boolean canCheckForToolbar() {
+    static boolean canCheckForV7Toolbar() {
         if (sToolbarCheck == null) {
             try {
                 Class.forName("android.support.v7.widget.Toolbar");

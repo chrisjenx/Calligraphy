@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,9 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void run() {
                 setTitle("Calligraphy changed");
-                getSupportActionBar().setSubtitle("Added subtitle");
+//                getSupportActionBar().setSubtitle("Added subtitle");
+                getActionBar().setSubtitle("Added subtitle");
+
             }
         }, 1000);
     }

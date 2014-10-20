@@ -1,11 +1,9 @@
 package uk.co.chrisjenx.calligraphy;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,10 +72,11 @@ class CalligraphyFactory implements LayoutInflater.Factory {
      * @param view TextView to check is Title
      * @return true if it is.
      */
+    @SuppressLint("NewApi")
     protected static boolean isActionBarTitle(TextView view) {
         if (matchesResourceIdName(view, ACTION_BAR_TITLE)) return true;
-        if (parentIsToolbar(view)) {
-            final Toolbar parent = (Toolbar) view.getParent();
+        if (parentIsToolbarV7(view)) {
+            final android.support.v7.widget.Toolbar parent = (android.support.v7.widget.Toolbar) view.getParent();
             return TextUtils.equals(parent.getTitle(), view.getText());
         }
         return false;
@@ -89,17 +88,18 @@ class CalligraphyFactory implements LayoutInflater.Factory {
      * @param view TextView to check is Title
      * @return true if it is.
      */
+    @SuppressLint("NewApi")
     protected static boolean isActionBarSubTitle(TextView view) {
         if (matchesResourceIdName(view, ACTION_BAR_SUBTITLE)) return true;
-        if (parentIsToolbar(view)) {
-            final Toolbar parent = (Toolbar) view.getParent();
+        if (parentIsToolbarV7(view)) {
+            final android.support.v7.widget.Toolbar parent = (android.support.v7.widget.Toolbar) view.getParent();
             return TextUtils.equals(parent.getSubtitle(), view.getText());
         }
         return false;
     }
 
-    protected static boolean parentIsToolbar(View view) {
-        return CalligraphyUtils.canCheckForToolbar() && view.getParent() != null && (view.getParent() instanceof Toolbar);
+    protected static boolean parentIsToolbarV7(View view) {
+        return CalligraphyUtils.canCheckForV7Toolbar() && view.getParent() != null && (view.getParent() instanceof android.support.v7.widget.Toolbar);
     }
 
     /**
@@ -177,7 +177,6 @@ class CalligraphyFactory implements LayoutInflater.Factory {
             // which has already been set by use we skip this TextView (mainly for inflating custom,
             // TextView's inside the Toolbar/ActionBar).
             if (TypefaceUtils.isLoaded(((TextView) view).getTypeface())) {
-                Log.i("Calli", "Typeface Loaded shortcut: " + ((TextView) view).getTypeface().toString());
                 return;
             }
             // Try to get typeface attribute value
@@ -206,16 +205,15 @@ class CalligraphyFactory implements LayoutInflater.Factory {
             }
 
 
-            // As the Toolbar on API21+ adds and sets the style on hit we don't need to defer anymore.
-            final boolean deferred = Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
-                    && (matchesResourceIdName(view, ACTION_BAR_TITLE) || matchesResourceIdName(view, ACTION_BAR_SUBTITLE));
+            // Still need to defer the Native action bar, appcompat-v7:21+ uses the Toolbar underneath. But won't match these anyway.
+            final boolean deferred = matchesResourceIdName(view, ACTION_BAR_TITLE) || matchesResourceIdName(view, ACTION_BAR_SUBTITLE);
 
             CalligraphyUtils.applyFontToTextView(context, (TextView) view, CalligraphyConfig.get(), textViewFont, deferred);
         }
 
-        // API21+ The ActionBar doesn't inflate default Title/SubTitle, we need to scan the
+        // AppCompat API21+ The ActionBar doesn't inflate default Title/SubTitle, we need to scan the
         // Toolbar(Which underlies the ActionBar) for its children.
-        if (CalligraphyUtils.canCheckForToolbar() && view instanceof android.support.v7.widget.Toolbar) {
+        if (CalligraphyUtils.canCheckForV7Toolbar() && view instanceof android.support.v7.widget.Toolbar) {
             final ViewGroup parent = (ViewGroup) view;
             parent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override

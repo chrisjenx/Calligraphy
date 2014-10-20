@@ -320,7 +320,7 @@ public final class CalligraphyUtils {
     static boolean canCheckForToolbar() {
         if (sToolbarCheck == null) {
             try {
-                Class.forName("android.support.v7.widget.Toolbar", false, null);
+                Class.forName("android.support.v7.widget.Toolbar");
                 sToolbarCheck = Boolean.TRUE;
             } catch (ClassNotFoundException e) {
                 sToolbarCheck = Boolean.FALSE;

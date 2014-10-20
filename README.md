@@ -24,7 +24,7 @@ dependencies {
 ```
 ### Fonts
 
-Add your custom fonts to `assets/` all font definition is relative to this path.
+Add your custom fonts to `assets/fonts/` all font definitions are relative to this path. 
 
 ### Custom Attribute
 
@@ -96,7 +96,7 @@ _You're good to go!_
     android:text="@string/hello_world"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textAppearance="@style/TextAppearance_FontPath/>
+    android:textAppearance="@style/TextAppearance.FontPath"/>
 
 ```
 
@@ -159,6 +159,12 @@ As of 1.0+ you *have* to define a custom attribute.
 - [@Smuldr](https://github.com/Smuldr)
 - [@Codebutler](https://github.com/codebutler)
 - [@loganj](https://github.com/loganj)
+
+#Note
+
+This library was created because it is currently not possible to declare a custom font in XML files in Android.
+
+If you feel this should be possible to do, please star [this issue](https://code.google.com/p/android/issues/detail?id=1087) on the official Android bug tracker.
 
 #Licence
 

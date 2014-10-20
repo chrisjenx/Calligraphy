@@ -153,7 +153,7 @@ public final class CalligraphyUtils {
      * @return null if attribute is not defined or added to View
      */
     static String pullFontPathFromView(Context context, AttributeSet attrs, int attributeId) {
-        if (attributeId == -1)
+        if (attributeId == -1 || attrs == null)
             return null;
 
         final String attributeName;
@@ -180,7 +180,7 @@ public final class CalligraphyUtils {
      * @return null if attribute is not defined or found in the Style
      */
     static String pullFontPathFromStyle(Context context, AttributeSet attrs, int attributeId) {
-        if (attributeId == -1)
+        if (attributeId == -1 || attrs == null)
             return null;
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, new int[]{attributeId});
         if (typedArray != null) {
@@ -208,7 +208,7 @@ public final class CalligraphyUtils {
      * @return returns null if attribute is not defined or if no TextAppearance is found.
      */
     static String pullFontPathFromTextAppearance(final Context context, AttributeSet attrs, int attributeId) {
-        if (attributeId == -1) {
+        if (attributeId == -1 || attrs == null) {
             return null;
         }
 

@@ -1,10 +1,15 @@
 package uk.co.chrisjenx.calligraphy;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -44,13 +49,13 @@ class CalligraphyFactory implements LayoutInflater.Factory {
      * @param view view to check.
      * @return 2 element array, default to -1 unless a style has been found.
      */
-    protected static int[] getStyleForTextView(View view) {
+    protected static int[] getStyleForTextView(TextView view) {
         final int[] styleIds = new int[]{-1, -1};
         // Try to find the specific actionbar styles
-        if (matchesResourceIdName(view, ACTION_BAR_TITLE)) {
+        if (isActionBarTitle(view)) {
             styleIds[0] = android.R.attr.actionBarStyle;
             styleIds[1] = android.R.attr.titleTextStyle;
-        } else if (matchesResourceIdName(view, ACTION_BAR_SUBTITLE)) {
+        } else if (isActionBarSubTitle(view)) {
             styleIds[0] = android.R.attr.actionBarStyle;
             styleIds[1] = android.R.attr.subtitleTextStyle;
         }
@@ -61,6 +66,40 @@ class CalligraphyFactory implements LayoutInflater.Factory {
                     : android.R.attr.textAppearance;
         }
         return styleIds;
+    }
+
+    /**
+     * An even dirtier way to see if the TextView is part of the ActionBar
+     *
+     * @param view TextView to check is Title
+     * @return true if it is.
+     */
+    protected static boolean isActionBarTitle(TextView view) {
+        if (matchesResourceIdName(view, ACTION_BAR_TITLE)) return true;
+        if (parentIsToolbar(view)) {
+            final Toolbar parent = (Toolbar) view.getParent();
+            return TextUtils.equals(parent.getTitle(), view.getText());
+        }
+        return false;
+    }
+
+    /**
+     * An even dirtier way to see if the TextView is part of the ActionBar
+     *
+     * @param view TextView to check is Title
+     * @return true if it is.
+     */
+    protected static boolean isActionBarSubTitle(TextView view) {
+        if (matchesResourceIdName(view, ACTION_BAR_SUBTITLE)) return true;
+        if (parentIsToolbar(view)) {
+            final Toolbar parent = (Toolbar) view.getParent();
+            return TextUtils.equals(parent.getSubtitle(), view.getText());
+        }
+        return false;
+    }
+
+    protected static boolean parentIsToolbar(View view) {
+        return view.getParent() != null && (view.getParent() instanceof android.support.v7.widget.Toolbar);
     }
 
     /**
@@ -132,8 +171,15 @@ class CalligraphyFactory implements LayoutInflater.Factory {
         }
     }
 
-    protected void onViewCreated(View view, String name, Context context, AttributeSet attrs) {
+    protected void onViewCreated(View view, String name, final Context context, AttributeSet attrs) {
         if (view instanceof TextView) {
+            // Fast path the setting of TextView's font, means if we do some delayed setting of font,
+            // which has already been set by use we skip this TextView (mainly for inflating custom,
+            // TextView's inside the Toolbar/ActionBar).
+            if (TypefaceUtils.isLoaded(((TextView) view).getTypeface())) {
+                Log.i("Calli", "Typeface Loaded shortcut: " + ((TextView) view).getTypeface().toString());
+                return;
+            }
             // Try to get typeface attribute value
             // Since we're not using namespace it's a little bit tricky
 
@@ -152,15 +198,36 @@ class CalligraphyFactory implements LayoutInflater.Factory {
 
             // Try theme attributes
             if (TextUtils.isEmpty(textViewFont)) {
-                final int[] styleForTextView = getStyleForTextView(view);
+                final int[] styleForTextView = getStyleForTextView((TextView) view);
                 if (styleForTextView[1] != -1)
                     textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], styleForTextView[1], mAttributeId);
                 else
                     textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], mAttributeId);
             }
 
-            final boolean deferred = matchesResourceIdName(view, ACTION_BAR_TITLE) || matchesResourceIdName(view, ACTION_BAR_SUBTITLE);
+
+            // As the Toolbar on API21+ adds and sets the style on hit we don't need to defer anymore.
+            final boolean deferred = Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
+                    && (matchesResourceIdName(view, ACTION_BAR_TITLE) || matchesResourceIdName(view, ACTION_BAR_SUBTITLE));
+
             CalligraphyUtils.applyFontToTextView(context, (TextView) view, CalligraphyConfig.get(), textViewFont, deferred);
+        }
+
+        // API21+ The ActionBar doesn't inflate default Title/SubTitle, we need to scan the
+        // Toolbar(Which underlies the ActionBar) for its children.
+        if (view instanceof android.support.v7.widget.Toolbar) {
+            final ViewGroup parent = (ViewGroup) view;
+            parent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    // No children, do nuffink!
+                    if (parent.getChildCount() <= 0) return;
+                    // Process children, defer draw as it has set the typeface.
+                    for (int i = 0; i < parent.getChildCount(); i++) {
+                        onViewCreated(parent.getChildAt(i), null, context, null);
+                    }
+                }
+            });
         }
     }
 

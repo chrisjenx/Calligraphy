@@ -1,9 +1,14 @@
 #Changelog
 
+#1.2.0 (20/10/2014)
+- Fixes issues with `appcompat-v7:21+` (uses underlying `Toolbar` impl).
+- Lollipop support.
+- Fast path view with font already set by us.
+
 #1.1.0 (02/08/2014)
 - Fixes ActionBar Title/SubTitle `textStyles`.
 - Fixes `textAllCaps` bug, now works correctly.
-- Fixes some `Spannable` issues reported, we are more careful what we apply spannables too now.
+- Fixes some `Spannable` issues reported, we are more careful what we apply `Spannable`'s too now.
 - Fixes missing Typeface on hint text on `EditText`/`AutoComplete`.
 - Fixes empty source and javadoc jars on maven.
 

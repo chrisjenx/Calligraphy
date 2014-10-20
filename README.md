@@ -11,7 +11,7 @@ Are you fed up of Custom views to set fonts? Or traversing the ViewTree to find 
 
 ### Dependency
 
-[Download from Maven Central (.jar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/1.1.0/calligraphy-1.1.0.jar)
+[Download from Maven Central (.jar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/1.2.0/calligraphy-1.2.0.jar)
 
 __OR__
 
@@ -19,7 +19,7 @@ Include the dependency:
 
 ```groovy
 dependencies {
-    compile 'uk.co.chrisjenx:calligraphy:1.1.+'
+    compile 'uk.co.chrisjenx:calligraphy:1.2.0'
 }
 ```
 ### Fonts

@@ -62,6 +62,16 @@ public final class TypefaceUtils {
         }
     }
 
+    /**
+     * Is the passed in typeface one of ours?
+     *
+     * @param typeface nullable, the typeface to check if ours.
+     * @return true if we have loaded it false otherwise.
+     */
+    public static boolean isLoaded(Typeface typeface) {
+        return typeface != null && sCachedFonts.containsValue(typeface);
+    }
+
     private TypefaceUtils() {
     }
 }

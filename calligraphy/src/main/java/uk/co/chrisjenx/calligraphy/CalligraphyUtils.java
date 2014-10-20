@@ -153,7 +153,7 @@ public final class CalligraphyUtils {
      * @return null if attribute is not defined or added to View
      */
     static String pullFontPathFromView(Context context, AttributeSet attrs, int attributeId) {
-        if (attributeId == -1)
+        if (attributeId == -1 || attrs == null)
             return null;
 
         final String attributeName;
@@ -180,7 +180,7 @@ public final class CalligraphyUtils {
      * @return null if attribute is not defined or found in the Style
      */
     static String pullFontPathFromStyle(Context context, AttributeSet attrs, int attributeId) {
-        if (attributeId == -1)
+        if (attributeId == -1 || attrs == null)
             return null;
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, new int[]{attributeId});
         if (typedArray != null) {
@@ -208,7 +208,7 @@ public final class CalligraphyUtils {
      * @return returns null if attribute is not defined or if no TextAppearance is found.
      */
     static String pullFontPathFromTextAppearance(final Context context, AttributeSet attrs, int attributeId) {
-        if (attributeId == -1) {
+        if (attributeId == -1 || attrs == null) {
             return null;
         }
 
@@ -308,6 +308,25 @@ public final class CalligraphyUtils {
             }
         }
         return null;
+    }
+
+    private static Boolean sToolbarCheck = null;
+
+    /**
+     * See if the user has added appcompat-v7, this is done at runtime, so we only check once.
+     *
+     * @return true if the v7.Toolbar is on the classpath
+     */
+    static boolean canCheckForV7Toolbar() {
+        if (sToolbarCheck == null) {
+            try {
+                Class.forName("android.support.v7.widget.Toolbar");
+                sToolbarCheck = Boolean.TRUE;
+            } catch (ClassNotFoundException e) {
+                sToolbarCheck = Boolean.FALSE;
+            }
+        }
+        return sToolbarCheck;
     }
 
     private CalligraphyUtils() {

@@ -2,7 +2,6 @@ package uk.co.chrisjenx.calligraphy;
 
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.HashMap;
@@ -69,7 +68,7 @@ public final class TypefaceUtils {
      * @param typeface nullable, the typeface to check if ours.
      * @return true if we have loaded it false otherwise.
      */
-    public static boolean isLoaded(@Nullable Typeface typeface) {
+    public static boolean isLoaded(Typeface typeface) {
         return typeface != null && sCachedFonts.containsValue(typeface);
     }
 

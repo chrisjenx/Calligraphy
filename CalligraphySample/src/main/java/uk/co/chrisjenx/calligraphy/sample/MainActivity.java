@@ -13,8 +13,13 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+
+        // Inject pragmatically
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, PlaceholderFragment.getInstance())
+                .commit();
 
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override

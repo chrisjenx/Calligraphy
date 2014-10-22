@@ -154,7 +154,6 @@ class CalligraphyFactory implements LayoutInflater.Factory {
 
         for (final String prefix : sClassPrefixList) {
             final View view = createViewOrFailQuietly(name, prefix, context, attrs);
-
             if (view != null) {
                 return view;
             }
@@ -167,6 +166,7 @@ class CalligraphyFactory implements LayoutInflater.Factory {
         try {
             return LayoutInflater.from(context).createView(name, prefix, attrs);
         } catch (Exception ignore) {
+            ignore.printStackTrace();
             return null;
         }
     }

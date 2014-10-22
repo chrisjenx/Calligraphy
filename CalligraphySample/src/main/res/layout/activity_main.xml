@@ -6,11 +6,4 @@
         android:layout_height="match_parent"
         tools:context="uk.co.chrisjenx.calligraphy.sample.MainActivity"
         tools:ignore="MergeRootFrame">
-
-    <fragment
-            android:id="@+id/fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:name="uk.co.chrisjenx.calligraphy.sample.PlaceholderFragment" />
-
 </FrameLayout>

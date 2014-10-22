@@ -17,9 +17,13 @@ import butterknife.OnClick;
  */
 public class PlaceholderFragment extends Fragment {
 
+    public static Fragment getInstance() {
+        return new PlaceholderFragment();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle state) {
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        return getActivity().getLayoutInflater().inflate(R.layout.fragment_main, container, false);
     }
 
     @Override

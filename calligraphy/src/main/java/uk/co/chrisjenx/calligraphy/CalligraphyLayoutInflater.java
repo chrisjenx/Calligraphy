@@ -24,6 +24,7 @@ class CalligraphyLayoutInflater extends LayoutInflater {
     }
 
     private void setUpLayoutFactory() {
+        // Don't try to set factory over the top of the current child one.
         if (!(getFactory() instanceof CalligraphyFactory)) {
             setFactory(new CalligraphyFactory(getFactory(), mAttributeId));
         }

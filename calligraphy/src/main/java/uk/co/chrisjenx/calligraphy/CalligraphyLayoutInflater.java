@@ -33,7 +33,7 @@ class CalligraphyLayoutInflater extends LayoutInflater {
         // This makes sure CalligraphyLayoutInflater.this is set on the factory to make sure
         // it calls back up the Inflater stack correctly.
         if (getFactory() instanceof CalligraphyFactory) {
-            ((CalligraphyFactory) getFactory()).setLayoutInfater(this);
+            ((CalligraphyFactory) getFactory()).setLayoutInflater(this);
         }
     }
 

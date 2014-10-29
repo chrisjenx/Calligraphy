@@ -126,7 +126,7 @@ class CalligraphyFactory implements LayoutInflater.Factory {
         this.mAttributeId = attributeId;
     }
 
-    public void setLayoutInfater(LayoutInflater inflater) {
+    public void setLayoutInflater(LayoutInflater inflater) {
         this.inflater = inflater;
     }
 
@@ -170,10 +170,18 @@ class CalligraphyFactory implements LayoutInflater.Factory {
 
     protected View createViewOrFailQuietly(String name, String prefix, Context context, AttributeSet attrs) {
         try {
+            // Try the system view inflater, this might not be correct if its been cloned and not
+            // set as the default view inflater.
+            return LayoutInflater.from(context).createView(name, prefix, attrs);
+        } catch (Exception ignore) {
+        }
+        try {
+            // If the above fails try the view inflater which we are attached too.
             return inflater.createView(name, prefix, attrs);
         } catch (Exception ignore) {
-            return null;
         }
+        // Well this sucks... Guess nothing wants to create a view for us :(
+        return null;
     }
 
     protected void onViewCreated(View view, String name, final Context context, AttributeSet attrs) {

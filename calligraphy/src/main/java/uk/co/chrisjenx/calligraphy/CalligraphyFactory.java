@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,10 +119,16 @@ class CalligraphyFactory implements LayoutInflater.Factory {
 
     private final LayoutInflater.Factory factory;
     private final int mAttributeId;
+    private LayoutInflater inflater;
 
-    public CalligraphyFactory(LayoutInflater.Factory factory, int attributeId) {
+    public CalligraphyFactory(LayoutInflater inflater, LayoutInflater.Factory factory, int attributeId) {
+        this.inflater = inflater;
         this.factory = factory;
         this.mAttributeId = attributeId;
+    }
+
+    public void setLayoutInfater(LayoutInflater inflater) {
+        this.inflater = inflater;
     }
 
     @Override
@@ -164,9 +171,12 @@ class CalligraphyFactory implements LayoutInflater.Factory {
 
     protected View createViewOrFailQuietly(String name, String prefix, Context context, AttributeSet attrs) {
         try {
-            return LayoutInflater.from(context).createView(name, prefix, attrs);
+            final LayoutInflater from = LayoutInflater.from(context);
+            Log.i("Calli", "From: " + from + " Original: " + this.inflater);
+            return inflater.createView(name, prefix, attrs);
+//            return LayoutInflater.from(context).createView(name, prefix, attrs);
         } catch (Exception ignore) {
-            ignore.printStackTrace();
+            Log.w("Calli", "Failed to inflate view");
             return null;
         }
     }

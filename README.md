@@ -170,7 +170,6 @@ It is possible to use multiple Typefaces inside a `TextView`, this isn't new con
 But this could be achieved using something like the following code.
 
 ```java
-// Apply spans to the currency symbol
 SpannableStringBuilder builder = new SpannableStringBuilder();
 sBuilder.append("Hello!") // Bold this
         .append("I use Calligraphy"); // Default TextView font.

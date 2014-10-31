@@ -156,13 +156,31 @@ The `CalligraphyFactory` looks for the font in a pretty specific order, for the 
 We originally did, but it conflicted with users wanting to actually use that attribute, you now 
 have to define a custom attribute.
 
-
 ### Why not ship with custom attribute?
 
-No resources means that the library can compile down to a `jar` instead of an `aar`, as I know alot 
+No resources means that the library can compile down to a `jar` instead of an `aar`, as I know allot
 of users are still not using Gradle yet.
 
 As of 1.0+ you *have* to define a custom attribute.
+
+### Multiple Typeface's per TextView / Spannables
+
+It is possible to use multiple Typefaces inside a `TextView`, this isn't new concept to Android.
+
+But this could be achieved using something like the following code.
+
+```java
+// Apply spans to the currency symbol
+SpannableStringBuilder builder = new SpannableStringBuilder();
+sBuilder.append("Hello!") // Bold this
+        .append("I use Calligraphy"); // Default TextView font.
+// Create the Typeface you want to apply to certain text
+CalligraphyTypefaceSpan typefaceSpan = new CalligraphyTypefaceSpan(TypefaceUtils.load(getAssets(), "fonts/Roboto-Bold.ttf");
+// Apply typeface to the Spannable 0 - 6 "Hello!" This can of course by dynamic.
+sBuilder.setSpan(typefaceSpan, 0, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+setText(sBuilder);
+```
+Of course this is just an example. Your mileage may vary.
 
 #Colaborators
 

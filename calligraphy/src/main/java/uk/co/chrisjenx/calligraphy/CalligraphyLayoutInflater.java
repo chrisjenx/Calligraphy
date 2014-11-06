@@ -33,6 +33,7 @@ public class CalligraphyLayoutInflater extends LayoutInflater {
     private Factory mFactory = null;
     private Factory2 mFactory2 = null;
     // Private Factory Hax
+    private PrivateFactoryWrapper mPrivateFactoryWrapper = null;
     private Method mSetPrivateFactoryMethod = null;
     private boolean mPrivateFactorySet = false;
 
@@ -80,6 +81,7 @@ public class CalligraphyLayoutInflater extends LayoutInflater {
     }
 
     private void setHiddenPrivateFactory() {
+        if (!(getContext() instanceof Factory2)) return;
         if (mSetPrivateFactoryMethod != null && !mPrivateFactorySet) {
             applyWrapperToPrivateFactory(mSetPrivateFactoryMethod);
         }
@@ -94,13 +96,12 @@ public class CalligraphyLayoutInflater extends LayoutInflater {
 
     private void applyWrapperToPrivateFactory(Method method) {
         try {
+            mPrivateFactoryWrapper = new PrivateFactoryWrapper((Factory2) getContext());
             method.setAccessible(true);
-            method.invoke(this, mWrapperFactory2);
+            method.invoke(this, mPrivateFactoryWrapper);
             mPrivateFactorySet = true;
-        } catch (IllegalAccessException e) {
-            Log.w("Calli", "Failed to setPrivateFactory", e);
-        } catch (InvocationTargetException e) {
-            Log.w("Calli", "Failed to setPrivateFactory", e);
+        } catch (IllegalAccessException ignored) {
+        } catch (InvocationTargetException ignored) {
         }
     }
 
@@ -153,7 +154,6 @@ public class CalligraphyLayoutInflater extends LayoutInflater {
     }
     // Layout inflater Creators
 
-
     // ===
     // Wrapper Factories for Pre/Post HC
     // ===
@@ -184,6 +184,32 @@ public class CalligraphyLayoutInflater extends LayoutInflater {
                 return view;
             }
             return null;
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    class PrivateFactoryWrapper implements Factory2 {
+
+        private final Factory2 factory2;
+
+        public PrivateFactoryWrapper(Factory2 factory2) {
+            this.factory2 = factory2;
+        }
+
+        @Override
+        public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+            // Ask the Activity to try and create the view!
+            final View view = factory2.onCreateView(parent, name, context, attrs);
+            Log.d("Calli", "PrivateFactory2 onCreateView: " + view);
+            return view;
+        }
+
+        @Override
+        public View onCreateView(String name, Context context, AttributeSet attrs) {
+            // Ask the Activity to try and create the view!
+            final View view = factory2.onCreateView(name, context, attrs);
+            Log.d("Calli", "PrivateFactory1 onCreateView: " + view);
+            return view;
         }
     }
 

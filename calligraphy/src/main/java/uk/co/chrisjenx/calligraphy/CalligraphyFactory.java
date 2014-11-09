@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -120,13 +119,9 @@ class CalligraphyFactory implements ActivityFactory2 {
 
     @Override
     public View onActivityCreateView(final View view, final AttributeSet attrs) {
-        if (view != null) {
-            if (view.getTag(R.id.calligraphy_tag_id) == Boolean.TRUE) {
-                Log.i("Calli", "Already intercepted this view!");
-                return view;
-            }
+        if (view != null && view.getTag(R.id.calligraphy_tag_id) != Boolean.TRUE) {
+            onViewCreated(view, view.getContext(), attrs);
             view.setTag(R.id.calligraphy_tag_id, Boolean.TRUE);
-            //onViewCreated(view, view.getContext(), attrs);
         }
         return view;
     }

@@ -121,11 +121,11 @@ class CalligraphyFactory implements ActivityFactory2 {
     @Override
     public View onActivityCreateView(final View view, final AttributeSet attrs) {
         if (view != null) {
-            if (view.getTag(CalligraphyUtils.getTaggedViewID()) == Boolean.TRUE) {
+            if (view.getTag(R.id.calligraphy_tag_id) == Boolean.TRUE) {
                 Log.i("Calli", "Already intercepted this view!");
                 return view;
             }
-            view.setTag(CalligraphyUtils.getTaggedViewID(), Boolean.TRUE);
+            view.setTag(R.id.calligraphy_tag_id, Boolean.TRUE);
             //onViewCreated(view, view.getContext(), attrs);
         }
         return view;

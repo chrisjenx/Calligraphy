@@ -11,7 +11,7 @@ import android.view.View;
  * Created by chris on 19/12/2013
  * Project: Calligraphy
  */
-public class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactory2 {
+class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactory2 {
 
     private static final String[] sClassPrefixList = {
             "android.widget.",

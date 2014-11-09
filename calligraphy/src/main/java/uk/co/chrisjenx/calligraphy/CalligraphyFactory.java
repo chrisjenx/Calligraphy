@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -20,11 +20,8 @@ import android.widget.ToggleButton;
 import java.util.HashMap;
 import java.util.Map;
 
-class CalligraphyFactory implements LayoutInflater.Factory {
-    private static final String[] sClassPrefixList = {
-            "android.widget.",
-            "android.webkit."
-    };
+class CalligraphyFactory implements ActivityFactory2 {
+
     private static final String ACTION_BAR_TITLE = "action_bar_title";
     private static final String ACTION_BAR_SUBTITLE = "action_bar_subtitle";
     private static final Map<Class<? extends TextView>, Integer> sStyles
@@ -115,63 +112,26 @@ class CalligraphyFactory implements LayoutInflater.Factory {
         return resourceEntryName.equalsIgnoreCase(matches);
     }
 
-
-    private final LayoutInflater.Factory factory;
     private final int mAttributeId;
 
-    public CalligraphyFactory(LayoutInflater.Factory factory, int attributeId) {
-        this.factory = factory;
+    public CalligraphyFactory(int attributeId) {
         this.mAttributeId = attributeId;
     }
 
     @Override
-    public View onCreateView(String name, Context context, AttributeSet attrs) {
-        View view = null;
-
-        if (context instanceof LayoutInflater.Factory) {
-            view = ((LayoutInflater.Factory) context).onCreateView(name, context, attrs);
-        }
-
-        if (factory != null && view == null) {
-            view = factory.onCreateView(name, context, attrs);
-        }
-
-        if (view == null) {
-            view = createViewOrFailQuietly(name, context, attrs);
-        }
-
+    public View onActivityCreateView(final View view, final AttributeSet attrs) {
         if (view != null) {
-            onViewCreated(view, name, context, attrs);
+            if (view.getTag(CalligraphyUtils.getTaggedViewID()) == Boolean.TRUE) {
+                Log.i("Calli", "Already intercepted this view!");
+                return view;
+            }
+            view.setTag(CalligraphyUtils.getTaggedViewID(), Boolean.TRUE);
+            //onViewCreated(view, view.getContext(), attrs);
         }
-
         return view;
     }
 
-    protected View createViewOrFailQuietly(String name, Context context, AttributeSet attrs) {
-        if (name.contains(".")) {
-            return createViewOrFailQuietly(name, null, context, attrs);
-        }
-
-        for (final String prefix : sClassPrefixList) {
-            final View view = createViewOrFailQuietly(name, prefix, context, attrs);
-            if (view != null) {
-                return view;
-            }
-        }
-
-        return null;
-    }
-
-    protected View createViewOrFailQuietly(String name, String prefix, Context context, AttributeSet attrs) {
-        try {
-            return LayoutInflater.from(context).createView(name, prefix, attrs);
-        } catch (Exception ignore) {
-            ignore.printStackTrace();
-            return null;
-        }
-    }
-
-    protected void onViewCreated(View view, String name, final Context context, AttributeSet attrs) {
+    protected void onViewCreated(View view, final Context context, AttributeSet attrs) {
         if (view instanceof TextView) {
             // Fast path the setting of TextView's font, means if we do some delayed setting of font,
             // which has already been set by use we skip this TextView (mainly for inflating custom,
@@ -222,7 +182,7 @@ class CalligraphyFactory implements LayoutInflater.Factory {
                     if (parent.getChildCount() <= 0) return;
                     // Process children, defer draw as it has set the typeface.
                     for (int i = 0; i < parent.getChildCount(); i++) {
-                        onViewCreated(parent.getChildAt(i), null, context, null);
+                        onViewCreated(parent.getChildAt(i), context, null);
                     }
                 }
             });

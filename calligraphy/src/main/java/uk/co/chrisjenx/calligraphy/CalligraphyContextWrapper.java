@@ -1,16 +1,15 @@
 package uk.co.chrisjenx.calligraphy;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 
 /**
  * Created by chris on 19/12/2013
  * Project: Calligraphy
  */
-public class CalligraphyContextWrapper extends ContextWrapper implements ActivityFactory2 {
+public class CalligraphyContextWrapper extends ContextWrapper {
 
     private CalligraphyLayoutInflater mInflater;
 
@@ -29,11 +28,11 @@ public class CalligraphyContextWrapper extends ContextWrapper implements Activit
         return new CalligraphyContextWrapper(base);
     }
 
-    public static ActivityFactory2 get(Context base) {
-        if (!(base instanceof CalligraphyContextWrapper)) {
+    public static ActivityFactory2 get(Activity activity) {
+        if (!(activity.getLayoutInflater() instanceof CalligraphyLayoutInflater)) {
             throw new RuntimeException("This activity does not wrap the Base Context! See CalligraphyContextWrapper.wrap(Context)");
         }
-        return (ActivityFactory2) base;
+        return (ActivityFactory2) activity.getLayoutInflater();
     }
 
     /**
@@ -79,8 +78,4 @@ public class CalligraphyContextWrapper extends ContextWrapper implements Activit
         return super.getSystemService(name);
     }
 
-    @Override
-    public View onActivityCreateView(View view, AttributeSet attrs) {
-        return mInflater.onActivityCreateView(view, attrs);
-    }
 }

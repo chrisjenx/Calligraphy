@@ -6,10 +6,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -39,7 +37,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-        return CalligraphyContextWrapper.get(getBaseContext()).onActivityCreateView(super.onCreateView(parent, name, context, attrs), attrs);
+        return CalligraphyContextWrapper.get(this).onActivityCreateView(super.onCreateView(parent, name, context, attrs), name, attrs);
     }
 
     @Override

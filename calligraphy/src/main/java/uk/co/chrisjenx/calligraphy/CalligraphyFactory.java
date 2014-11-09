@@ -118,7 +118,7 @@ class CalligraphyFactory implements ActivityFactory2 {
     }
 
     @Override
-    public View onActivityCreateView(final View view, final AttributeSet attrs) {
+    public View onActivityCreateView(final View view, String name, final AttributeSet attrs) {
         if (view != null && view.getTag(R.id.calligraphy_tag_id) != Boolean.TRUE) {
             onViewCreated(view, view.getContext(), attrs);
             view.setTag(R.id.calligraphy_tag_id, Boolean.TRUE);
@@ -158,7 +158,6 @@ class CalligraphyFactory implements ActivityFactory2 {
                 else
                     textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], mAttributeId);
             }
-
 
             // Still need to defer the Native action bar, appcompat-v7:21+ uses the Toolbar underneath. But won't match these anyway.
             final boolean deferred = matchesResourceIdName(view, ACTION_BAR_TITLE) || matchesResourceIdName(view, ACTION_BAR_SUBTITLE);

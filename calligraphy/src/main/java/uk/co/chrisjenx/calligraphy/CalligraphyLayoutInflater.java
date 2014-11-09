@@ -51,11 +51,12 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
     private void setUpLayoutFactories() {
         // If we are HC+ we get and set Factory2 otherwise we just wrap Factory1
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            if (getFactory2() != null) {
+            if (getFactory2() != null && !(getFactory2() instanceof WrapperFactory2)) {
                 // Sets both Factory/Factory2
                 setFactory2(getFactory2());
             }
-        } else if (getFactory() != null) {
+        }
+        if (getFactory() != null && !(getFactory() instanceof WrapperFactory)) {
             setFactory(getFactory());
         }
     }
@@ -102,7 +103,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
         // at it.
         if (view == null) view = super.onCreateView(name, attrs);
 
-        return mCalligraphyFactory.onActivityCreateView(view, attrs);
+        return mCalligraphyFactory.onActivityCreateView(view, name, attrs);
     }
 
     /**
@@ -113,7 +114,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
     protected View onCreateView(View parent, String name, AttributeSet attrs) throws ClassNotFoundException {
         return mCalligraphyFactory.onActivityCreateView(
                 super.onCreateView(parent, name, attrs),
-                attrs);
+                name, attrs);
     }
 
     /**
@@ -122,8 +123,8 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
      */
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public View onActivityCreateView(View view, AttributeSet attrs) {
-        return mCalligraphyFactory.onActivityCreateView(view, attrs);
+    public View onActivityCreateView(View view, String name, AttributeSet attrs) {
+        return mCalligraphyFactory.onActivityCreateView(view, name, attrs);
     }
 
     // ===
@@ -147,7 +148,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
         public View onCreateView(String name, Context context, AttributeSet attrs) {
             return mCalligraphyFactory.onActivityCreateView(
                     mFactory.onCreateView(name, context, attrs),
-                    attrs);
+                    name, attrs);
         }
     }
 
@@ -168,14 +169,14 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
         public View onCreateView(String name, Context context, AttributeSet attrs) {
             return mCalligraphyFactory.onActivityCreateView(
                     mFactory2.onCreateView(name, context, attrs),
-                    attrs);
+                    name, attrs);
         }
 
         @Override
         public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
             return mCalligraphyFactory.onActivityCreateView(
                     mFactory2.onCreateView(parent, name, context, attrs),
-                    attrs);
+                    name, attrs);
         }
     }
 

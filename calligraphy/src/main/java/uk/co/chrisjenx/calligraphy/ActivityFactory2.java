@@ -22,9 +22,9 @@ public interface ActivityFactory2 {
      * </pre>
      *
      * @param view  result of {@code super.onCreateView(parent, name, context, attrs)}, this might be null, which is fine.
-     * @param attrs see {@link android.view.LayoutInflater.Factory2#onCreateView(android.view.View, String, android.content.Context, android.util.AttributeSet)}
-     * @return the result from the activities {@code onCreateView()}
+     * @param name
+     *@param attrs see {@link android.view.LayoutInflater.Factory2#onCreateView(android.view.View, String, android.content.Context, android.util.AttributeSet)}  @return the result from the activities {@code onCreateView()}
      * @see android.view.LayoutInflater.Factory2
      */
-    View onActivityCreateView(View view, AttributeSet attrs);
+    View onActivityCreateView(View view, String name, AttributeSet attrs);
 }

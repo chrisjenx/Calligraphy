@@ -96,6 +96,7 @@ public class CalligraphyLayoutInflater extends LayoutInflater implements Activit
         // at it.
         if (view == null) view = super.onCreateView(name, attrs);
 
+        //TODO intercept
         Log.d("Calli", "Inflater1 onCreateView: " + view);
 
         return view;
@@ -105,18 +106,20 @@ public class CalligraphyLayoutInflater extends LayoutInflater implements Activit
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected View onCreateView(View parent, String name, AttributeSet attrs) throws ClassNotFoundException {
         final View view = super.onCreateView(parent, name, attrs);
+        //TODO intercept
         Log.d("Calli", "Inflater2 onCreateView: " + view);
         return view;
     }
 
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public View onActivityCreateView(Factory2 activity, View parent, String name, Context context, AttributeSet attrs) {
+    public View onActivityCreateView(View view, AttributeSet attrs) {
         // Ask the Activity to try and create the view!
-        final View view = activity.onCreateView(parent, name, context, attrs);
-        //TODO intercept
+        if (view != null) {
+            //TODO intercept
+        }
         Log.d("Calli", "ActivityFactory2 onCreateView: " + view);
-        return null;
+        return view;
     }
 
     // ===

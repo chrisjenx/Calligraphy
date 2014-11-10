@@ -2,10 +2,15 @@ package uk.co.chrisjenx.calligraphy;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created by chris on 19/12/2013
@@ -117,6 +122,9 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
                 name, attrs);
     }
 
+    private static final int[] ATTRS_THEME = new int[]{R.attr.theme};
+    private static final Class<?>[] mConstructorSignature = new Class[]{Context.class, AttributeSet.class};
+
     /**
      * The Activity onCreateView (PrivateFactory) is the third port of call for LayoutInflation.
      * We opted to manual injection over aggressive reflection, this should be less fragile.
@@ -125,7 +133,26 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public View onActivityCreateView(View view, String name, AttributeSet attrs) {
         if (view == null && name.indexOf('.') > -1) {
-            //TODO: Inflate view somehow...
+            //TODO: Inflate view better... as this sucks
+            try {
+                Context viewContext = getContext();
+                final TypedArray ta = viewContext.obtainStyledAttributes(attrs, ATTRS_THEME);
+                final int themeResId = ta.getResourceId(0, 0);
+                if (themeResId != 0) {
+                    viewContext = new ContextThemeWrapper(viewContext, themeResId);
+                }
+                ta.recycle();
+                final Class<? extends View> clazz = getContext().getClassLoader().loadClass(name).asSubclass(View.class);
+                final Constructor<? extends View> constructor = clazz.getConstructor(mConstructorSignature);
+                final Object[] args = new Object[]{viewContext, attrs};
+                constructor.setAccessible(true);
+                view = constructor.newInstance(args);
+            } catch (ClassNotFoundException ignored) {
+            } catch (NoSuchMethodException ignored) {
+            } catch (InvocationTargetException ignored) {
+            } catch (InstantiationException ignored) {
+            } catch (IllegalAccessException ignored) {
+            }
         }
         return mCalligraphyFactory.onActivityCreateView(view, name, attrs);
     }

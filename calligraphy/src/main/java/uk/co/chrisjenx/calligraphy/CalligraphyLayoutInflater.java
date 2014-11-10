@@ -124,6 +124,9 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public View onActivityCreateView(View view, String name, AttributeSet attrs) {
+        if (view == null && name.indexOf('.') > -1) {
+            //TODO: Inflate view somehow...
+        }
         return mCalligraphyFactory.onActivityCreateView(view, name, attrs);
     }
 

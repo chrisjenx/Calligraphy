@@ -37,7 +37,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-        return CalligraphyContextWrapper.get(this).onActivityCreateView(super.onCreateView(parent, name, context, attrs), name, attrs);
+        return CalligraphyContextWrapper.get(this).onActivityCreateView(super.onCreateView(parent, name, context, attrs), name, context, attrs);
     }
 
     @Override

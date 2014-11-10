@@ -118,7 +118,7 @@ class CalligraphyFactory implements ActivityFactory2 {
     }
 
     @Override
-    public View onActivityCreateView(final View view, String name, final AttributeSet attrs) {
+    public View onActivityCreateView(final View view, String name, Context context, final AttributeSet attrs) {
         if (view != null && view.getTag(R.id.calligraphy_tag_id) != Boolean.TRUE) {
             onViewCreated(view, view.getContext(), attrs);
             view.setTag(R.id.calligraphy_tag_id, Boolean.TRUE);

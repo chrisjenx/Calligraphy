@@ -1,5 +1,6 @@
 package uk.co.chrisjenx.calligraphy;
 
+import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -26,5 +27,5 @@ public interface ActivityFactory2 {
      *@param attrs see {@link android.view.LayoutInflater.Factory2#onCreateView(android.view.View, String, android.content.Context, android.util.AttributeSet)}  @return the result from the activities {@code onCreateView()}
      * @see android.view.LayoutInflater.Factory2
      */
-    View onActivityCreateView(View view, String name, AttributeSet attrs);
+    View onActivityCreateView(View view, String name, Context context, AttributeSet attrs);
 }

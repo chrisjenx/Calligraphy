@@ -93,6 +93,9 @@ _You're good to go!_
     fontPath="fonts/Roboto-Bold.ttf"/>
 ```
 
+_Note: Popular IDE's (Android Studio, IntelliJ) will likely mark this as an error despite being correct. You may want to add `tools:ignore="MissingPrefix"` to either the View itself or its parent ViewGroup to avoid this. You'll need to add the tools namespace to have access to this "ignore" attribute. `xmlns:tools="
+http://schemas.android.com/tools"`. See https://code.google.com/p/android/issues/detail?id=65176._
+
 ### Custom font in TextAppearance
 
 

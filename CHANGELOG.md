@@ -1,5 +1,8 @@
 #Changelog
 
+#1.2.1 (29/10/2014) WIP
+- Fixes `cloneInContext()` on `CalligraphyLayoutInflater`. (Fixes fonts inside `Fragments` with `support-v4:21+`)
+
 #1.2.0 (20/10/2014)
 - Fixes issues with `appcompat-v7:21+` (uses underlying `Toolbar` impl).
 - Lollipop support.

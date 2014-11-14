@@ -118,10 +118,16 @@ class CalligraphyFactory implements LayoutInflater.Factory {
 
     private final LayoutInflater.Factory factory;
     private final int mAttributeId;
+    private LayoutInflater inflater;
 
-    public CalligraphyFactory(LayoutInflater.Factory factory, int attributeId) {
+    public CalligraphyFactory(LayoutInflater inflater, LayoutInflater.Factory factory, int attributeId) {
+        this.inflater = inflater;
         this.factory = factory;
         this.mAttributeId = attributeId;
+    }
+
+    public void setLayoutInflater(LayoutInflater inflater) {
+        this.inflater = inflater;
     }
 
     @Override
@@ -164,11 +170,18 @@ class CalligraphyFactory implements LayoutInflater.Factory {
 
     protected View createViewOrFailQuietly(String name, String prefix, Context context, AttributeSet attrs) {
         try {
+            // Try the system view inflater, this might not be correct if its been cloned and not
+            // set as the default view inflater.
             return LayoutInflater.from(context).createView(name, prefix, attrs);
         } catch (Exception ignore) {
-            ignore.printStackTrace();
-            return null;
         }
+        try {
+            // If the above fails try the view inflater which we are attached too.
+            return inflater.createView(name, prefix, attrs);
+        } catch (Exception ignore) {
+        }
+        // Well this sucks... Guess nothing wants to create a view for us :(
+        return null;
     }
 
     protected void onViewCreated(View view, String name, final Context context, AttributeSet attrs) {

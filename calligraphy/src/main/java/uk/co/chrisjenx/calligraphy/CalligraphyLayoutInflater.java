@@ -182,7 +182,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
     /**
      * Factory 1 is the first port of call for LayoutInflation
      */
-    private static class WrapperFactory implements Factory {
+    class WrapperFactory implements Factory {
 
         private final Factory mFactory;
         private final CalligraphyFactory mCalligraphyFactory;
@@ -194,9 +194,18 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
 
         @Override
         public View onCreateView(String name, Context context, AttributeSet attrs) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                return mCalligraphyFactory.onViewCreated(
+                        createCustomViewInternal(
+                                null, mFactory.onCreateView(name, context, attrs), name, context, attrs
+                        ),
+                        context, attrs
+                );
+            }
             return mCalligraphyFactory.onViewCreated(
                     mFactory.onCreateView(name, context, attrs),
-                    context, attrs);
+                    context, attrs
+            );
         }
     }
 

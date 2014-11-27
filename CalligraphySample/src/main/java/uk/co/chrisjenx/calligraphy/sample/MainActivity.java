@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;

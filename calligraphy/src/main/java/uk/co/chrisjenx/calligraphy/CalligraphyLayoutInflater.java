@@ -3,9 +3,12 @@ package uk.co.chrisjenx.calligraphy;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by chris on 19/12/2013
@@ -84,7 +87,46 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
 
     // ===
     // LayoutInflater ViewCreators
+    // Works in order of inflation
     // ===
+
+    /**
+     * The Activity onCreateView (PrivateFactory) is the third port of call for LayoutInflation.
+     * We opted to manual injection over aggressive reflection, this should be less fragile.
+     */
+    @Override
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public View onActivityCreateView(View parent, View view, String name, Context context, AttributeSet attrs) {
+
+        if (view == null && name.indexOf('.') > -1) {
+            if (mConstructorArgs == null)
+                mConstructorArgs = CalligraphyUtils.getField(LayoutInflater.class, this, "mConstructorArgs");
+
+            final Object[] mConstructorArgsArr = (Object[]) CalligraphyUtils.getValue(mConstructorArgs, this);
+            final Object lastContext = mConstructorArgsArr[0];
+            mConstructorArgsArr[0] = parent != null ? parent.getContext() : context;
+            CalligraphyUtils.setValue(mConstructorArgs, this, mConstructorArgsArr);
+            try {
+                view = createView(name, null, attrs);
+            } catch (ClassNotFoundException ignored) {
+            } finally {
+                mConstructorArgsArr[0] = lastContext;
+                CalligraphyUtils.setValue(mConstructorArgs, this, mConstructorArgsArr);
+            }
+        }
+        return mCalligraphyFactory.onViewCreated(view, context, attrs);
+    }
+
+    /**
+     * The LayoutInflater onCreateView is the fourth port of call for LayoutInflation.
+     */
+    @Override
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    protected View onCreateView(View parent, String name, @NonNull AttributeSet attrs) throws ClassNotFoundException {
+        return mCalligraphyFactory.onViewCreated(
+                super.onCreateView(parent, name, attrs),
+                getContext(), attrs);
+    }
 
     /**
      * The LayoutInflater onCreateView is the fourth port of call for LayoutInflation.
@@ -103,32 +145,10 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
         // at it.
         if (view == null) view = super.onCreateView(name, attrs);
 
-        return mCalligraphyFactory.onActivityCreateView(view, name, getContext(), attrs);
+        return mCalligraphyFactory.onViewCreated(view, view.getContext(), attrs);
     }
 
-    /**
-     * The LayoutInflater onCreateView is the fourth port of call for LayoutInflation.
-     */
-    @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    protected View onCreateView(View parent, String name, AttributeSet attrs) throws ClassNotFoundException {
-        return mCalligraphyFactory.onActivityCreateView(
-                super.onCreateView(parent, name, attrs),
-                name, getContext(), attrs);
-    }
-
-    /**
-     * The Activity onCreateView (PrivateFactory) is the third port of call for LayoutInflation.
-     * We opted to manual injection over aggressive reflection, this should be less fragile.
-     */
-    @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public View onActivityCreateView(View view, String name, Context context, AttributeSet attrs) {
-        if (view == null && name.indexOf('.') > -1) {
-            //TODO: Inflate view better... as this sucks
-        }
-        return mCalligraphyFactory.onActivityCreateView(view, name, context, attrs);
-    }
+    private Field mConstructorArgs = null;
 
     // ===
     // Wrapper Factories for Pre/Post HC
@@ -149,9 +169,9 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
 
         @Override
         public View onCreateView(String name, Context context, AttributeSet attrs) {
-            return mCalligraphyFactory.onActivityCreateView(
+            return mCalligraphyFactory.onViewCreated(
                     mFactory.onCreateView(name, context, attrs),
-                    name, context, attrs);
+                    context, attrs);
         }
     }
 
@@ -170,16 +190,16 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
 
         @Override
         public View onCreateView(String name, Context context, AttributeSet attrs) {
-            return mCalligraphyFactory.onActivityCreateView(
+            return mCalligraphyFactory.onViewCreated(
                     mFactory2.onCreateView(name, context, attrs),
-                    name, context, attrs);
+                    context, attrs);
         }
 
         @Override
         public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-            return mCalligraphyFactory.onActivityCreateView(
+            return mCalligraphyFactory.onViewCreated(
                     mFactory2.onCreateView(parent, name, context, attrs),
-                    name, context, attrs);
+                    context, attrs);
         }
     }
 

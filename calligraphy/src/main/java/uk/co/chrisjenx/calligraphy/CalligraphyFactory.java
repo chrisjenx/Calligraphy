@@ -2,6 +2,7 @@ package uk.co.chrisjenx.calligraphy;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -19,7 +20,7 @@ import android.widget.ToggleButton;
 import java.util.HashMap;
 import java.util.Map;
 
-class CalligraphyFactory implements ActivityFactory2 {
+class CalligraphyFactory implements CalligraphyViewCreated {
 
     private static final String ACTION_BAR_TITLE = "action_bar_title";
     private static final String ACTION_BAR_SUBTITLE = "action_bar_subtitle";
@@ -117,16 +118,18 @@ class CalligraphyFactory implements ActivityFactory2 {
         this.mAttributeId = attributeId;
     }
 
+
     @Override
-    public View onActivityCreateView(final View view, String name, Context context, final AttributeSet attrs) {
+    @Nullable
+    public View onViewCreated(@Nullable View view, Context context, AttributeSet attrs) {
         if (view != null && view.getTag(R.id.calligraphy_tag_id) != Boolean.TRUE) {
-            onViewCreated(view, view.getContext(), attrs);
+            onViewCreatedInternal(view, context, attrs);
             view.setTag(R.id.calligraphy_tag_id, Boolean.TRUE);
         }
         return view;
     }
 
-    protected void onViewCreated(View view, final Context context, AttributeSet attrs) {
+    void onViewCreatedInternal(View view, final Context context, AttributeSet attrs) {
         if (view instanceof TextView) {
             // Fast path the setting of TextView's font, means if we do some delayed setting of font,
             // which has already been set by use we skip this TextView (mainly for inflating custom,

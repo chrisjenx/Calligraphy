@@ -69,7 +69,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
     public void setFactory(Factory factory) {
         // Only set our factory and wrap calls to the Factory trying to be set!
         if (!(factory instanceof WrapperFactory)) {
-            super.setFactory(new WrapperFactory(factory, mCalligraphyFactory));
+            super.setFactory(new WrapperFactory(factory, this, mCalligraphyFactory));
         } else {
             super.setFactory(factory);
         }
@@ -119,6 +119,8 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
      */
     @Override
     protected View onCreateView(String name, @NonNull AttributeSet attrs) throws ClassNotFoundException {
+        // This mimics the {@code PhoneLayoutInflater} in the way it tries to inflate the base
+        // classes, if this fails its pretty certain the app will fail at this point.
         View view = null;
         for (String prefix : sClassPrefixList) {
             try {
@@ -182,13 +184,15 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
     /**
      * Factory 1 is the first port of call for LayoutInflation
      */
-    class WrapperFactory implements Factory {
+    private static class WrapperFactory implements Factory {
 
         private final Factory mFactory;
+        private final CalligraphyLayoutInflater mInflater;
         private final CalligraphyFactory mCalligraphyFactory;
 
-        public WrapperFactory(Factory factory, CalligraphyFactory calligraphyFactory) {
+        public WrapperFactory(Factory factory, CalligraphyLayoutInflater inflater, CalligraphyFactory calligraphyFactory) {
             mFactory = factory;
+            mInflater = inflater;
             mCalligraphyFactory = calligraphyFactory;
         }
 
@@ -196,7 +200,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
         public View onCreateView(String name, Context context, AttributeSet attrs) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
                 return mCalligraphyFactory.onViewCreated(
-                        createCustomViewInternal(
+                        mInflater.createCustomViewInternal(
                                 null, mFactory.onCreateView(name, context, attrs), name, context, attrs
                         ),
                         context, attrs

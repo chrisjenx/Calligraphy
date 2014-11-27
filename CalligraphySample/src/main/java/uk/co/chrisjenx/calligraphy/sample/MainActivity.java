@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.util.AttributeSet;
 import android.view.View;
@@ -36,13 +37,10 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-        return CalligraphyContextWrapper.get(this).onActivityCreateView(
-                parent,
-                super.onCreateView(parent, name, context, attrs),
-                name,
-                context,
-                attrs);
+    public View onCreateView(View parent, String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        return CalligraphyContextWrapper.get(this)
+                .onActivityCreateView(parent, super.onCreateView(parent, name, context, attrs),
+                        name, context, attrs);
     }
 
     @Override

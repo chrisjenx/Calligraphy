@@ -59,6 +59,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
                 setFactory2(getFactory2());
             }
         }
+        // We can do this as setFactory2 is used for both methods.
         if (getFactory() != null && !(getFactory() instanceof WrapperFactory)) {
             setFactory(getFactory());
         }
@@ -97,7 +98,64 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public View onActivityCreateView(View parent, View view, String name, Context context, AttributeSet attrs) {
+        return mCalligraphyFactory.onViewCreated(createCustomViewInternal(parent, view, name, context, attrs), context, attrs);
+    }
 
+    /**
+     * The LayoutInflater onCreateView is the fourth port of call for LayoutInflation.
+     * BUT only for none CustomViews.
+     */
+    @Override
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    protected View onCreateView(View parent, String name, @NonNull AttributeSet attrs) throws ClassNotFoundException {
+        return mCalligraphyFactory.onViewCreated(super.onCreateView(parent, name, attrs),
+                getContext(), attrs);
+    }
+
+    /**
+     * The LayoutInflater onCreateView is the fourth port of call for LayoutInflation.
+     * BUT only for none CustomViews.
+     * Basically if this method doesn't inflate the View nothing probably will.
+     */
+    @Override
+    protected View onCreateView(String name, @NonNull AttributeSet attrs) throws ClassNotFoundException {
+        View view = null;
+        for (String prefix : sClassPrefixList) {
+            try {
+                view = createView(name, prefix, attrs);
+            } catch (ClassNotFoundException e) {
+            }
+        }
+        // In this case we want to let the base class take a crack
+        // at it.
+        if (view == null) view = super.onCreateView(name, attrs);
+
+        return mCalligraphyFactory.onViewCreated(view, view.getContext(), attrs);
+    }
+
+    private Field mConstructorArgs = null;
+
+    /**
+     * Nasty method to inflate custom layouts that haven't been handled else where. If this fails it
+     * will fall back through to the PhoneLayoutInflater method of inflating custom views where
+     * Calligraphy will NOT have a hook into.
+     *
+     * @param parent  parent view
+     * @param view    view if it has been inflated by this point, if this is not null this method
+     *                just returns this value.
+     * @param name    name of the thing to inflate.
+     * @param context Context to inflate by if parent is null
+     * @param attrs   Attr for this view which we can steal fontPath from too.
+     * @return view or the View we inflate in here.
+     */
+    private View createCustomViewInternal(View parent, View view, String name, Context context, AttributeSet attrs) {
+        // I by no means advise anyone to do this normally, but Google have locked down access to
+        // the createView() method, so we never get a callback with attributes at the end of the
+        // createViewFromTag chain (which would solve all this unnecessary rubbish).
+        // We at the very least try to optimise this as much as possible.
+        // We only call for customViews (As they are the ones that never go through onCreateView(...)).
+        // We also maintain the Field reference and make it accessible which will make a pretty
+        // significant difference to performance on Android 4.0+.
         if (view == null && name.indexOf('.') > -1) {
             if (mConstructorArgs == null)
                 mConstructorArgs = CalligraphyUtils.getField(LayoutInflater.class, this, "mConstructorArgs");
@@ -114,41 +172,8 @@ class CalligraphyLayoutInflater extends LayoutInflater implements ActivityFactor
                 CalligraphyUtils.setValue(mConstructorArgs, this, mConstructorArgsArr);
             }
         }
-        return mCalligraphyFactory.onViewCreated(view, context, attrs);
+        return view;
     }
-
-    /**
-     * The LayoutInflater onCreateView is the fourth port of call for LayoutInflation.
-     */
-    @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    protected View onCreateView(View parent, String name, @NonNull AttributeSet attrs) throws ClassNotFoundException {
-        return mCalligraphyFactory.onViewCreated(
-                super.onCreateView(parent, name, attrs),
-                getContext(), attrs);
-    }
-
-    /**
-     * The LayoutInflater onCreateView is the fourth port of call for LayoutInflation.
-     * Basically if this method doesn't inflate the View nothing probably will.
-     */
-    @Override
-    protected View onCreateView(String name, AttributeSet attrs) throws ClassNotFoundException {
-        View view = null;
-        for (String prefix : sClassPrefixList) {
-            try {
-                view = createView(name, prefix, attrs);
-            } catch (ClassNotFoundException e) {
-            }
-        }
-        // In this case we want to let the base class take a crack
-        // at it.
-        if (view == null) view = super.onCreateView(name, attrs);
-
-        return mCalligraphyFactory.onViewCreated(view, view.getContext(), attrs);
-    }
-
-    private Field mConstructorArgs = null;
 
     // ===
     // Wrapper Factories for Pre/Post HC

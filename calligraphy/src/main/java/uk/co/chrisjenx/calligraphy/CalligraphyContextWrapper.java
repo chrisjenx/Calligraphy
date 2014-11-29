@@ -28,11 +28,11 @@ public class CalligraphyContextWrapper extends ContextWrapper {
         return new CalligraphyContextWrapper(base);
     }
 
-    public static ActivityFactory2 get(Activity activity) {
+    public static CalligraphyActivityFactory2 get(Activity activity) {
         if (!(activity.getLayoutInflater() instanceof CalligraphyLayoutInflater)) {
             throw new RuntimeException("This activity does not wrap the Base Context! See CalligraphyContextWrapper.wrap(Context)");
         }
-        return (ActivityFactory2) activity.getLayoutInflater();
+        return (CalligraphyActivityFactory2) activity.getLayoutInflater();
     }
 
     /**

@@ -9,7 +9,7 @@ import android.view.View;
  * Created by chris on 27/11/14.
  * For Calligraphy.
  */
-public interface CalligraphyViewCreated {
+interface CalligraphyViewCreated {
     /**
      * Handle the created view
      *

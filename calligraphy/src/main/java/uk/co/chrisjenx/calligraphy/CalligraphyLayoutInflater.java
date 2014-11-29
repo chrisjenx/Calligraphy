@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * Created by chris on 19/12/2013
@@ -84,6 +85,20 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
         } else {
             super.setFactory2(factory2);
         }
+    }
+
+    private Method mSetPrivateFactoryMethod = null;
+
+    private Method getPrivateFactoryMethod() {
+        if (!CalligraphyConfig.get().isReflection()) return null;
+        final Method[] methods = getClass().getMethods();
+        for (Method method : methods) {
+            if (method.getName().equals("setPrivateFactory")) {
+                method.setAccessible(true);
+                return method;
+            }
+        }
+        return null;
     }
 
     // ===

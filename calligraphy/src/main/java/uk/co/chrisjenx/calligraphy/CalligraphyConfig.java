@@ -114,6 +114,10 @@ public class CalligraphyConfig {
         return mIsFontSet;
     }
 
+    public boolean isReflection() {
+        return mReflection;
+    }
+
     /**
      * @return the custom attrId to look for, -1 if not set.
      */

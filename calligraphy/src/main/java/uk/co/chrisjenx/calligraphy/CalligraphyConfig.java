@@ -1,5 +1,6 @@
 package uk.co.chrisjenx.calligraphy;
 
+import android.os.Build;
 import android.text.TextUtils;
 
 /**
@@ -17,8 +18,8 @@ public class CalligraphyConfig {
      * @param defaultFontAssetPath a path to a font file in the assets folder, e.g. "fonts/roboto-light.ttf",
      *                             passing null will default to the device font-family.
      */
-    public static void initDefault(String defaultFontAssetPath) {
-        mInstance = new CalligraphyConfig(defaultFontAssetPath);
+    public static CalligraphyConfig initDefault(String defaultFontAssetPath) {
+        return mInstance = new CalligraphyConfig(defaultFontAssetPath);
     }
 
     /**
@@ -27,8 +28,8 @@ public class CalligraphyConfig {
      * @param defaultAttributeId the custom attribute to look for.
      * @see #initDefault(String, int)
      */
-    public static void initDefault(int defaultAttributeId) {
-        mInstance = new CalligraphyConfig(defaultAttributeId);
+    public static CalligraphyConfig initDefault(int defaultAttributeId) {
+        return mInstance = new CalligraphyConfig(defaultAttributeId);
     }
 
     /**
@@ -39,8 +40,8 @@ public class CalligraphyConfig {
      * @see #initDefault(String)
      * @see #initDefault(int)
      */
-    public static void initDefault(String defaultFontAssetPath, int defaultAttributeId) {
-        mInstance = new CalligraphyConfig(defaultFontAssetPath, defaultAttributeId);
+    public static CalligraphyConfig initDefault(String defaultFontAssetPath, int defaultAttributeId) {
+        return mInstance = new CalligraphyConfig(defaultFontAssetPath, defaultAttributeId);
     }
 
     static CalligraphyConfig get() {
@@ -53,6 +54,11 @@ public class CalligraphyConfig {
     private final String mFontPath;
     private final boolean mIsFontSet;
     private final int mAttrId;
+
+    /**
+     * Use Reflection to inject the private factory. Doesn't exist pre HC. so defaults to false.
+     */
+    private boolean mReflection = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? true : false;
 
     private CalligraphyConfig() {
         this(null, -1);
@@ -70,6 +76,28 @@ public class CalligraphyConfig {
         this.mFontPath = defaultFontAssetPath;
         mIsFontSet = !TextUtils.isEmpty(defaultFontAssetPath);
         mAttrId = attrId != -1 ? attrId : -1;
+    }
+
+    /**
+     * Turn of the use of Reflection to inject the private factory.
+     * This has operational concenquences! Please read and understand before disabling.
+     * <b>This is already disabled on pre Honeycomb devices. (API 11)</b>
+     *
+     * If you disable this you will need to override your {@link android.app.Activity#onCreateView(android.view.View, String, android.content.Context, android.util.AttributeSet)}
+     * as this is set as the {@link android.view.LayoutInflater} private factory.
+     *
+     * <pre>
+     * {@code
+     *
+     * @Override
+     * @TargetApi(Build.VERSION_CODES.HONEYCOMB) public View onCreateView(View parent, String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+     * return CalligraphyContextWrapper.onActivityCreateView(this, parent, super.onCreateView(parent, name, context, attrs), name, context, attrs);
+     * }
+     * }
+     * </pre>
+     */
+    public void disableReflection() {
+        mReflection = false;
     }
 
     /**

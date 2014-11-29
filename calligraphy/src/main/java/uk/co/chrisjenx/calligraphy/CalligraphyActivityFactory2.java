@@ -8,7 +8,7 @@ import android.view.View;
  * Created by chris on 09/11/14.
  * For Calligraphy.
  */
-interface CalligraphyActivityFactory2 {
+public interface CalligraphyActivityFactory2 {
 
     /**
      * Used to Wrap the Activity onCreateView method.

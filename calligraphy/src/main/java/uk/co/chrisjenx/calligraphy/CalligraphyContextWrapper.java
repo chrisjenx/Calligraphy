@@ -3,7 +3,9 @@ package uk.co.chrisjenx.calligraphy;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 
 /**
  * Created by chris on 19/12/2013
@@ -28,11 +30,21 @@ public class CalligraphyContextWrapper extends ContextWrapper {
         return new CalligraphyContextWrapper(base);
     }
 
+    /**
+     * Get the Calligraphy Activity Fragment Instance to allow callbacks for when views are created.
+     *
+     * @param activity The activity the original that the ContextWrapper was attached too.
+     * @return Interface allowing you to call onActivityViewCreated
+     */
     public static CalligraphyActivityFactory2 get(Activity activity) {
         if (!(activity.getLayoutInflater() instanceof CalligraphyLayoutInflater)) {
             throw new RuntimeException("This activity does not wrap the Base Context! See CalligraphyContextWrapper.wrap(Context)");
         }
         return (CalligraphyActivityFactory2) activity.getLayoutInflater();
+    }
+
+    public static View onActivityCreateView(Activity activity, View parent, View view, String name, Context context, AttributeSet attr) {
+        return get(activity).onActivityCreateView(parent, view, name, context, attr);
     }
 
     /**

@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -15,11 +14,11 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.View;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Created by chris on 20/12/2013
@@ -334,45 +333,7 @@ public final class CalligraphyUtils {
         return sToolbarCheck;
     }
 
-    private static int sGeneratedTagId = -1;
-
-    /**
-     * Use this int with {@link android.view.View#setTag(int, Object)} so we know when we have,
-     * intercepted a view.
-     *
-     * @return unique id for view tagging.
-     */
-    static int getTaggedViewID() {
-        if (sGeneratedTagId == -1) {
-            sGeneratedTagId = generateViewId();
-        }
-        return sGeneratedTagId;
-    }
-
-    private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
-
-    /**
-     * Generate a value suitable for use in {@link android.view.View#setId(int)}.
-     * This value will not collide with ID values generated at build time by aapt for R.id.
-     *
-     * @return a generated ID value
-     */
-    private static int generateViewId() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return View.generateViewId();
-        }
-        for (; ; ) {
-            final int result = sNextGeneratedId.get();
-            // aapt-generated IDs have the high byte nonzero; clamp to the range under that.
-            int newValue = result + 1;
-            if (newValue > 16777215) newValue = 1; // Roll over to 1, not 0.
-            if (sNextGeneratedId.compareAndSet(result, newValue)) {
-                return result;
-            }
-        }
-    }
-
-    public static Field getField(Class clazz, Object obj, String fieldName) {
+    static Field getField(Class clazz, String fieldName) {
         try {
             final Field f = clazz.getDeclaredField(fieldName);
             f.setAccessible(true);
@@ -382,7 +343,7 @@ public final class CalligraphyUtils {
         return null;
     }
 
-    public static Object getValue(Field field, Object obj) {
+    static Object getValue(Field field, Object obj) {
         try {
             return field.get(obj);
         } catch (IllegalAccessException ignored) {
@@ -390,10 +351,29 @@ public final class CalligraphyUtils {
         return null;
     }
 
-    public static void setValue(Field field, Object obj, Object value) {
+    static void setValue(Field field, Object obj, Object value) {
         try {
             field.set(obj, value);
         } catch (IllegalAccessException e) {
+        }
+    }
+
+    static Method getMethod(Class clazz, String methodName) {
+        final Method[] methods = clazz.getMethods();
+        for (Method method : methods) {
+            if (method.getName().equals(methodName)) {
+                method.setAccessible(true);
+                return method;
+            }
+        }
+        return null;
+    }
+
+    static void invokeMethod(Object object, Method method, Object... args) {
+        try {
+            if (method == null) return;
+            method.invoke(object, args);
+        } catch (IllegalAccessException | InvocationTargetException ignored) {
         }
     }
 

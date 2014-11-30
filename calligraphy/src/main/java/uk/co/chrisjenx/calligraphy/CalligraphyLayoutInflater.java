@@ -7,6 +7,9 @@ import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+
+import org.xmlpull.v1.XmlPullParser;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -24,6 +27,9 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
 
     private final int mAttributeId;
     private final CalligraphyFactory mCalligraphyFactory;
+    // Reflection Hax
+    private boolean mSetPrivateFactory = false;
+    private Field mConstructorArgs = null;
 
     protected CalligraphyLayoutInflater(Context context, int attributeId) {
         super(context);
@@ -47,6 +53,13 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
     // ===
     // Wrapping goodies
     // ===
+
+
+    @Override
+    public View inflate(XmlPullParser parser, ViewGroup root, boolean attachToRoot) {
+        setPrivateFactoryInternal();
+        return super.inflate(parser, root, attachToRoot);
+    }
 
     /**
      * We don't want to unnecessary create/set our factories if there are none there. We try to be
@@ -87,18 +100,17 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
         }
     }
 
-    private Method mSetPrivateFactoryMethod = null;
+    private void setPrivateFactoryInternal() {
+        // Already tried to set the factory.
+        if (mSetPrivateFactory) return;
+        // Reflection (Or Old Device) skip.
+        if (!CalligraphyConfig.get().isReflection()) return;
 
-    private Method getPrivateFactoryMethod() {
-        if (!CalligraphyConfig.get().isReflection()) return null;
-        final Method[] methods = getClass().getMethods();
-        for (Method method : methods) {
-            if (method.getName().equals("setPrivateFactory")) {
-                method.setAccessible(true);
-                return method;
-            }
+        final Method setPrivateFactoryMethod = CalligraphyUtils.getMethod(LayoutInflater.class, "setPrivateFactory");
+        if (setPrivateFactoryMethod != null) {
+            CalligraphyUtils.invokeMethod(this, setPrivateFactoryMethod, new WrapperFactory2((Factory2) getContext(), mCalligraphyFactory));
         }
-        return null;
+        mSetPrivateFactory = true;
     }
 
     // ===
@@ -150,8 +162,6 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
         return mCalligraphyFactory.onViewCreated(view, view.getContext(), attrs);
     }
 
-    private Field mConstructorArgs = null;
-
     /**
      * Nasty method to inflate custom layouts that haven't been handled else where. If this fails it
      * will fall back through to the PhoneLayoutInflater method of inflating custom views where
@@ -175,7 +185,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
         // significant difference to performance on Android 4.0+.
         if (view == null && name.indexOf('.') > -1) {
             if (mConstructorArgs == null)
-                mConstructorArgs = CalligraphyUtils.getField(LayoutInflater.class, this, "mConstructorArgs");
+                mConstructorArgs = CalligraphyUtils.getField(LayoutInflater.class, "mConstructorArgs");
 
             final Object[] mConstructorArgsArr = (Object[]) CalligraphyUtils.getValue(mConstructorArgs, this);
             final Object lastContext = mConstructorArgsArr[0];

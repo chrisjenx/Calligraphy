@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,6 +106,11 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
         if (mSetPrivateFactory) return;
         // Reflection (Or Old Device) skip.
         if (!CalligraphyConfig.get().isReflection()) return;
+        // Skip if not attached to an activity.
+        if (!(getContext() instanceof Factory2)) {
+            mSetPrivateFactory = true;
+            return;
+        }
 
         final Method setPrivateFactoryMethod = CalligraphyUtils
                 .getMethod(LayoutInflater.class, "setPrivateFactory");
@@ -286,6 +292,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
 
         @Override
         public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+            Log.i("Calli", "Private Factory");
             return mCalligraphyFactory.onViewCreated(
                     mInflater.createCustomViewInternal(parent,
                             mFactory2.onCreateView(parent, name, context, attrs),

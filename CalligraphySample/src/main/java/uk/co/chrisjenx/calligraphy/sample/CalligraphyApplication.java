@@ -13,7 +13,6 @@ public class CalligraphyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        CalligraphyConfig.initDefault("fonts/Roboto-ThinItalic.ttf", R.attr.fontPath)
-                .disableReflection();
+        CalligraphyConfig.initDefault("fonts/Roboto-ThinItalic.ttf", R.attr.fontPath);
     }
 }

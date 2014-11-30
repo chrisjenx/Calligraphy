@@ -374,6 +374,7 @@ public final class CalligraphyUtils {
             if (method == null) return;
             method.invoke(object, args);
         } catch (IllegalAccessException | InvocationTargetException ignored) {
+            ignored.printStackTrace();
         }
     }
 

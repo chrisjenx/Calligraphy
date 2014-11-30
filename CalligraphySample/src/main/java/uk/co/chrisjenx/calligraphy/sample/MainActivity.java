@@ -1,15 +1,10 @@
 package uk.co.chrisjenx.calligraphy.sample;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
-import android.util.AttributeSet;
-import android.view.View;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -35,11 +30,11 @@ public class MainActivity extends ActionBarActivity {
         }, 1000);
     }
 
-    @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public View onCreateView(View parent, String name, @NonNull Context context, @NonNull AttributeSet attrs) {
-        return CalligraphyContextWrapper.onActivityCreateView(this, parent, super.onCreateView(parent, name, context, attrs), name, context, attrs);
-    }
+//    @Override
+//    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+//    public View onCreateView(View parent, String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+//        return CalligraphyContextWrapper.onActivityCreateView(this, parent, super.onCreateView(parent, name, context, attrs), name, context, attrs);
+//    }
 
     @Override
     protected void attachBaseContext(Context newBase) {

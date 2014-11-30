@@ -106,9 +106,13 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
         // Reflection (Or Old Device) skip.
         if (!CalligraphyConfig.get().isReflection()) return;
 
-        final Method setPrivateFactoryMethod = CalligraphyUtils.getMethod(LayoutInflater.class, "setPrivateFactory");
+        final Method setPrivateFactoryMethod = CalligraphyUtils
+                .getMethod(LayoutInflater.class, "setPrivateFactory");
+
         if (setPrivateFactoryMethod != null) {
-            CalligraphyUtils.invokeMethod(this, setPrivateFactoryMethod, new WrapperFactory2((Factory2) getContext(), mCalligraphyFactory));
+            CalligraphyUtils.invokeMethod(this,
+                    setPrivateFactoryMethod,
+                    new PrivateWrapperFactory2((Factory2) getContext(), this, mCalligraphyFactory));
         }
         mSetPrivateFactory = true;
     }
@@ -243,8 +247,8 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private static class WrapperFactory2 implements Factory2 {
-        private final Factory2 mFactory2;
-        private final CalligraphyFactory mCalligraphyFactory;
+        protected final Factory2 mFactory2;
+        protected final CalligraphyFactory mCalligraphyFactory;
 
         public WrapperFactory2(Factory2 factory2, CalligraphyFactory calligraphyFactory) {
             mFactory2 = factory2;
@@ -263,6 +267,32 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
             return mCalligraphyFactory.onViewCreated(
                     mFactory2.onCreateView(parent, name, context, attrs),
                     context, attrs);
+        }
+    }
+
+    /**
+     * Private factory is step three for Activity Inflation, this is what is attached to the
+     * Activity on HC+ devices.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private static class PrivateWrapperFactory2 extends WrapperFactory2 {
+
+        private final CalligraphyLayoutInflater mInflater;
+
+        public PrivateWrapperFactory2(Factory2 factory2, CalligraphyLayoutInflater inflater, CalligraphyFactory calligraphyFactory) {
+            super(factory2, calligraphyFactory);
+            mInflater = inflater;
+        }
+
+        @Override
+        public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+            return mCalligraphyFactory.onViewCreated(
+                    mInflater.createCustomViewInternal(parent,
+                            mFactory2.onCreateView(parent, name, context, attrs),
+                            name, context, attrs
+                    ),
+                    context, attrs
+            );
         }
     }
 

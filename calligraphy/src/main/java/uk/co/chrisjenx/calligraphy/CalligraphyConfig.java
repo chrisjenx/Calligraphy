@@ -59,6 +59,10 @@ public class CalligraphyConfig {
      * Use Reflection to inject the private factory. Doesn't exist pre HC. so defaults to false.
      */
     private boolean mReflection = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? true : false;
+    /**
+     * Use Reflection to intercept CustomView inflation with the correct Context.
+     */
+    private boolean mCustomViewCreation = true;
 
     private CalligraphyConfig() {
         this(null, -1);
@@ -96,7 +100,34 @@ public class CalligraphyConfig {
      * }
      * </pre>
      */
-    public void disableReflection() {
+    public void disablePrivateFactoryInjection() {
+        mReflection = false;
+    }
+
+    /**
+     * Due to the poor inflation order where custom views are created and never returned inside an
+     * {@code onCreateView(...)} method. We have to create CustomView's at the latest point in the
+     * overrideable injection flow.
+     *
+     * On HoneyComb+ this is inside the {@link android.app.Activity#onCreateView(android.view.View, String, android.content.Context, android.util.AttributeSet)}
+     * Pre HoneyComb this is in the {@link android.view.LayoutInflater.Factory#onCreateView(String, android.util.AttributeSet)}
+     *
+     * We wrap base implimentations, so if you LayoutInflater/Factory/Activity creates the
+     * custom view before we get to this point, your view is used. (Such is the case with the
+     * TintEditText etc)
+     *
+     * The problem is, the native methods pass there parents context to the constructor in a really
+     * specific place. We have to mimic this in {@link uk.co.chrisjenx.calligraphy.CalligraphyLayoutInflater#createCustomViewInternal(android.view.View, android.view.View, String, android.content.Context, android.util.AttributeSet)}
+     * To mimic this we have to use reflection as the Class construtor args are hidden to us.
+     *
+     * We have discussed other means of doing this but this is the only semi-clean way of doing it.
+     * (Without having to do proxy classes etc).
+     *
+     * Calling this will of course speed up inflation by turning off reflection, but not by much,
+     * But if you want Calligraphy to inject the correct typeface then you will need to make sure your CustomView's
+     * are created before reaching the LayoutInflater onViewCreated.
+     */
+    public void disableCustomViewInflation() {
         mReflection = false;
     }
 

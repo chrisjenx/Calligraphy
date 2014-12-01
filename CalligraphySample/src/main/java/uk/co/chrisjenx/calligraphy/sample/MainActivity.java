@@ -30,6 +30,9 @@ public class MainActivity extends ActionBarActivity {
         }, 1000);
     }
 
+    /*
+        Uncomment if you disable PrivateFactory injection. See CalligraphyConfig#disablePrivateFactoryInjection()
+     */
 //    @Override
 //    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 //    public View onCreateView(View parent, String name, @NonNull Context context, @NonNull AttributeSet attrs) {

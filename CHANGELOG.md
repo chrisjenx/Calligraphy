@@ -5,12 +5,12 @@ This is a massive rewrite of the interception model. Look at `CalligraphyLayoutI
 `CalligraphyConfig` for more information on options and changes.
 
 Notable changes:
+- Removed jar binary, We build an @aar due to the way we tag `View`s.
 - Intercept View creation at each stage.
 - Defer view creation to native components (Except CustomViews).
 - Inject `setPrivateFactory` on the `Activity`.
 - We wrap Factory not disturbing underlying factory and layout inflater invocation.
 - Better support for `cloneInContext()` which the compat library uses heavily.
-
 
 #1.2.0 (20/10/2014)
 - Fixes issues with `appcompat-v7:21+` (uses underlying `Toolbar` impl).

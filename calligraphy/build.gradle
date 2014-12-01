@@ -34,19 +34,4 @@ dependencies {
     provided 'com.android.support:appcompat-v7:21.0.2'
 }
 
-//
-// Attaches a Jar task to the archive artifact. Makes sure we upload a Jar file to maven.
-//
-android.libraryVariants.all { variant ->
-    def name = variant.buildType.name
-
-    // Only attach a jar for non-debug build types.
-    if (!name.equals("DEBUG")) {
-        def task = project.tasks.create "jar${name.capitalize()}", Jar
-        task.dependsOn variant.javaCompile
-        task.from variant.javaCompile.destinationDir
-        artifacts.add('archives', task);
-    }
-}
-
 apply from: '../gradle/deploy.gradle'

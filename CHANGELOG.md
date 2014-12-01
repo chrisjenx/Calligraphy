@@ -9,6 +9,7 @@ Notable changes:
 - Defer view creation to native components (Except CustomViews).
 - Inject `setPrivateFactory` on the `Activity`.
 - We wrap Factory not disturbing underlying factory and layout inflater invocation.
+- Better support for `cloneInContext()` which the compat library uses heavily.
 
 
 #1.2.0 (20/10/2014)

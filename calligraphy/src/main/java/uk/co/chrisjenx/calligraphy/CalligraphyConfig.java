@@ -58,7 +58,7 @@ public class CalligraphyConfig {
     /**
      * Use Reflection to inject the private factory. Doesn't exist pre HC. so defaults to false.
      */
-    private boolean mReflection = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? true : false;
+    private boolean mReflection = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
     /**
      * Use Reflection to intercept CustomView inflation with the correct Context.
      */
@@ -128,7 +128,7 @@ public class CalligraphyConfig {
      * are created before reaching the LayoutInflater onViewCreated.
      */
     public void disableCustomViewInflation() {
-        mReflection = false;
+        mCustomViewCreation = false;
     }
 
     /**
@@ -147,6 +147,10 @@ public class CalligraphyConfig {
 
     public boolean isReflection() {
         return mReflection;
+    }
+
+    public boolean isCustomViewCreation() {
+        return mCustomViewCreation;
     }
 
     /**

@@ -3,9 +3,7 @@ package uk.co.chrisjenx.calligraphy;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,7 +142,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
      */
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    protected View onCreateView(View parent, String name, @NonNull AttributeSet attrs) throws ClassNotFoundException {
+    protected View onCreateView(View parent, String name, AttributeSet attrs) throws ClassNotFoundException {
         return mCalligraphyFactory.onViewCreated(super.onCreateView(parent, name, attrs),
                 getContext(), attrs);
     }
@@ -155,7 +153,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
      * Basically if this method doesn't inflate the View nothing probably will.
      */
     @Override
-    protected View onCreateView(String name, @NonNull AttributeSet attrs) throws ClassNotFoundException {
+    protected View onCreateView(String name, AttributeSet attrs) throws ClassNotFoundException {
         // This mimics the {@code PhoneLayoutInflater} in the way it tries to inflate the base
         // classes, if this fails its pretty certain the app will fail at this point.
         View view = null;
@@ -193,6 +191,9 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
         // We only call for customViews (As they are the ones that never go through onCreateView(...)).
         // We also maintain the Field reference and make it accessible which will make a pretty
         // significant difference to performance on Android 4.0+.
+
+        // If CustomViewCreation is off skip this.
+        if (!CalligraphyConfig.get().isCustomViewCreation()) return view;
         if (view == null && name.indexOf('.') > -1) {
             if (mConstructorArgs == null)
                 mConstructorArgs = CalligraphyUtils.getField(LayoutInflater.class, "mConstructorArgs");
@@ -292,7 +293,6 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
 
         @Override
         public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-            Log.i("Calli", "Private Factory");
             return mCalligraphyFactory.onViewCreated(
                     mInflater.createCustomViewInternal(parent,
                             mFactory2.onCreateView(parent, name, context, attrs),

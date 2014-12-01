@@ -2,7 +2,6 @@ package uk.co.chrisjenx.calligraphy;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -120,8 +119,7 @@ class CalligraphyFactory implements CalligraphyViewCreated {
 
 
     @Override
-    @Nullable
-    public View onViewCreated(@Nullable View view, Context context, AttributeSet attrs) {
+    public View onViewCreated(View view, Context context, AttributeSet attrs) {
         if (view != null && view.getTag(R.id.calligraphy_tag_id) != Boolean.TRUE) {
             onViewCreatedInternal(view, context, attrs);
             view.setTag(R.id.calligraphy_tag_id, Boolean.TRUE);

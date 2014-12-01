@@ -1,7 +1,6 @@
 package uk.co.chrisjenx.calligraphy;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -18,6 +17,5 @@ interface CalligraphyViewCreated {
      * @param attrs   shouldn't be null.
      * @return null if null is passed in.
      */
-    @Nullable
-    View onViewCreated(@Nullable View view, Context context, AttributeSet attrs);
+    View onViewCreated(View view, Context context, AttributeSet attrs);
 }

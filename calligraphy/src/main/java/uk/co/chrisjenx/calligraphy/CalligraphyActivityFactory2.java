@@ -22,9 +22,12 @@ public interface CalligraphyActivityFactory2 {
      * }
      * </pre>
      *
-     * @param view  result of {@code super.onCreateView(parent, name, context, attrs)}, this might be null, which is fine.
-     * @param name
-     * @param attrs see {@link android.view.LayoutInflater.Factory2#onCreateView(android.view.View, String, android.content.Context, android.util.AttributeSet)}  @return the result from the activities {@code onCreateView()}
+     * @param parent  parent view, can be null.
+     * @param view    result of {@code super.onCreateView(parent, name, context, attrs)}, this might be null, which is fine.
+     * @param name    Name of View we are trying to inflate
+     * @param context current context (normally the Activity's)
+     * @param attrs   see {@link android.view.LayoutInflater.Factory2#onCreateView(android.view.View, String, android.content.Context, android.util.AttributeSet)}  @return the result from the activities {@code onCreateView()}
+     * @return The view passed in, or null if nothing was passed in.
      * @see android.view.LayoutInflater.Factory2
      */
     View onActivityCreateView(View parent, View view, String name, Context context, AttributeSet attrs);

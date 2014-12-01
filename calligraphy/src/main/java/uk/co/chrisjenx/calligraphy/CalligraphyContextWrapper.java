@@ -24,7 +24,8 @@ public class CalligraphyContextWrapper extends ContextWrapper {
      * {@link uk.co.chrisjenx.calligraphy.CalligraphyConfig} make sure this is initialised before
      * the activity is created.
      *
-     * @param base ContextBase to Wrap
+     * @param base ContextBase to Wrap.
+     * @return ContextWrapper to pass back to the activity.
      */
     public static ContextWrapper wrap(Context base) {
         return new CalligraphyContextWrapper(base);

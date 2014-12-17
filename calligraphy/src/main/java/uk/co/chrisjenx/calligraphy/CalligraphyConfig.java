@@ -9,7 +9,7 @@ import android.text.TextUtils;
  */
 public class CalligraphyConfig {
 
-    private static CalligraphyConfig mInstance;
+    private static CalligraphyConfig sInstance;
 
     /**
      * Set the default Calligraphy Config
@@ -18,7 +18,7 @@ public class CalligraphyConfig {
      * @see uk.co.chrisjenx.calligraphy.CalligraphyConfig.Builder
      */
     public static void initDefault(CalligraphyConfig calligraphyConfig) {
-        mInstance = calligraphyConfig;
+        sInstance = calligraphyConfig;
     }
 
     /**
@@ -26,9 +26,9 @@ public class CalligraphyConfig {
      * If not set it will create a default config.
      */
     public static CalligraphyConfig get() {
-        if (mInstance == null)
-            mInstance = new CalligraphyConfig(new Builder());
-        return mInstance;
+        if (sInstance == null)
+            sInstance = new CalligraphyConfig(new Builder());
+        return sInstance;
     }
 
     /**

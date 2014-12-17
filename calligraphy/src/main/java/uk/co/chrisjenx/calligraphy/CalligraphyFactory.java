@@ -19,7 +19,7 @@ import android.widget.ToggleButton;
 import java.util.HashMap;
 import java.util.Map;
 
-class CalligraphyFactory implements CalligraphyViewCreated {
+class CalligraphyFactory {
 
     private static final String ACTION_BAR_TITLE = "action_bar_title";
     private static final String ACTION_BAR_SUBTITLE = "action_bar_subtitle";
@@ -117,8 +117,15 @@ class CalligraphyFactory implements CalligraphyViewCreated {
         this.mAttributeId = attributeId;
     }
 
+    /**
+     * Handle the created view
+     *
+     * @param view    nullable.
+     * @param context shouldn't be null.
+     * @param attrs   shouldn't be null.
+     * @return null if null is passed in.
+     */
 
-    @Override
     public View onViewCreated(View view, Context context, AttributeSet attrs) {
         if (view != null && view.getTag(R.id.calligraphy_tag_id) != Boolean.TRUE) {
             onViewCreatedInternal(view, context, attrs);

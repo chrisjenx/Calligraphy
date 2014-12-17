@@ -1,8 +1,12 @@
 #Changelog
 
 #2.0.0 (WIP)
+**Breaking changes**
 This is a massive rewrite of the interception model. Look at `CalligraphyLayoutInflater` and
 `CalligraphyConfig` for more information on options and changes.
+
+- **BREAKING CHANGE** This is an API change to Calligraphy config.
+ Changed CalligraphyConfig to a builder pattern, use `CalligraphyConfig.Builder().build()`;
 
 Notable changes:
 - Removed jar binary, We build an @aar due to the way we tag `View`s.

@@ -110,11 +110,11 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
             return;
         }
 
-        final Method setPrivateFactoryMethod = CalligraphyUtils
+        final Method setPrivateFactoryMethod = ReflectionUtils
                 .getMethod(LayoutInflater.class, "setPrivateFactory");
 
         if (setPrivateFactoryMethod != null) {
-            CalligraphyUtils.invokeMethod(this,
+            ReflectionUtils.invokeMethod(this,
                     setPrivateFactoryMethod,
                     new PrivateWrapperFactory2((Factory2) getContext(), this, mCalligraphyFactory));
         }
@@ -196,18 +196,18 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
         if (!CalligraphyConfig.get().isCustomViewCreation()) return view;
         if (view == null && name.indexOf('.') > -1) {
             if (mConstructorArgs == null)
-                mConstructorArgs = CalligraphyUtils.getField(LayoutInflater.class, "mConstructorArgs");
+                mConstructorArgs = ReflectionUtils.getField(LayoutInflater.class, "mConstructorArgs");
 
-            final Object[] mConstructorArgsArr = (Object[]) CalligraphyUtils.getValue(mConstructorArgs, this);
+            final Object[] mConstructorArgsArr = (Object[]) ReflectionUtils.getValue(mConstructorArgs, this);
             final Object lastContext = mConstructorArgsArr[0];
             mConstructorArgsArr[0] = parent != null ? parent.getContext() : context;
-            CalligraphyUtils.setValue(mConstructorArgs, this, mConstructorArgsArr);
+            ReflectionUtils.setValue(mConstructorArgs, this, mConstructorArgsArr);
             try {
                 view = createView(name, null, attrs);
             } catch (ClassNotFoundException ignored) {
             } finally {
                 mConstructorArgsArr[0] = lastContext;
-                CalligraphyUtils.setValue(mConstructorArgs, this, mConstructorArgsArr);
+                ReflectionUtils.setValue(mConstructorArgs, this, mConstructorArgsArr);
             }
         }
         return view;

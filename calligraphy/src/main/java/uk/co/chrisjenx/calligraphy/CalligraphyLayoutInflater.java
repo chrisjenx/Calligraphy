@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
  * Created by chris on 19/12/2013
  * Project: Calligraphy
  */
-class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyActivityFactory2 {
+class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyActivityFactory {
 
     private static final String[] sClassPrefixList = {
             "android.widget.",

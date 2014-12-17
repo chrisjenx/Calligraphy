@@ -31,7 +31,6 @@ public class CalligraphyConfig {
         return mInstance;
     }
 
-
     /**
      * Is a default font set?
      */

@@ -13,6 +13,10 @@ public class CalligraphyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        CalligraphyConfig.initDefault("fonts/Roboto-ThinItalic.ttf", R.attr.fontPath);
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/Roboto-ThinItalic.ttf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
     }
 }

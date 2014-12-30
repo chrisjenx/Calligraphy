@@ -1,5 +1,21 @@
 #Changelog
 
+#2.0.0 (WIP)
+**Breaking changes**
+This is a massive rewrite of the interception model. Look at `CalligraphyLayoutInflater` and
+`CalligraphyConfig` for more information on options and changes.
+
+- **BREAKING CHANGE** This is an API change to Calligraphy config.
+ Changed CalligraphyConfig to a builder pattern, use `CalligraphyConfig.Builder().build()`;
+
+Notable changes:
+- Removed jar binary, We build an @aar due to the way we tag `View`s.
+- Intercept View creation at each stage.
+- Defer view creation to native components (Except CustomViews).
+- Inject `setPrivateFactory` on the `Activity`.
+- We wrap Factory not disturbing underlying factory and layout inflater invocation.
+- Better support for `cloneInContext()` which the compat library uses heavily.
+
 #1.2.0 (20/10/2014)
 - Fixes issues with `appcompat-v7:21+` (uses underlying `Toolbar` impl).
 - Lollipop support.

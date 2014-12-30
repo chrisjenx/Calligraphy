@@ -23,7 +23,7 @@ public class PlaceholderFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle state) {
-        return getActivity().getLayoutInflater().inflate(R.layout.fragment_main, container, false);
+        return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
     @Override

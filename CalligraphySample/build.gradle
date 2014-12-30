@@ -3,14 +3,14 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.3'
+        classpath 'com.android.tools.build:gradle:1.0.0'
     }
 }
 apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.0.0"
+    buildToolsVersion "21.1.1"
 
     defaultConfig {
         minSdkVersion 7
@@ -20,7 +20,8 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
@@ -28,8 +29,8 @@ android {
 
 dependencies {
     compile project(':calligraphy')
-    compile 'com.android.support:support-v4:21.0.0'
-    compile 'com.android.support:appcompat-v7:21.0.0'
+    compile 'com.android.support:support-v4:21.0.2'
+    compile 'com.android.support:appcompat-v7:21.0.2'
 
     compile 'com.jakewharton:butterknife:5.1.2'
 }

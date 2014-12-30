@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.3'
+        classpath 'com.android.tools.build:gradle:1.0.0'
     }
 }
 apply plugin: 'com.android.library'
@@ -14,7 +14,7 @@ repositories {
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.0.0"
+    buildToolsVersion "21.1.1"
 
     defaultConfig {
         minSdkVersion 7
@@ -25,28 +25,13 @@ android {
 
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
         }
     }
 }
 
 dependencies {
-    provided 'com.android.support:appcompat-v7:21.0.0'
-}
-
-//
-// Attaches a Jar task to the archive artifact. Makes sure we upload a Jar file to maven.
-//
-android.libraryVariants.all { variant ->
-    def name = variant.buildType.name
-
-    // Only attach a jar for non-debug build types.
-    if (!name.equals("DEBUG")) {
-        def task = project.tasks.create "jar${name.capitalize()}", Jar
-        task.dependsOn variant.javaCompile
-        task.from variant.javaCompile.destinationDir
-        artifacts.add('archives', task);
-    }
+    provided 'com.android.support:appcompat-v7:21.0.2'
 }
 
 apply from: '../gradle/deploy.gradle'

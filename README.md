@@ -23,7 +23,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle st
 
 ### Dependency
 
-[Download from Maven Central (.jar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/1.2.0/calligraphy-1.2.0.jar)
+[Download from Maven Central (.aar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/2.0.0/calligraphy-2.0.0.aar)
 
 __OR__
 
@@ -31,7 +31,7 @@ Include the dependency:
 
 ```groovy
 dependencies {
-    compile 'uk.co.chrisjenx:calligraphy:1.2.0'
+    compile 'uk.co.chrisjenx:calligraphy:2.0.0'
 }
 ```
 ### Fonts
@@ -40,32 +40,30 @@ Add your custom fonts to `assets/fonts/` all font definitions are relative to th
 
 ### Custom Attribute
 
-We don't package an `R.attr` with Calligraphy to keep it a Jar. So you will need to add your own Attr.
+We ship with `R.attr.fontPath`.
 
-The most common one is: `res/values/attrs.xml`
-
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <attr name="fontPath" format="string"/>
-</resources>
-```
+This can be used in such a way: `<TextView fontPath="fonts/MyFont.ttf"/>` Please note the missing
+namespace, this IS intention.
 
 ### Configuration
 
-Define your default font using `CalligraphyConfig`, in your `Application` class, unfortunately 
-`Activity#onCreate(Bundle)` is called _after_ `Activity#attachBaseContext(Context)` so the config 
-needs to be defined before that.
+Define your default font using `CalligraphyConfig`, in your `Application` class.
+Unfortunately `Activity#onCreate(Bundle)` is called _after_ `Activity#attachBaseContext(Context)` so
+the config needs to be defined before that.
 
 ```java
 protected void onCreate() {
     super.onCreate();
-    CalligraphyConfig.initDefault("fonts/Roboto-Regular.ttf", R.attr.fontPath);
+    CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                            .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
+                            .setFontAttrId(R.attr.fontPath)
+                            .build()
+            );
     //....
 }
 ```
-_Note: You don't need to define `CalligraphyConfig` anymore (1.0.0+) but the library will apply
-no default font. I recommend defining at least a default font or attribute._
+_Note: You don't need to define `CalligraphyConfig` but the library will apply
+no default font and use `R.id.fontPath`._
 
 ### Inject into Context
 
@@ -159,18 +157,16 @@ The `CalligraphyFactory` looks for the font in a pretty specific order, for the 
 We originally did, but it conflicted with users wanting to actually use that attribute, you now 
 have to define a custom attribute.
 
-### Why not ship with custom attribute?
+### Why no jar?
 
-No resources means that the library can compile down to a `jar` instead of an `aar`, as I know allot
-of users are still not using Gradle yet.
-
-As of 1.0+ you *have* to define a custom attribute.
+We needed to ship a custom ID with Calligraphy to improve the Font Injection flow. This
+unfortunately means that is has to be an `aar`. But you're using Gradle now anyway right?
 
 ### Multiple Typeface's per TextView / Spannables
 
 It is possible to use multiple Typefaces inside a `TextView`, this isn't new concept to Android.
 
-But this could be achieved using something like the following code.
+This _could_ be achieved using something like the following code.
 
 ```java
 SpannableStringBuilder builder = new SpannableStringBuilder();
@@ -191,6 +187,7 @@ Of course this is just an example. Your mileage may vary.
 - [@Smuldr](https://github.com/Smuldr)
 - [@Codebutler](https://github.com/codebutler)
 - [@loganj](https://github.com/loganj)
+- [@dlew](https://github.com/dlew)
 
 #Note
 

@@ -7,8 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.Toast;
-
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -30,6 +30,12 @@ public class PlaceholderFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
+
+        ViewStub stub = ButterKnife.findById(view, R.id.stub);
+        stub.inflate();
+
+        ViewStub stubWithFontPath = ButterKnife.findById(view, R.id.stub_with_font_path);
+        stubWithFontPath.inflate();
     }
 
     @OnClick({R.id.button_bold})

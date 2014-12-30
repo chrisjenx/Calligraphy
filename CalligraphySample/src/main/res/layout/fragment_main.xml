@@ -72,6 +72,18 @@
             android:layout_height="wrap_content"
             android:text="@string/defined_custom_view"/>
 
+        <ViewStub
+            android:id="@+id/stub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout="@layout/stub" />
+
+        <ViewStub
+            android:id="@+id/stub_with_font_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout="@layout/stub_with_font_path" />
+
         <CheckBox
             fontPath="fonts/Oswald-Stencbab.ttf"
             android:layout_width="match_parent"

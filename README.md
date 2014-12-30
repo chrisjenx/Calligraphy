@@ -169,7 +169,7 @@ It is possible to use multiple Typefaces inside a `TextView`, this isn't new con
 This _could_ be achieved using something like the following code.
 
 ```java
-SpannableStringBuilder builder = new SpannableStringBuilder();
+SpannableStringBuilder sBuilder = new SpannableStringBuilder();
 sBuilder.append("Hello!") // Bold this
         .append("I use Calligraphy"); // Default TextView font.
 // Create the Typeface you want to apply to certain text

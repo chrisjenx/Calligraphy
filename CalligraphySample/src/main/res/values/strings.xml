@@ -10,6 +10,8 @@
     <string name="defined_in_appears">\nThis has the font path defined in the Views TextAppearance as Oswald.\n</string>
     <string name="defined_in_appears_caps">\nThis has the font path defined in the Views TextAppearance as Oswald. textAllCaps is applied.\n</string>
     <string name="defined_custom_view">\nThis is a custom TextView with Oswald font.\n</string>
+    <string name="defined_view_stub">\nThis is a TextView inflated from a ViewStub.\n</string>
+    <string name="defined_view_stub_font_path">\nThis is a TextView inflated from a ViewStub w/ fontPath declared.\n</string>
 
     <string name="checkbox_custom">Custom Oswald checkbox</string>
 

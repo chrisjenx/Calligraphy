@@ -72,7 +72,7 @@ Wrap the Activity Context:
 ```java
 @Override
 protected void attachBaseContext(Context newBase) {
-    super.attachBaseContext(new CalligraphyContextWrapper(newBase));
+    super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
 }
 ```
 

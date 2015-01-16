@@ -23,6 +23,11 @@
 
     <style name="AppTheme.Widget"/>
 
+    <style name="TextViewNoStyleParent">
+        <item name="android:textColor">@android:color/holo_blue_dark</item>
+        <item name="fontPath">fonts/gtw.ttf</item>
+    </style>
+
     <style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
         <!-- Custom Attr-->
         <item name="fontPath">fonts/RobotoCondensed-Regular.ttf</item>

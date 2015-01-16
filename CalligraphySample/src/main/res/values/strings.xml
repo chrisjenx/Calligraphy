@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Calligraphy</string>
+    <string name="defined_gtw">\nThis is text set by the gtw style.\n</string>
     <string name="default_theme">\nThis is text set by the default theme fontPath.\n</string>
     <string name="defined_fontpath_view">\nThis has a font path set to Roboto Bold, on the View.\n</string>
     <string name="defined_incorrect">\nThis has a fontPath set to a font file that does not exist, it goes back to the default.\n</string>

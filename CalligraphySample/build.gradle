@@ -10,7 +10,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         minSdkVersion 7
@@ -29,8 +29,8 @@ android {
 
 dependencies {
     compile project(':calligraphy')
-    compile 'com.android.support:support-v4:21.0.2'
-    compile 'com.android.support:appcompat-v7:21.0.2'
+    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:appcompat-v7:21.0.3'
 
     compile 'com.jakewharton:butterknife:5.1.2'
 }

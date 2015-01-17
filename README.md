@@ -7,18 +7,6 @@ Are you fed up of Custom views to set fonts? Or traversing the ViewTree to find 
 
 ![alt text](https://github.com/chrisjenx/Calligraphy/raw/master/screenshot.png "ScreenShot Of Font Samples")
 
-## Known Issue
-
-Lollipop `support-v4:21.0.0` has broken inflation inside `Fragment`s, inside `onCreateView` you need
-to inflate using the activity `LayoutInflater`.
-
-```java
-@Override
-public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle state) {
-    return getActivity().getLayoutInflater().inflate(R.layout.fragment_main, container, false);
-}
-```
-
 ##Getting started
 
 ### Dependency

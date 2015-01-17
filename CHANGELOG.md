@@ -1,6 +1,8 @@
 #Changelog
 
-#2.0.0 (WIP)
+#2.1.0 (WIP)
+
+#2.0.0 (16/01/2014)
 **Breaking changes**
 This is a massive rewrite of the interception model. Look at `CalligraphyLayoutInflater` and
 `CalligraphyConfig` for more information on options and changes.

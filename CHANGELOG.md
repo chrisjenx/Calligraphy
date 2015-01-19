@@ -1,6 +1,7 @@
 #Changelog
 
 #2.1.0 (WIP)
+- Throw exception on passing null into `CalligraphySpan`
 
 #2.0.0 (16/01/2014)
 **Breaking changes**

@@ -180,12 +180,16 @@ class CalligraphyFactory {
             parent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    // No children, do nuffink!
-                    if (parent.getChildCount() <= 0) return;
-                    // Process children, defer draw as it has set the typeface.
-                    for (int i = 0; i < parent.getChildCount(); i++) {
-                        onViewCreated(parent.getChildAt(i), context, null);
+                    int childCount = parent.getChildCount();
+                    if (childCount != 0) {
+                        // Process children, defer draw as it has set the typeface.
+                        for (int i = 0; i < childCount; i++) {
+                            onViewCreated(parent.getChildAt(i), context, null);
+                        }
                     }
+
+                    // Our dark deed is done
+                    parent.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
             });
         }

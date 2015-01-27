@@ -1,7 +1,9 @@
 package uk.co.chrisjenx.calligraphy;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -178,6 +180,7 @@ class CalligraphyFactory {
         if (CalligraphyUtils.canCheckForV7Toolbar() && view instanceof android.support.v7.widget.Toolbar) {
             final ViewGroup parent = (ViewGroup) view;
             parent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                 @Override
                 public void onGlobalLayout() {
                     int childCount = parent.getChildCount();
@@ -189,7 +192,12 @@ class CalligraphyFactory {
                     }
 
                     // Our dark deed is done
-                    parent.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN ) {
+                        //noinspection deprecation
+                        parent.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    } else {
+                        parent.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
                 }
             });
         }

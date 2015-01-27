@@ -160,7 +160,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
         for (String prefix : sClassPrefixList) {
             try {
                 view = createView(name, prefix, attrs);
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException ignored) {
             }
         }
         // In this case we want to let the base class take a crack

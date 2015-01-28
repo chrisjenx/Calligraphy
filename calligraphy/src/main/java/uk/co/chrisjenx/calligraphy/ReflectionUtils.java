@@ -31,7 +31,7 @@ class ReflectionUtils {
     static void setValue(Field field, Object obj, Object value) {
         try {
             field.set(obj, value);
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException ignored) {
         }
     }
 

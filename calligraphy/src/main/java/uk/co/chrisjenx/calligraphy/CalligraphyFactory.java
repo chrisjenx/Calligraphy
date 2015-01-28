@@ -1,7 +1,9 @@
 package uk.co.chrisjenx.calligraphy;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -178,13 +180,23 @@ class CalligraphyFactory {
         if (CalligraphyUtils.canCheckForV7Toolbar() && view instanceof android.support.v7.widget.Toolbar) {
             final ViewGroup parent = (ViewGroup) view;
             parent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                 @Override
                 public void onGlobalLayout() {
-                    // No children, do nuffink!
-                    if (parent.getChildCount() <= 0) return;
-                    // Process children, defer draw as it has set the typeface.
-                    for (int i = 0; i < parent.getChildCount(); i++) {
-                        onViewCreated(parent.getChildAt(i), context, null);
+                    int childCount = parent.getChildCount();
+                    if (childCount != 0) {
+                        // Process children, defer draw as it has set the typeface.
+                        for (int i = 0; i < childCount; i++) {
+                            onViewCreated(parent.getChildAt(i), context, null);
+                        }
+                    }
+
+                    // Our dark deed is done
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN ) {
+                        //noinspection deprecation
+                        parent.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    } else {
+                        parent.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
                 }
             });

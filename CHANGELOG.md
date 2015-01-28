@@ -1,7 +1,8 @@
 #Changelog
 
-#2.1.0 (WIP)
+#2.0.1 (28/01/2014)
 - Throw exception on passing null into `CalligraphySpan`
+- Fixed memory bug with `Toolbar`. [@dlew](https://github.com/dlew)
 
 #2.0.0 (16/01/2014)
 **Breaking changes**

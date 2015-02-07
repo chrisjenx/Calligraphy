@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.util.Log;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A helper loading {@link android.graphics.Typeface} avoiding the leak of the font when loaded
@@ -17,8 +18,8 @@ import java.util.HashMap;
  */
 public final class TypefaceUtils {
 
-    private static final HashMap<String, Typeface> sCachedFonts = new HashMap<String, Typeface>();
-    private static final HashMap<Typeface, CalligraphyTypefaceSpan> sCachedSpans = new HashMap<Typeface, CalligraphyTypefaceSpan>();
+    private static final Map<String, Typeface> sCachedFonts = new HashMap<String, Typeface>();
+    private static final Map<Typeface, CalligraphyTypefaceSpan> sCachedSpans = new HashMap<Typeface, CalligraphyTypefaceSpan>();
 
     /**
      * A helper loading a custom font.

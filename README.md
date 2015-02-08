@@ -40,7 +40,8 @@ Unfortunately `Activity#onCreate(Bundle)` is called _after_ `Activity#attachBase
 the config needs to be defined before that.
 
 ```java
-protected void onCreate() {
+@Override
+public void onCreate() {
     super.onCreate();
     CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                             .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")

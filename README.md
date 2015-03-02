@@ -182,7 +182,7 @@ Of course this is just an example. Your mileage may vary.
 
 This library was created because it is currently not possible to declare a custom font in XML files in Android.
 
-If you feel this should be possible to do, please star [this issue](https://code.google.com/p/android/issues/detail?id=1087) on the official Android bug tracker.
+If you feel this should be possible to do, please star [this issue](https://code.google.com/p/android/issues/detail?id=88945) on the official Android bug tracker.
 
 #Licence
 

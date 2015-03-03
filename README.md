@@ -1,6 +1,8 @@
 Calligraphy
 ===========
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Calligraphy-blue.svg?style=flat)](http://android-arsenal.com/details/1/163)
+
 Custom fonts in Android the easy way.
 
 Are you fed up of Custom views to set fonts? Or traversing the ViewTree to find TextViews? Yeah me too.

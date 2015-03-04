@@ -156,8 +156,9 @@ public class CalligraphyConfig {
          * }
          * </code></pre>
          */
-        public void disablePrivateFactoryInjection() {
+        public Builder disablePrivateFactoryInjection() {
             this.reflection = false;
+            return this;
         }
 
         /**
@@ -183,8 +184,9 @@ public class CalligraphyConfig {
          * But if you want Calligraphy to inject the correct typeface then you will need to make sure your CustomView's
          * are created before reaching the LayoutInflater onViewCreated.
          */
-        public void disableCustomViewInflation() {
+        public Builder disableCustomViewInflation() {
             this.customViewCreation = false;
+            return this;
         }
 
         public CalligraphyConfig build() {

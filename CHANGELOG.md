@@ -1,5 +1,8 @@
 #Changelog
 
+#2.0.2 (WIP)
+- Fixed `CalligraphyConfig.Builder` missing return statements.
+
 #2.0.1 (28/01/2014)
 - Throw exception on passing null into `CalligraphySpan`
 - Fixed memory bug with `Toolbar`. [@dlew](https://github.com/dlew)

@@ -3,7 +3,7 @@ Calligraphy
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Calligraphy-blue.svg?style=flat)](http://android-arsenal.com/details/1/163)
 
-Custom fonts in Android the easy way.
+Custom fonts in Android an OK way.
 
 Are you fed up of Custom views to set fonts? Or traversing the ViewTree to find TextViews? Yeah me too.
 
@@ -13,33 +13,27 @@ Are you fed up of Custom views to set fonts? Or traversing the ViewTree to find 
 
 ### Dependency
 
-[Download from Maven Central (.aar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/2.0.1/calligraphy-2.0.1.aar)
-
-__OR__
-
-Include the dependency:
+Include the dependency [Download (.aar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/2.0.1/calligraphy-2.0.1.aar) :
 
 ```groovy
 dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.0.1'
 }
 ```
-### Fonts
+### Add Fonts
 
-Add your custom fonts to `assets/fonts/` all font definitions are relative to this path. 
+Add your custom fonts to `assets/` all font definitions are relative to this path. 
 
-### Custom Attribute
+### Usage
 
-We ship with `R.attr.fontPath`.
+```xml
+<TextView fontPath="fonts/MyFont.ttf"/>
+``` 
+**Note: The missing namespace, this __IS__ intention.**
 
-This can be used in such a way: `<TextView fontPath="fonts/MyFont.ttf"/>` Please note the missing
-namespace, this IS intention.
+### Installation
 
-### Configuration
-
-Define your default font using `CalligraphyConfig`, in your `Application` class.
-Unfortunately `Activity#onCreate(Bundle)` is called _after_ `Activity#attachBaseContext(Context)` so
-the config needs to be defined before that.
+Define your default font using `CalligraphyConfig`, in your `Application` class in the `#onCreate()` method.
 
 ```java
 @Override
@@ -53,12 +47,13 @@ public void onCreate() {
     //....
 }
 ```
+
 _Note: You don't need to define `CalligraphyConfig` but the library will apply
-no default font and use `R.id.fontPath`._
+no default font and use the default attribute of `R.id.fontPath`._
 
 ### Inject into Context
 
-Wrap the Activity Context:
+Wrap the `Activity` Context:
 
 ```java
 @Override

@@ -5,7 +5,7 @@ Calligraphy
 
 Custom fonts in Android an OK way.
 
-Are you fed up of Custom views to set fonts? Or traversing the ViewTree to find TextViews? Yeah me too.
+Are you fed up of Custom Views to set fonts? Or traversing the ViewTree to find TextViews? Yeah me too.
 
 ![alt text](https://github.com/chrisjenx/Calligraphy/raw/master/screenshot.png "ScreenShot Of Font Samples")
 
@@ -13,11 +13,11 @@ Are you fed up of Custom views to set fonts? Or traversing the ViewTree to find 
 
 ### Dependency
 
-Include the dependency [Download (.aar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/2.0.1/calligraphy-2.0.1.aar) :
+Include the dependency [Download (.aar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/2.0.2/calligraphy-2.0.2.aar) :
 
 ```groovy
 dependencies {
-    compile 'uk.co.chrisjenx:calligraphy:2.0.1'
+    compile 'uk.co.chrisjenx:calligraphy:2.0.2'
 }
 ```
 ### Add Fonts
@@ -29,7 +29,7 @@ Add your custom fonts to `assets/` all font definitions are relative to this pat
 ```xml
 <TextView fontPath="fonts/MyFont.ttf"/>
 ``` 
-**Note: The missing namespace, this __IS__ intention.**
+**Note: The missing namespace, this __IS__ intentional.**
 
 ### Installation
 

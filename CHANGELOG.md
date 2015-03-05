@@ -1,7 +1,8 @@
 #Changelog
 
-#2.0.2 (WIP)
+#2.0.2 (05/01/2015)
 - Fixed `CalligraphyConfig.Builder` missing return statements.
+- Fixed `createView()` getting the wrong parent context, Fixed: #135, #120
 
 #2.0.1 (28/01/2014)
 - Throw exception on passing null into `CalligraphySpan`

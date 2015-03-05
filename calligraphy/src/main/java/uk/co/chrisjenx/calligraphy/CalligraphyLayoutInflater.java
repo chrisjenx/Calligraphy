@@ -175,15 +175,15 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
      * will fall back through to the PhoneLayoutInflater method of inflating custom views where
      * Calligraphy will NOT have a hook into.
      *
-     * @param parent  parent view
-     * @param view    view if it has been inflated by this point, if this is not null this method
-     *                just returns this value.
-     * @param name    name of the thing to inflate.
-     * @param context Context to inflate by if parent is null
-     * @param attrs   Attr for this view which we can steal fontPath from too.
+     * @param parent      parent view
+     * @param view        view if it has been inflated by this point, if this is not null this method
+     *                    just returns this value.
+     * @param name        name of the thing to inflate.
+     * @param viewContext Context to inflate by if parent is null
+     * @param attrs       Attr for this view which we can steal fontPath from too.
      * @return view or the View we inflate in here.
      */
-    private View createCustomViewInternal(View parent, View view, String name, Context context, AttributeSet attrs) {
+    private View createCustomViewInternal(View parent, View view, String name, Context viewContext, AttributeSet attrs) {
         // I by no means advise anyone to do this normally, but Google have locked down access to
         // the createView() method, so we never get a callback with attributes at the end of the
         // createViewFromTag chain (which would solve all this unnecessary rubbish).
@@ -200,7 +200,10 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
 
             final Object[] mConstructorArgsArr = (Object[]) ReflectionUtils.getValue(mConstructorArgs, this);
             final Object lastContext = mConstructorArgsArr[0];
-            mConstructorArgsArr[0] = parent != null ? parent.getContext() : context;
+            // The LayoutInflater actually finds out the correct context to use. We just need to set
+            // it on the mConstructor for the internal method.
+            // Set the constructor ars up for the createView, not sure why we can't pass these in.
+            mConstructorArgsArr[0] = viewContext;
             ReflectionUtils.setValue(mConstructorArgs, this, mConstructorArgsArr);
             try {
                 view = createView(name, null, attrs);

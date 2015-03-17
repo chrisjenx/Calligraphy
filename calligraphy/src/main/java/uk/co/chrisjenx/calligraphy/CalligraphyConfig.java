@@ -2,12 +2,43 @@ package uk.co.chrisjenx.calligraphy;
 
 import android.os.Build;
 import android.text.TextUtils;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.ToggleButton;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by chris on 20/12/2013
  * Project: Calligraphy
  */
 public class CalligraphyConfig {
+
+    /**
+     * The default styles for the factory to lookup. The builder builds an extended immutable
+     * map of this with any additional custom styles.
+     */
+    private static final Map<Class<? extends TextView>, Integer> DEFAULT_STYLES = new HashMap<>();
+
+    static {
+        {
+            DEFAULT_STYLES.put(TextView.class, android.R.attr.textViewStyle);
+            DEFAULT_STYLES.put(Button.class, android.R.attr.buttonStyle);
+            DEFAULT_STYLES.put(EditText.class, android.R.attr.editTextStyle);
+            DEFAULT_STYLES.put(AutoCompleteTextView.class, android.R.attr.autoCompleteTextViewStyle);
+            DEFAULT_STYLES.put(MultiAutoCompleteTextView.class, android.R.attr.autoCompleteTextViewStyle);
+            DEFAULT_STYLES.put(CheckBox.class, android.R.attr.checkboxStyle);
+            DEFAULT_STYLES.put(RadioButton.class, android.R.attr.radioButtonStyle);
+            DEFAULT_STYLES.put(ToggleButton.class, android.R.attr.buttonStyleToggle);
+        }
+    }
 
     private static CalligraphyConfig sInstance;
 
@@ -51,6 +82,10 @@ public class CalligraphyConfig {
      * Use Reflection to intercept CustomView inflation with the correct Context.
      */
     private final boolean mCustomViewCreation;
+    /**
+     * Class Styles. Build from DEFAULT_STYLES and the builder.
+     */
+    private final Map<Class<? extends TextView>, Integer> mClassStyleAttributeMap;
 
     protected CalligraphyConfig(Builder builder) {
         mIsFontSet = builder.isFontSet;
@@ -58,6 +93,9 @@ public class CalligraphyConfig {
         mAttrId = builder.attrId;
         mReflection = builder.reflection;
         mCustomViewCreation = builder.customViewCreation;
+        final Map<Class<? extends TextView>, Integer> tempMap = new HashMap<>(DEFAULT_STYLES);
+        tempMap.putAll(builder.mStyleClassMap);
+        mClassStyleAttributeMap = Collections.unmodifiableMap(tempMap);
     }
 
     /**
@@ -80,6 +118,10 @@ public class CalligraphyConfig {
 
     public boolean isCustomViewCreation() {
         return mCustomViewCreation;
+    }
+
+    /* default */ Map<Class<? extends TextView>, Integer> getClassStyles() {
+        return mClassStyleAttributeMap;
     }
 
     /**
@@ -114,6 +156,10 @@ public class CalligraphyConfig {
          * The default fontPath
          */
         private String fontAssetPath = null;
+        /**
+         * Additional Class Styles. Can be empty.
+         */
+        private Map<Class<? extends TextView>, Integer> mStyleClassMap = new HashMap<>();
 
         /**
          * This defaults to R.attr.fontPath. So only override if you want to use your own attrId.
@@ -186,6 +232,28 @@ public class CalligraphyConfig {
          */
         public Builder disableCustomViewInflation() {
             this.customViewCreation = false;
+            return this;
+        }
+
+        /**
+         * Add a custom style to get looked up. If you use a custom class that has a parent style
+         * which is not part of the default android styles you will need to add it here.
+         *
+         * The Calligraphy inflater is unaware of custom styles in your custom classes. We use
+         * the class type to look up the style attribute in the theme resources.
+         *
+         * So if you had a {@code MyTextField.class} which looked up it's default style as
+         * {@code R.attr.textFieldStyle} you would add those here.
+         *
+         * {@code builder.addCustomStyle(MyTextField.class,R.attr.textFieldStyle}
+         *
+         * @param styleClass             the class that related to the parent styleResource. null is ignored.
+         * @param styleResourceAttribute e.g. {@code R.attr.textFieldStyle}, 0 is ignored.
+         * @return this builder.
+         */
+        public Builder addCustomStyle(final Class<? extends TextView> styleClass, final int styleResourceAttribute) {
+            if (styleClass == null || styleResourceAttribute == 0) return this;
+            mStyleClassMap.put(styleClass, styleResourceAttribute);
             return this;
         }
 

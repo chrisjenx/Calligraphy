@@ -76,13 +76,13 @@
             android:id="@+id/stub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout="@layout/stub" />
+            android:layout="@layout/stub"/>
 
         <ViewStub
             android:id="@+id/stub_with_font_path"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout="@layout/stub_with_font_path" />
+            android:layout="@layout/stub_with_font_path"/>
 
         <CheckBox
             fontPath="fonts/Oswald-Stencbab.ttf"
@@ -99,6 +99,11 @@
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
             android:hint="@string/edit_text_hint"/>
+
+        <uk.co.chrisjenx.calligraphy.sample.TextField
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/custom_view_style_text"/>
 
         <Button
             android:id="@+id/button_default"

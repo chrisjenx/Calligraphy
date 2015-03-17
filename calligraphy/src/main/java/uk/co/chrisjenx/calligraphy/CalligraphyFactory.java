@@ -9,35 +9,12 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.MultiAutoCompleteTextView;
-import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.ToggleButton;
-
-import java.util.HashMap;
-import java.util.Map;
 
 class CalligraphyFactory {
 
     private static final String ACTION_BAR_TITLE = "action_bar_title";
     private static final String ACTION_BAR_SUBTITLE = "action_bar_subtitle";
-    private static final Map<Class<? extends TextView>, Integer> sStyles
-            = new HashMap<Class<? extends TextView>, Integer>() {
-        {
-            put(TextView.class, android.R.attr.textViewStyle);
-            put(Button.class, android.R.attr.buttonStyle);
-            put(EditText.class, android.R.attr.editTextStyle);
-            put(AutoCompleteTextView.class, android.R.attr.autoCompleteTextViewStyle);
-            put(MultiAutoCompleteTextView.class, android.R.attr.autoCompleteTextViewStyle);
-            put(CheckBox.class, android.R.attr.checkboxStyle);
-            put(RadioButton.class, android.R.attr.radioButtonStyle);
-            put(ToggleButton.class, android.R.attr.buttonStyleToggle);
-        }
-    };
 
     /**
      * Some styles are in sub styles, such as actionBarTextStyle etc..
@@ -57,8 +34,8 @@ class CalligraphyFactory {
         }
         if (styleIds[0] == -1) {
             // Use TextAppearance as default style
-            styleIds[0] = sStyles.containsKey(view.getClass())
-                    ? sStyles.get(view.getClass())
+            styleIds[0] = CalligraphyConfig.get().getClassStyles().containsKey(view.getClass())
+                    ? CalligraphyConfig.get().getClassStyles().get(view.getClass())
                     : android.R.attr.textAppearance;
         }
         return styleIds;
@@ -192,7 +169,7 @@ class CalligraphyFactory {
                     }
 
                     // Our dark deed is done
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN ) {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                         //noinspection deprecation
                         parent.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     } else {

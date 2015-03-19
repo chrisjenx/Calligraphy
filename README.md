@@ -162,7 +162,7 @@ sBuilder.append("Hello!") // Bold this
 CalligraphyTypefaceSpan typefaceSpan = new CalligraphyTypefaceSpan(TypefaceUtils.load(getAssets(), "fonts/Roboto-Bold.ttf");
 // Apply typeface to the Spannable 0 - 6 "Hello!" This can of course by dynamic.
 sBuilder.setSpan(typefaceSpan, 0, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-setText(sBuilder);
+setText(sBuilder, TextView.BufferType.SPANNABLE);
 ```
 Of course this is just an example. Your mileage may vary.
 

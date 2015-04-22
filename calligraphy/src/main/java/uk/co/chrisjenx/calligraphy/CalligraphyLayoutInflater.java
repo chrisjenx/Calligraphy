@@ -68,8 +68,9 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
         // If we are HC+ we get and set Factory2 otherwise we just wrap Factory1
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             if (getFactory2() != null && !(getFactory2() instanceof WrapperFactory2)) {
-                // Sets both Factory/Factory2
+                // Sets Factory2 only
                 setFactory2(getFactory2());
+                return;
             }
         }
         // We can do this as setFactory2 is used for both methods.

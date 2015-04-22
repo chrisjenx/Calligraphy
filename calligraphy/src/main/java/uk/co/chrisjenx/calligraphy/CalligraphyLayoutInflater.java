@@ -34,14 +34,12 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
         super(context);
         mAttributeId = attributeId;
         mCalligraphyFactory = new CalligraphyFactory(attributeId);
-        setUpLayoutFactories();
     }
 
     protected CalligraphyLayoutInflater(LayoutInflater original, Context newContext, int attributeId) {
         super(original, newContext);
         mAttributeId = attributeId;
         mCalligraphyFactory = new CalligraphyFactory(attributeId);
-        setUpLayoutFactories();
     }
 
     @Override
@@ -64,12 +62,13 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
      * We don't want to unnecessary create/set our factories if there are none there. We try to be
      * as lazy as possible.
      */
-    private void setUpLayoutFactories() {
+    void setUpLayoutFactories() {
         // If we are HC+ we get and set Factory2 otherwise we just wrap Factory1
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             if (getFactory2() != null && !(getFactory2() instanceof WrapperFactory2)) {
-                // Sets both Factory/Factory2
+                // Sets Factory2 only
                 setFactory2(getFactory2());
+                return;
             }
         }
         // We can do this as setFactory2 is used for both methods.

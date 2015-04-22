@@ -109,6 +109,7 @@ public class CalligraphyContextWrapper extends ContextWrapper {
         if (LAYOUT_INFLATER_SERVICE.equals(name)) {
             if (mInflater == null) {
                 mInflater = new CalligraphyLayoutInflater(LayoutInflater.from(getBaseContext()), this, mAttributeId);
+                mInflater.setUpLayoutFactories();
             }
             return mInflater;
         }

@@ -3,7 +3,6 @@ package uk.co.chrisjenx.calligraphy;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.view.LayoutInflaterCompat;
 import android.support.v4.view.LayoutInflaterFactory;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -36,19 +35,19 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
         super(context);
         mAttributeId = attributeId;
         mCalligraphyFactory = new CalligraphyFactory(attributeId);
-        setUpLayoutFactories();
+        setUpLayoutFactories(false);
     }
 
-    protected CalligraphyLayoutInflater(LayoutInflater original, Context newContext, int attributeId) {
+    protected CalligraphyLayoutInflater(LayoutInflater original, Context newContext, int attributeId, final boolean cloned) {
         super(original, newContext);
         mAttributeId = attributeId;
         mCalligraphyFactory = new CalligraphyFactory(attributeId);
-        setUpLayoutFactories();
+        setUpLayoutFactories(cloned);
     }
 
     @Override
     public LayoutInflater cloneInContext(Context newContext) {
-        return new CalligraphyLayoutInflater(this, newContext, mAttributeId);
+        return new CalligraphyLayoutInflater(this, newContext, mAttributeId, true);
     }
 
     // ===
@@ -66,7 +65,8 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
      * We don't want to unnecessary create/set our factories if there are none there. We try to be
      * as lazy as possible.
      */
-    private void setUpLayoutFactories() {
+    private void setUpLayoutFactories(boolean cloned) {
+        if (cloned) return;
         // If we are HC+ we get and set Factory2 otherwise we just wrap Factory1
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             if (getFactory2() != null && !(getFactory2() instanceof WrapperFactory2)) {
@@ -95,6 +95,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
     public void setFactory2(Factory2 factory2) {
         // Only set our factory and wrap calls to the Factory2 trying to be set!
         if (!(factory2 instanceof WrapperFactory2)) {
+//            LayoutInflaterCompat.setFactory(this, new WrapperFactory2(factory2, mCalligraphyFactory));
             super.setFactory2(new WrapperFactory2(factory2, mCalligraphyFactory));
         } else {
             super.setFactory2(factory2);
@@ -258,7 +259,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
      * Factory 2 is the second port of call for LayoutInflation
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private static class WrapperFactory2 implements Factory2 {
+    private static class WrapperFactory2 implements Factory2, LayoutInflaterFactory {
         protected final Factory2 mFactory2;
         protected final CalligraphyFactory mCalligraphyFactory;
 

@@ -3,6 +3,8 @@ package uk.co.chrisjenx.calligraphy;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.view.LayoutInflaterCompat;
+import android.support.v4.view.LayoutInflaterFactory;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;

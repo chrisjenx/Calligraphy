@@ -3,7 +3,6 @@ package uk.co.chrisjenx.calligraphy;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.view.LayoutInflaterFactory;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -259,7 +258,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
      * Factory 2 is the second port of call for LayoutInflation
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private static class WrapperFactory2 implements Factory2, LayoutInflaterFactory {
+    private static class WrapperFactory2 implements Factory2 {
         protected final Factory2 mFactory2;
         protected final CalligraphyFactory mCalligraphyFactory;
 

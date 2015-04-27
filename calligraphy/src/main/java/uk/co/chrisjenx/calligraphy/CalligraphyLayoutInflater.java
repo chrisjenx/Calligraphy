@@ -29,6 +29,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
     // Reflection Hax
     private boolean mSetPrivateFactory = false;
     private Field mConstructorArgs = null;
+    private boolean mFactorySet;
 
     protected CalligraphyLayoutInflater(Context context, int attributeId) {
         super(context);
@@ -81,10 +82,13 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
     @Override
     public void setFactory(Factory factory) {
         // Only set our factory and wrap calls to the Factory trying to be set!
-        if (!(factory instanceof WrapperFactory)) {
-            super.setFactory(new WrapperFactory(factory, this, mCalligraphyFactory));
-        } else {
-            super.setFactory(factory);
+        if (!mFactorySet) {
+            if (!(factory instanceof WrapperFactory)) {
+                super.setFactory(new WrapperFactory(factory, this, mCalligraphyFactory));
+            } else {
+                super.setFactory(factory);
+            }
+            mFactorySet = true;
         }
     }
 
@@ -92,10 +96,13 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void setFactory2(Factory2 factory2) {
         // Only set our factory and wrap calls to the Factory2 trying to be set!
-        if (!(factory2 instanceof WrapperFactory2)) {
-            super.setFactory2(new WrapperFactory2(factory2, mCalligraphyFactory));
-        } else {
-            super.setFactory2(factory2);
+        if (!mFactorySet) {
+            if (!(factory2 instanceof WrapperFactory2)) {
+                super.setFactory2(new WrapperFactory2(factory2, mCalligraphyFactory));
+            } else {
+                super.setFactory2(factory2);
+            }
+            mFactorySet = true;
         }
     }
 

@@ -1,5 +1,9 @@
 #Changelog
 
+#2.1.0 (27/04/2015)
+- Fixed #155, We now clone correctly.
+- Added Styles for Custom Views. (`builder.addCustomStyle(ToggleButton.class, android.R.attr.buttonStyleToggle)`)
+
 #2.0.2 (05/01/2015)
 - Fixed `CalligraphyConfig.Builder` missing return statements.
 - Fixed `createView()` getting the wrong parent context, Fixed: #135, #120

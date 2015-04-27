@@ -13,11 +13,11 @@ Are you fed up of Custom Views to set fonts? Or traversing the ViewTree to find 
 
 ### Dependency
 
-Include the dependency [Download (.aar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/2.0.2/calligraphy-2.0.2.aar) :
+Include the dependency [Download (.aar)](http://search.maven.org/remotecontent?filepath=uk/co/chrisjenx/calligraphy/2.1.0/calligraphy-2.1.0.aar) :
 
 ```groovy
 dependencies {
-    compile 'uk.co.chrisjenx:calligraphy:2.0.2'
+    compile 'uk.co.chrisjenx:calligraphy:2.1.0'
 }
 ```
 ### Add Fonts

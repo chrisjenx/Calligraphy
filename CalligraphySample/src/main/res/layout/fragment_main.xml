@@ -93,6 +93,7 @@
             android:text="@string/checkbox_custom"/>
 
         <EditText
+            android:id="@+id/edit_text"
             fontPath="fonts/Roboto-Bold.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -18,6 +18,8 @@
 
     <string name="edit_text_hint">Custom Roboto Bold Hint</string>
 
+    <string name="custom_view_style_text">\nCustom View Style, taken from a Custom style attribute.\n</string>
+
     <string name="button_default">Default Font (show dialog)</string>
     <string name="button_defined">Bold Button (show toast)</string>
 

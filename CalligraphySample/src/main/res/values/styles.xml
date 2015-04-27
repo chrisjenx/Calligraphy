@@ -9,6 +9,8 @@
         <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
         <!-- Action Bar Theme -->
         <item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>
+        <!-- Custom Style Attribute-->
+        <item name="textFieldStyle">@style/TextField</item>
     </style>
 
     <!-- AppTheme ActionBar Style -->
@@ -52,4 +54,11 @@
         <item name="fontPath">fonts/Oswald-Stencbab.ttf</item>
         <item name="android:textColor">#444</item>
     </style>
+
+    <!-- Custom Class Styles -->
+    <style name="TextField" parent="android:Widget.Holo.Light.TextView">
+        <item name="fontPath">fonts/gtw.ttf</item>
+        <item name="android:textSize">@dimen/abc_text_size_small_material</item>
+    </style>
+
 </resources>

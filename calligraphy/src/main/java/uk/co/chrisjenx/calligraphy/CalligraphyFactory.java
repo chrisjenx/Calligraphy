@@ -3,6 +3,7 @@ package uk.co.chrisjenx.calligraphy;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -15,6 +16,11 @@ class CalligraphyFactory {
 
     private static final String ACTION_BAR_TITLE = "action_bar_title";
     private static final String ACTION_BAR_SUBTITLE = "action_bar_subtitle";
+
+    /**
+     * Default AttrID if not set.
+     */
+    public static final int INVALID_ATTR_ID = -1;
 
     /**
      * Some styles are in sub styles, such as actionBarTextStyle etc..
@@ -91,9 +97,13 @@ class CalligraphyFactory {
     }
 
     private final int mAttributeId;
+    private final int mBoldAttributeId;
+    private final int mItalicAttributeId;
 
-    public CalligraphyFactory(int attributeId) {
+    public CalligraphyFactory(int attributeId, int boldAttributeId, int italicAttributeId) {
         this.mAttributeId = attributeId;
+        this.mBoldAttributeId = boldAttributeId;
+        this.mItalicAttributeId = italicAttributeId;
     }
 
     /**
@@ -125,25 +135,61 @@ class CalligraphyFactory {
             // Since we're not using namespace it's a little bit tricky
 
             // Try view xml attributes
-            String textViewFont = CalligraphyUtils.pullFontPathFromView(context, attrs, mAttributeId);
+            String textViewFont;
+            if (((TextView) view).getTypeface().getStyle() == Typeface.BOLD && mBoldAttributeId != INVALID_ATTR_ID) {
+                textViewFont = CalligraphyUtils.pullFontPathFromView(context, attrs, mBoldAttributeId);
+            } else if (((TextView) view).getTypeface().getStyle() == Typeface.ITALIC && mItalicAttributeId != INVALID_ATTR_ID) {
+                textViewFont = CalligraphyUtils.pullFontPathFromView(context, attrs, mItalicAttributeId);
+            } else {
+                textViewFont = CalligraphyUtils.pullFontPathFromView(context, attrs, mAttributeId);
+            }
 
             // Try view style attributes
             if (TextUtils.isEmpty(textViewFont)) {
-                textViewFont = CalligraphyUtils.pullFontPathFromStyle(context, attrs, mAttributeId);
+                if (((TextView) view).getTypeface().getStyle() == Typeface.BOLD && mBoldAttributeId != INVALID_ATTR_ID) {
+                    textViewFont = CalligraphyUtils.pullFontPathFromStyle(context, attrs, mBoldAttributeId);
+                } else if (((TextView) view).getTypeface().getStyle() == Typeface.ITALIC && mItalicAttributeId != INVALID_ATTR_ID) {
+                    textViewFont = CalligraphyUtils.pullFontPathFromStyle(context, attrs, mItalicAttributeId);
+                } else {
+                    textViewFont = CalligraphyUtils.pullFontPathFromStyle(context, attrs, mAttributeId);
+                }
             }
 
             // Try View TextAppearance
             if (TextUtils.isEmpty(textViewFont)) {
-                textViewFont = CalligraphyUtils.pullFontPathFromTextAppearance(context, attrs, mAttributeId);
+                if (((TextView) view).getTypeface().getStyle() == Typeface.BOLD && mBoldAttributeId != INVALID_ATTR_ID) {
+                    textViewFont = CalligraphyUtils.pullFontPathFromTextAppearance(context, attrs, mBoldAttributeId);
+                } else if (((TextView) view).getTypeface().getStyle() == Typeface.ITALIC && mItalicAttributeId != INVALID_ATTR_ID) {
+                    textViewFont = CalligraphyUtils.pullFontPathFromTextAppearance(context, attrs, mItalicAttributeId);
+                } else {
+                    textViewFont = CalligraphyUtils.pullFontPathFromTextAppearance(context, attrs, mAttributeId);
+                }
             }
 
             // Try theme attributes
             if (TextUtils.isEmpty(textViewFont)) {
-                final int[] styleForTextView = getStyleForTextView((TextView) view);
-                if (styleForTextView[1] != -1)
-                    textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], styleForTextView[1], mAttributeId);
-                else
-                    textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], mAttributeId);
+                if (((TextView) view).getTypeface().getStyle() == Typeface.BOLD && mBoldAttributeId != INVALID_ATTR_ID) {
+                    final int[] styleForTextView = getStyleForTextView((TextView) view);
+                    if (styleForTextView[1] != -1) {
+                        textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], styleForTextView[1], mBoldAttributeId);
+                    } else {
+                        textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], mBoldAttributeId);
+                    }
+                } else if (((TextView) view).getTypeface().getStyle() == Typeface.ITALIC && mItalicAttributeId != INVALID_ATTR_ID) {
+                    final int[] styleForTextView = getStyleForTextView((TextView) view);
+                    if (styleForTextView[1] != -1) {
+                        textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], styleForTextView[1], mItalicAttributeId);
+                    } else {
+                        textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], mItalicAttributeId);
+                    }
+                } else {
+                    final int[] styleForTextView = getStyleForTextView((TextView) view);
+                    if (styleForTextView[1] != -1) {
+                        textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], styleForTextView[1], mAttributeId);
+                    } else {
+                        textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], mAttributeId);
+                    }
+                }
             }
 
             // Still need to defer the Native action bar, appcompat-v7:21+ uses the Toolbar underneath. But won't match these anyway.
@@ -179,6 +225,4 @@ class CalligraphyFactory {
             });
         }
     }
-
-
 }

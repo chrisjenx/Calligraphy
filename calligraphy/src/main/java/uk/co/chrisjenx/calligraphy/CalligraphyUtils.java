@@ -22,6 +22,11 @@ import android.widget.TextView;
  */
 public final class CalligraphyUtils {
 
+    public static final String FONT_REGULAR = "Regular";
+    public static final String FONT_BOLD = "Bold";
+    public static final String FONT_ITALIC = "Italic";
+    public static final String FONT_BOLD_ITALIC = "Bold-Italic";
+
     /**
      * Applies a custom typeface span to the text.
      *
@@ -120,7 +125,18 @@ public final class CalligraphyUtils {
     static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config, boolean deferred) {
         if (context == null || textView == null || config == null) return;
         if (!config.isFontSet()) return;
-        applyFontToTextView(context, textView, config.getFontPath(), deferred);
+        String fontPath;
+        if ((textView.getTypeface().getStyle() == Typeface.BOLD_ITALIC || ((textView.getTypeface().getStyle() & Typeface.BOLD) != 0 && (textView.getTypeface().getStyle() & Typeface.ITALIC) != 0))
+                && config.getBoldItalicFontPath() != null) {
+            fontPath = config.getItalicFontPath();
+        } else if (textView.getTypeface().getStyle() == Typeface.BOLD && config.getBoldFontPath() != null) {
+            fontPath = config.getBoldFontPath();
+        } else if (textView.getTypeface().getStyle() == Typeface.ITALIC && config.getItalicFontPath() != null) {
+            fontPath = config.getItalicFontPath();
+        } else {
+            fontPath = config.getFontPath();
+        }
+        applyFontToTextView(context, textView, fontPath, deferred);
     }
 
     /**
@@ -138,7 +154,55 @@ public final class CalligraphyUtils {
 
     static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config, final String textViewFont, boolean deferred) {
         if (context == null || textView == null || config == null) return;
-        if (!TextUtils.isEmpty(textViewFont) && applyFontToTextView(context, textView, textViewFont, deferred)) {
+        if (!TextUtils.isEmpty(textViewFont)) {
+            if (isInherentFontPath(textViewFont)) {
+                if (textView.getTypeface().getStyle() == Typeface.BOLD_ITALIC || ((textView.getTypeface().getStyle() & Typeface.BOLD) != 0 && (textView.getTypeface().getStyle() & Typeface.ITALIC) != 0)) {
+                    try {
+                        Typeface.createFromAsset(context.getAssets(), pullFontPathFromInherentFontPath(textViewFont, FONT_BOLD_ITALIC));
+                        applyFontToTextView(context, textView, pullFontPathFromInherentFontPath(textViewFont, FONT_BOLD_ITALIC), deferred);
+                    } catch (Throwable t) {
+                        try {
+                            Typeface.createFromAsset(context.getAssets(), pullFontPathFromInherentFontPath(textViewFont, FONT_REGULAR));
+                            applyFontToTextView(context, textView, pullFontPathFromInherentFontPath(textViewFont, FONT_REGULAR), deferred);
+                        } catch (Throwable t2) {
+                            applyFontToTextView(context, textView, config, deferred);
+                        }
+                    }
+                } else if (textView.getTypeface().getStyle() == Typeface.BOLD) {
+                    try {
+                        Typeface.createFromAsset(context.getAssets(), pullFontPathFromInherentFontPath(textViewFont, FONT_BOLD));
+                        applyFontToTextView(context, textView, pullFontPathFromInherentFontPath(textViewFont, FONT_BOLD), deferred);
+                    } catch (Throwable t) {
+                        try {
+                            Typeface.createFromAsset(context.getAssets(), pullFontPathFromInherentFontPath(textViewFont, FONT_REGULAR));
+                            applyFontToTextView(context, textView, pullFontPathFromInherentFontPath(textViewFont, FONT_REGULAR), deferred);
+                        } catch (Throwable t2) {
+                            applyFontToTextView(context, textView, config, deferred);
+                        }
+                    }
+                } else if (textView.getTypeface().getStyle() == Typeface.ITALIC) {
+                    try {
+                        Typeface.createFromAsset(context.getAssets(), pullFontPathFromInherentFontPath(textViewFont, FONT_ITALIC));
+                        applyFontToTextView(context, textView, pullFontPathFromInherentFontPath(textViewFont, FONT_ITALIC), deferred);
+                    } catch (Throwable t) {
+                        try {
+                            Typeface.createFromAsset(context.getAssets(), pullFontPathFromInherentFontPath(textViewFont, FONT_REGULAR));
+                            applyFontToTextView(context, textView, pullFontPathFromInherentFontPath(textViewFont, FONT_REGULAR), deferred);
+                        } catch (Throwable t2) {
+                            applyFontToTextView(context, textView, config, deferred);
+                        }
+                    }
+                } else {
+                    try {
+                        Typeface.createFromAsset(context.getAssets(), pullFontPathFromInherentFontPath(textViewFont, FONT_REGULAR));
+                        applyFontToTextView(context, textView, pullFontPathFromInherentFontPath(textViewFont, FONT_REGULAR), deferred);
+                    } catch (Throwable t) {
+                        applyFontToTextView(context, textView, config, deferred);
+                    }
+                }
+            } else {
+                applyFontToTextView(context, textView, textViewFont, deferred);
+            }
             return;
         }
         applyFontToTextView(context, textView, config, deferred);
@@ -308,6 +372,14 @@ public final class CalligraphyUtils {
             }
         }
         return null;
+    }
+
+    public static String pullFontPathFromInherentFontPath(String fontPath, String fontType) {
+        return String.format(fontPath, fontType);
+    }
+
+    public static boolean isInherentFontPath(String fontPath) {
+        return fontPath.contains("%s");
     }
 
     private static Boolean sToolbarCheck = null;

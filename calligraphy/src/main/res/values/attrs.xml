@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="fontPath" format="string"/>
+    <attr name="boldFontPath" format="string"/>
+    <attr name="italicFontPath" format="string"/>
+    <attr name="boldItalicFontPath" format="string"/>
 </resources>

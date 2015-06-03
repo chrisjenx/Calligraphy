@@ -266,7 +266,7 @@ public class CalligraphyConfig {
          * @return this builder.
          */
         public Builder setFontAttrId(int fontAssetAttrId) {
-            this.attrId = fontAssetAttrId != INVALID_ATTR_ID ? fontAssetAttrId : INVALID_ATTR_ID;
+            this.attrId = fontAssetAttrId;
             return this;
         }
 
@@ -277,7 +277,7 @@ public class CalligraphyConfig {
          * @return this builder.
          */
         public Builder setBoldFontAttrId(int fontAssetAttrId) {
-            this.boldAttrId = fontAssetAttrId != INVALID_ATTR_ID ? fontAssetAttrId : INVALID_ATTR_ID;
+            this.boldAttrId = fontAssetAttrId;
             return this;
         }
 
@@ -288,7 +288,7 @@ public class CalligraphyConfig {
          * @return this builder.
          */
         public Builder setItalicFontAttrId(int fontAssetAttrId) {
-            this.italicAttrId = fontAssetAttrId != INVALID_ATTR_ID ? fontAssetAttrId : INVALID_ATTR_ID;
+            this.italicAttrId = fontAssetAttrId;
             return this;
         }
 
@@ -299,7 +299,7 @@ public class CalligraphyConfig {
          * @return this builder.
          */
         public Builder setBoldItalicFontAttrId(int fontAssetAttrId) {
-            this.boldItalicAttrId = fontAssetAttrId != INVALID_ATTR_ID ? fontAssetAttrId : INVALID_ATTR_ID;
+            this.boldItalicAttrId = fontAssetAttrId;
             return this;
         }
 

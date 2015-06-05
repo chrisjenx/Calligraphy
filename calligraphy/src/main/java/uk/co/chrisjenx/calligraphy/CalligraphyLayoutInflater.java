@@ -25,28 +25,34 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
     };
 
     private final int mAttributeId;
+    private final int mBoldAttributeId;
+    private final int mItalicAttributeId;
     private final CalligraphyFactory mCalligraphyFactory;
     // Reflection Hax
     private boolean mSetPrivateFactory = false;
     private Field mConstructorArgs = null;
 
-    protected CalligraphyLayoutInflater(Context context, int attributeId) {
+    protected CalligraphyLayoutInflater(Context context, int attributeId, int boldAttributeId, int italicAttributeId) {
         super(context);
         mAttributeId = attributeId;
-        mCalligraphyFactory = new CalligraphyFactory(attributeId);
+        mBoldAttributeId = boldAttributeId;
+        mItalicAttributeId = italicAttributeId;
+        mCalligraphyFactory = new CalligraphyFactory(attributeId, boldAttributeId, italicAttributeId);
         setUpLayoutFactories(false);
     }
 
-    protected CalligraphyLayoutInflater(LayoutInflater original, Context newContext, int attributeId, final boolean cloned) {
+    protected CalligraphyLayoutInflater(LayoutInflater original, Context newContext, int attributeId, int boldAttributeId, int italicAttributeId, final boolean cloned) {
         super(original, newContext);
         mAttributeId = attributeId;
-        mCalligraphyFactory = new CalligraphyFactory(attributeId);
+        mBoldAttributeId = boldAttributeId;
+        mItalicAttributeId = italicAttributeId;
+        mCalligraphyFactory = new CalligraphyFactory(attributeId, boldAttributeId, italicAttributeId);
         setUpLayoutFactories(cloned);
     }
 
     @Override
     public LayoutInflater cloneInContext(Context newContext) {
-        return new CalligraphyLayoutInflater(this, newContext, mAttributeId, true);
+        return new CalligraphyLayoutInflater(this, newContext, mAttributeId, mBoldAttributeId, mItalicAttributeId, true);
     }
 
     // ===

@@ -39,11 +39,25 @@ Define your default font using `CalligraphyConfig`, in your `Application` class 
 @Override
 public void onCreate() {
     super.onCreate();
+
+    // Customize each text style font separately
     CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                             .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
+                            .setDefaultBoldFontPath("fonts/Roboto-RobotoBold.ttf")
+                            .setDefaultItalicFontPath("fonts/Roboto-RobotoItalic.ttf")
+                            .setDefaultBoldItalicFontPath("fonts/Roboto-RobotoBoldItalic.ttf")
                             .setFontAttrId(R.attr.fontPath)
                             .build()
             );
+
+    // Set the inherent default font path to look up Regular, Bold, Italic, and Bold-Italic fonts stored in your assets folder
+    // NOTE: This string will be formatted to lookup each font style. If one of the styles is not found, the default (Regular) will be used
+    CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                            .setInherentDefaultFontPaths("fonts/Roboto-%s.ttf")
+                            .setFontAttrId(R.attr.fontPath)
+                            .build()
+            );
+
     //....
 }
 ```
@@ -70,11 +84,22 @@ _You're good to go!_
 ### Custom font per TextView
 
 ```xml
+<!-- Specify the font path type for regular, bold, italic, and bold-italic, one will be used based on the textStyle applied -->
 <TextView
     android:text="@string/hello_world"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    fontPath="fonts/Roboto-Bold.ttf"/>
+    fontPath="fonts/Roboto-Regular.ttf"
+    boldFontPath="fonts/Roboto-Bold.ttf"
+    italicFontPath="fonts/Roboto-Italic.ttf"
+    boldItalicFontPath="fonts/Roboto-Bold-Italic.ttf"/>
+
+<!-- If you specify an inherent font path, just using the fontPath attr will suffice -->
+<TextView
+    android:text="@string/hello_world"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    fontPath="fonts/Roboto-%s.ttf"/>
 ```
 
 _Note: Popular IDE's (Android Studio, IntelliJ) will likely mark this as an error despite being correct. You may want to add `tools:ignore="MissingPrefix"` to either the View itself or its parent ViewGroup to avoid this. You'll need to add the tools namespace to have access to this "ignore" attribute. `xmlns:tools="
@@ -84,9 +109,19 @@ http://schemas.android.com/tools"`. See https://code.google.com/p/android/issues
 
 
 ```xml
+<!-- Specify the font path type for regular, bold, italic, and bold-italic, these will be applied based on the textStyle -->
 <style name="TextAppearance.FontPath" parent="android:TextAppearance">
     <!-- Custom Attr-->
     <item name="fontPath">fonts/RobotoCondensed-Regular.ttf</item>
+    <item name="boldFontPath">fonts/RobotoCondensed-Bold.ttf</item>
+    <item name="italicFontPath">fonts/RobotoCondensed-Italic.ttf</item>
+    <item name="boldItalicFontPath">fonts/RobotoCondensed-Bold-Italic.ttf</item>
+</style>
+
+<!-- If you specify an inherent font path, just using the fontPath attr will suffice -->
+<style name="TextAppearance.FontPath" parent="android:TextAppearance">
+    <!-- Custom Attr-->
+    <item name="fontPath">fonts/RobotoCondensed-%s.ttf</item>
 </style>
 ```
 
@@ -103,8 +138,17 @@ http://schemas.android.com/tools"`. See https://code.google.com/p/android/issues
 
 
 ```xml
+<!-- Specify the font path type for regular, bold, italic, and bold-italic, these will be applied based on the textStyle -->
 <style name="TextViewCustomFont">
     <item name="fontPath">fonts/RobotoCondensed-Regular.ttf</item>
+    <item name="boldFontPath">fonts/RobotoCondensed-Bold.ttf</item>
+    <item name="italicFontPath">fonts/RobotoCondensed-Italic.ttf</item>
+    <item name="boldItalicFontPath">fonts/RobotoCondensed-Bold-Italic.ttf</item>
+</style>
+
+<!-- If you specify an inherent font path, just using the fontPath attr will suffice -->
+<style name="TextViewCustomFont">
+    <item name="fontPath">fonts/RobotoCondensed-%s.ttf</item>
 </style>
 ```
 
@@ -117,8 +161,17 @@ http://schemas.android.com/tools"`. See https://code.google.com/p/android/issues
 
 <style name="AppTheme.Widget"/>
 
+<!-- Specify the font path type for regular, bold, italic, and bold-italic, these will be applied based on the textStyle -->
 <style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
     <item name="fontPath">fonts/Roboto-ThinItalic.ttf</item>
+    <item name="boldFontPath">fonts/Roboto-Bold.ttf</item>
+    <item name="italicFontPath">fonts/Roboto-Italic.ttf</item>
+    <item name="boldItalicFontPath">fonts/Roboto-Bold-Italic.ttf</item>
+</style>
+
+<!-- If you specify an inherent font path, just using the fontPath attr will suffice -->
+<style name="TextViewCustomFont">
+    <item name="fontPath">fonts/Roboto-%s.ttf</item>
 </style>
 ```
 
@@ -136,7 +189,17 @@ The `CalligraphyFactory` looks for the font in a pretty specific order, for the 
  defined in the `Style` and a `TextAttribute` defined in the `View` the `Style` attribute is picked first!
 4. `Theme` - if defined this is used.
 5. `Default` - if defined in the `CalligraphyConfig` this is used of none of the above are found 
-**OR** if one of the above returns an invalid font. 
+**OR** if one of the above returns an invalid font.
+
+When specifying an inherent font path, we lookup each font based on these values
+```java
+    // If we fail to find one of the fonts, we will either default to the Regular font supplied (i.e. "fonts/font-Regular.ttf")
+    // or the default system font if there is no Regular
+    String.format("fonts/font-%s.ttf", "Regular");
+    String.format("fonts/font-%s.ttf", "Bold");
+    String.format("fonts/font-%s.ttf", "Italic");
+    String.format("fonts/font-%s.ttf", "Bold-Italic");
+```
 
 ### Why *not* piggyback off of fontFamily attribute?
 

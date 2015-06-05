@@ -3,6 +3,7 @@ package uk.co.chrisjenx.calligraphy;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -15,6 +16,11 @@ class CalligraphyFactory {
 
     private static final String ACTION_BAR_TITLE = "action_bar_title";
     private static final String ACTION_BAR_SUBTITLE = "action_bar_subtitle";
+
+    /**
+     * Default AttrID if not set.
+     */
+    public static final int INVALID_ATTR_ID = -1;
 
     /**
      * Some styles are in sub styles, such as actionBarTextStyle etc..
@@ -91,9 +97,13 @@ class CalligraphyFactory {
     }
 
     private final int mAttributeId;
+    private final int mBoldAttributeId;
+    private final int mItalicAttributeId;
 
-    public CalligraphyFactory(int attributeId) {
+    public CalligraphyFactory(int attributeId, int boldAttributeId, int italicAttributeId) {
         this.mAttributeId = attributeId;
+        this.mBoldAttributeId = boldAttributeId;
+        this.mItalicAttributeId = italicAttributeId;
     }
 
     /**
@@ -123,28 +133,7 @@ class CalligraphyFactory {
             }
             // Try to get typeface attribute value
             // Since we're not using namespace it's a little bit tricky
-
-            // Try view xml attributes
-            String textViewFont = CalligraphyUtils.pullFontPathFromView(context, attrs, mAttributeId);
-
-            // Try view style attributes
-            if (TextUtils.isEmpty(textViewFont)) {
-                textViewFont = CalligraphyUtils.pullFontPathFromStyle(context, attrs, mAttributeId);
-            }
-
-            // Try View TextAppearance
-            if (TextUtils.isEmpty(textViewFont)) {
-                textViewFont = CalligraphyUtils.pullFontPathFromTextAppearance(context, attrs, mAttributeId);
-            }
-
-            // Try theme attributes
-            if (TextUtils.isEmpty(textViewFont)) {
-                final int[] styleForTextView = getStyleForTextView((TextView) view);
-                if (styleForTextView[1] != -1)
-                    textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], styleForTextView[1], mAttributeId);
-                else
-                    textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], mAttributeId);
-            }
+            String textViewFont = selectFont((TextView) view, context, attrs);
 
             // Still need to defer the Native action bar, appcompat-v7:21+ uses the Toolbar underneath. But won't match these anyway.
             final boolean deferred = matchesResourceIdName(view, ACTION_BAR_TITLE) || matchesResourceIdName(view, ACTION_BAR_SUBTITLE);
@@ -180,5 +169,43 @@ class CalligraphyFactory {
         }
     }
 
+    private String selectFont(TextView textView, Context context, AttributeSet attrs) {
+        String textViewFont;
 
+        // get style: regular/bold/italic
+        int styleAttributeId;
+        if (textView.getTypeface() == null) {
+            styleAttributeId = mAttributeId;
+        } else if (textView.getTypeface().getStyle() == Typeface.BOLD && mBoldAttributeId != INVALID_ATTR_ID) {
+            styleAttributeId = mBoldAttributeId;
+        } else if (textView.getTypeface().getStyle() == Typeface.ITALIC && mItalicAttributeId != INVALID_ATTR_ID) {
+            styleAttributeId = mItalicAttributeId;
+        } else {
+            styleAttributeId = mAttributeId;
+        }
+
+        // Try view xml attributes
+        textViewFont = CalligraphyUtils.pullFontPathFromView(context, attrs, styleAttributeId);
+
+        // Try view style attributes
+        if (TextUtils.isEmpty(textViewFont)) {
+            textViewFont = CalligraphyUtils.pullFontPathFromStyle(context, attrs, styleAttributeId);
+        }
+
+        // Try View TextAppearance
+        if (TextUtils.isEmpty(textViewFont)) {
+            textViewFont = CalligraphyUtils.pullFontPathFromTextAppearance(context, attrs, styleAttributeId);
+        }
+
+        // Try theme attributes
+        if (TextUtils.isEmpty(textViewFont)) {
+            final int[] styleForTextView = getStyleForTextView(textView);
+            if (styleForTextView[1] != -1) {
+                textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], styleForTextView[1], styleAttributeId);
+            } else {
+                textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], styleAttributeId);
+            }
+        }
+        return textViewFont;
+    }
 }

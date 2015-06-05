@@ -16,6 +16,8 @@ public class CalligraphyContextWrapper extends ContextWrapper {
     private CalligraphyLayoutInflater mInflater;
 
     private final int mAttributeId;
+    private final int mBoldAttributeId;
+    private final int mItalicAttributeId;
 
     /**
      * Uses the default configuration from {@link uk.co.chrisjenx.calligraphy.CalligraphyConfig}
@@ -84,6 +86,8 @@ public class CalligraphyContextWrapper extends ContextWrapper {
     CalligraphyContextWrapper(Context base) {
         super(base);
         mAttributeId = CalligraphyConfig.get().getAttrId();
+        mBoldAttributeId = CalligraphyConfig.get().getBoldAttrId();
+        mItalicAttributeId = CalligraphyConfig.get().getItalicAttrId();
     }
 
     /**
@@ -99,16 +103,18 @@ public class CalligraphyContextWrapper extends ContextWrapper {
      * @deprecated use {@link #wrap(android.content.Context)}
      */
     @Deprecated
-    public CalligraphyContextWrapper(Context base, int attributeId) {
+    public CalligraphyContextWrapper(Context base, int attributeId, int boldAttributeId, int italicAttributeId) {
         super(base);
         mAttributeId = attributeId;
+        mBoldAttributeId = boldAttributeId;
+        mItalicAttributeId = italicAttributeId;
     }
 
     @Override
     public Object getSystemService(String name) {
         if (LAYOUT_INFLATER_SERVICE.equals(name)) {
             if (mInflater == null) {
-                mInflater = new CalligraphyLayoutInflater(LayoutInflater.from(getBaseContext()), this, mAttributeId, false);
+                mInflater = new CalligraphyLayoutInflater(LayoutInflater.from(getBaseContext()), this, mAttributeId, mBoldAttributeId, mItalicAttributeId, false);
             }
             return mInflater;
         }

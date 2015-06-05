@@ -118,10 +118,6 @@ public final class CalligraphyUtils {
         return applyFontToTextView(textView, typeface, deferred);
     }
 
-    static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config) {
-        applyFontToTextView(context, textView, config, false);
-    }
-
     static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config, boolean deferred) {
         if (context == null || textView == null || config == null) return;
         if (!config.isFontSet()) return;

@@ -119,20 +119,36 @@ public final class CalligraphyUtils {
     }
 
     static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config, boolean deferred) {
-        if (context == null || textView == null || config == null) return;
-        if (!config.isFontSet()) return;
-        String fontPath;
-        if (textView.getTypeface() != null && (textView.getTypeface().getStyle() == Typeface.BOLD_ITALIC || ((textView.getTypeface().getStyle() & Typeface.BOLD) != 0 && (textView.getTypeface().getStyle() & Typeface.ITALIC) != 0))
-                && config.getBoldItalicFontPath() != null) {
-            fontPath = config.getItalicFontPath();
-        } else if (textView.getTypeface() != null && textView.getTypeface().getStyle() == Typeface.BOLD && config.getBoldFontPath() != null) {
-            fontPath = config.getBoldFontPath();
-        } else if (textView.getTypeface() != null && textView.getTypeface().getStyle() == Typeface.ITALIC && config.getItalicFontPath() != null) {
-            fontPath = config.getItalicFontPath();
-        } else {
+        if (context == null || textView == null || config == null) {
+            return;
+        }
+        if (!config.isFontSet()) {
+            return;
+        }
+
+        String fontPath = getFontPathByStyle(textView, config);
+        applyFontToTextView(context, textView, fontPath, deferred);
+    }
+
+    private static String getFontPathByStyle(TextView textView, CalligraphyConfig config) {
+        String fontPath = null;
+        if (textView.getTypeface() != null) {
+            switch (textView.getTypeface().getStyle()) {
+                case Typeface.BOLD:
+                    fontPath = config.getBoldFontPath();
+                    break;
+                case Typeface.ITALIC:
+                    fontPath = config.getItalicFontPath();
+                    break;
+                case Typeface.BOLD_ITALIC:
+                    fontPath = config.getBoldItalicFontPath();
+                    break;
+            }
+        }
+        if (fontPath == null) {
             fontPath = config.getFontPath();
         }
-        applyFontToTextView(context, textView, fontPath, deferred);
+        return fontPath;
     }
 
     /**
@@ -158,6 +174,17 @@ public final class CalligraphyUtils {
             return;
         }
 
+        String style = getStyleIdentifier(textView);
+
+        try {
+            Typeface.createFromAsset(context.getAssets(), pullFontPathFromInherentFontPath(textViewFont, style));
+            applyFontToTextView(context, textView, pullFontPathFromInherentFontPath(textViewFont, style), deferred);
+        } catch (Throwable t) {
+            applyFontToTextView(context, textView, config, deferred);
+        }
+    }
+
+    private static String getStyleIdentifier(TextView textView) {
         String style;
         if (textView.getTypeface() == null) {
             style = FONT_REGULAR;
@@ -176,13 +203,7 @@ public final class CalligraphyUtils {
                     style = FONT_REGULAR;
             }
         }
-
-        try {
-            Typeface.createFromAsset(context.getAssets(), pullFontPathFromInherentFontPath(textViewFont, style));
-            applyFontToTextView(context, textView, pullFontPathFromInherentFontPath(textViewFont, style), deferred);
-        } catch (Throwable t) {
-            applyFontToTextView(context, textView, config, deferred);
-        }
+        return style;
     }
 
     /**

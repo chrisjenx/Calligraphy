@@ -167,7 +167,26 @@ public final class CalligraphyUtils {
         final int stringResourceId = attrs.getAttributeResourceValue(null, attributeName, -1);
         return stringResourceId > 0
                 ? context.getString(stringResourceId)
-                : attrs.getAttributeValue(null, attributeName);
+                : pullFontPathFromAttribute(context, attrs.getAttributeValue(null, attributeName));
+    }
+
+    /**
+     * Tries to convert from an attribute to a String
+     */
+    static String pullFontPathFromAttribute(Context context, String attribute) {
+        String value = null;
+        if (attribute != null && attribute.startsWith("?bread")) {
+            try {
+                int identifier = context.getResources().getIdentifier(attribute.substring(1),
+                        "attr",
+                        context.getPackageName());
+                TypedValue attr = new TypedValue();
+                context.getTheme().resolveAttribute(identifier, attr, true);
+                value = attr.coerceToString().toString();
+            } catch (NullPointerException ignore) { /* Handle a missing attr or invalid value */ }
+        }
+        if (value == null) value = attribute; // Allow this to work as it always has
+        return value;
     }
 
     /**

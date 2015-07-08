@@ -175,7 +175,7 @@ public final class CalligraphyUtils {
      */
     static String pullFontPathFromAttribute(Context context, String attribute) {
         String value = null;
-        if (attribute != null && attribute.startsWith("?bread")) {
+        if (attribute != null && attribute.startsWith("?")) {
             try {
                 int identifier = context.getResources().getIdentifier(attribute.substring(1),
                         "attr",

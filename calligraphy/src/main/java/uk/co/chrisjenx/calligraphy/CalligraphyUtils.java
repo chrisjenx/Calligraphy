@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.TextView;
 
 /**
@@ -168,6 +169,27 @@ public final class CalligraphyUtils {
         return stringResourceId > 0
                 ? context.getString(stringResourceId)
                 : attrs.getAttributeValue(null, attributeName);
+    }
+
+    /**
+     * Tries to pull the Ingored Attribute directly from the View.
+     * @param context     Activity Context
+     * @param attrs       View Attributes
+     * @return false if attribute is not defined or added to View
+     */
+    static boolean pullIgnoredFromView(Context context, AttributeSet attrs) {
+        if (attrs == null)
+            return false;
+
+        final String attributeName;
+        try {
+            attributeName = context.getResources().getResourceEntryName(R.attr.calligraphyIgnore);
+        } catch (Resources.NotFoundException e) {
+            // invalid attribute ID
+            return false;
+        }
+
+        return attrs.getAttributeBooleanValue(null, attributeName, false);
     }
 
     /**
@@ -327,6 +349,16 @@ public final class CalligraphyUtils {
             }
         }
         return sToolbarCheck;
+    }
+
+    /**
+     *
+     * @param view view to check for ignore
+     * @param config current Calligraphy config
+     * @return
+     */
+    static boolean isIgnoredClass(View view, CalligraphyConfig config) {
+        return config.getIgnoredClassSet().contains(view.getClass());
     }
 
     private CalligraphyUtils() {

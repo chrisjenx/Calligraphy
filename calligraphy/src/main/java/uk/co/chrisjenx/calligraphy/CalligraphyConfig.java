@@ -2,6 +2,7 @@ package uk.co.chrisjenx.calligraphy;
 
 import android.os.Build;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -13,7 +14,9 @@ import android.widget.ToggleButton;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by chris on 20/12/2013
@@ -86,6 +89,10 @@ public class CalligraphyConfig {
      * Class Styles. Build from DEFAULT_STYLES and the builder.
      */
     private final Map<Class<? extends TextView>, Integer> mClassStyleAttributeMap;
+    /**
+     * Classes that will not be injected
+     */
+    private final Set<Class<?>> mIgnoredClassSet;
 
     protected CalligraphyConfig(Builder builder) {
         mIsFontSet = builder.isFontSet;
@@ -96,6 +103,7 @@ public class CalligraphyConfig {
         final Map<Class<? extends TextView>, Integer> tempMap = new HashMap<>(DEFAULT_STYLES);
         tempMap.putAll(builder.mStyleClassMap);
         mClassStyleAttributeMap = Collections.unmodifiableMap(tempMap);
+        mIgnoredClassSet = Collections.unmodifiableSet(new HashSet<>(builder.mIgnoredClassSet));
     }
 
     /**
@@ -131,6 +139,10 @@ public class CalligraphyConfig {
         return mAttrId;
     }
 
+    public Set<Class<?>> getIgnoredClassSet() {
+        return mIgnoredClassSet;
+    }
+
     public static class Builder {
         /**
          * Default AttrID if not set.
@@ -160,7 +172,10 @@ public class CalligraphyConfig {
          * Additional Class Styles. Can be empty.
          */
         private Map<Class<? extends TextView>, Integer> mStyleClassMap = new HashMap<>();
-
+        /**
+         * Ignored classes. Can be empty.
+         */
+        private Set<Class<?>> mIgnoredClassSet = new HashSet<>();
         /**
          * This defaults to R.attr.fontPath. So only override if you want to use your own attrId.
          *
@@ -254,6 +269,12 @@ public class CalligraphyConfig {
         public Builder addCustomStyle(final Class<? extends TextView> styleClass, final int styleResourceAttribute) {
             if (styleClass == null || styleResourceAttribute == 0) return this;
             mStyleClassMap.put(styleClass, styleResourceAttribute);
+            return this;
+        }
+
+        public Builder ignoreClass(final Class<?> clazz) {
+            if(clazz == null) return this;
+            mIgnoredClassSet.add(clazz);
             return this;
         }
 

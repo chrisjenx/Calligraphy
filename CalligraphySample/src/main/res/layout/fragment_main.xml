@@ -106,6 +106,19 @@
             android:layout_height="wrap_content"
             android:text="@string/custom_view_style_text"/>
 
+        <com.malinskiy.materialicons.widget.IconTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/defined_ignore_class"/>
+
+        <com.malinskiy.materialicons.widget.IconButton
+            calligraphyIgnore="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="@string/defined_ignore_attribute"/>
+
         <Button
             android:id="@+id/button_default"
             android:layout_width="wrap_content"

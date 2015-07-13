@@ -114,7 +114,7 @@ class CalligraphyFactory {
     }
 
     void onViewCreatedInternal(View view, final Context context, AttributeSet attrs) {
-        if (view instanceof TextView) {
+        if (!CalligraphyConfig.get().isIgnoredClass(view.getClass()) && view instanceof TextView) {
             // Fast path the setting of TextView's font, means if we do some delayed setting of font,
             // which has already been set by use we skip this TextView (mainly for inflating custom,
             // TextView's inside the Toolbar/ActionBar).

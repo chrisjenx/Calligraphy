@@ -106,6 +106,20 @@
             android:layout_height="wrap_content"
             android:text="@string/custom_view_style_text"/>
 
+
+        <uk.co.chrisjenx.calligraphy.sample.ThirdPartyCustomView
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/default_theme"/>
+
+        <uk.co.chrisjenx.calligraphy.sample.ThirdPartyCustomView
+            fontPath="fonts/Roboto-Bold.ttf"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/defined_fontpath_view"/>
+
         <Button
             android:id="@+id/button_default"
             android:layout_width="wrap_content"

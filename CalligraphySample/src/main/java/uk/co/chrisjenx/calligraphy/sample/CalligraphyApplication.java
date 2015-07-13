@@ -17,6 +17,7 @@ public class CalligraphyApplication extends Application {
                         .setDefaultFontPath("fonts/Roboto-ThinItalic.ttf")
                         .setFontAttrId(R.attr.fontPath)
                         .addCustomStyle(TextField.class, R.attr.textFieldStyle)
+                        .addFactoryPlugin(new ThirdPartyCustomViewCalligraphyFactoryPlugin(R.attr.fontPath))
                         .build()
         );
     }

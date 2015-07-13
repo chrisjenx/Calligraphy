@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
+import java.util.Collection;
+
 class CalligraphyFactory {
 
     private static final String ACTION_BAR_TITLE = "action_bar_title";
@@ -109,6 +111,13 @@ class CalligraphyFactory {
         if (view != null && view.getTag(R.id.calligraphy_tag_id) != Boolean.TRUE) {
             onViewCreatedInternal(view, context, attrs);
             view.setTag(R.id.calligraphy_tag_id, Boolean.TRUE);
+
+            Collection<CalligraphyFactoryPlugin> factoryPlugins = CalligraphyConfig.get().getFactoryPlugins();
+            if (factoryPlugins != null) {
+                for (CalligraphyFactoryPlugin plugin : factoryPlugins) {
+                    plugin.onViewCreated(view, context, attrs);
+                }
+            }
         }
         return view;
     }
@@ -124,18 +133,7 @@ class CalligraphyFactory {
             // Try to get typeface attribute value
             // Since we're not using namespace it's a little bit tricky
 
-            // Try view xml attributes
-            String textViewFont = CalligraphyUtils.pullFontPathFromView(context, attrs, mAttributeId);
-
-            // Try view style attributes
-            if (TextUtils.isEmpty(textViewFont)) {
-                textViewFont = CalligraphyUtils.pullFontPathFromStyle(context, attrs, mAttributeId);
-            }
-
-            // Try View TextAppearance
-            if (TextUtils.isEmpty(textViewFont)) {
-                textViewFont = CalligraphyUtils.pullFontPathFromTextAppearance(context, attrs, mAttributeId);
-            }
+            String textViewFont = CalligraphyUtils.pullFontPathFromAttributesHierarchy(context, attrs, mAttributeId);
 
             // Try theme attributes
             if (TextUtils.isEmpty(textViewFont)) {
@@ -179,6 +177,5 @@ class CalligraphyFactory {
             });
         }
     }
-
 
 }

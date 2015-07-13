@@ -32,5 +32,7 @@ dependencies {
     compile 'com.android.support:support-v4:22.1.1'
     compile 'com.android.support:appcompat-v7:22.1.1'
 
+    compile 'com.malinskiy:materialicons:1.0.2'
+
     compile 'com.jakewharton:butterknife:5.1.2'
 }

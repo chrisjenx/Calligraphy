@@ -144,6 +144,56 @@ public final class CalligraphyUtils {
         applyFontToTextView(context, textView, config, deferred);
     }
 
+
+    /**
+     * Tries to pull the fontPath in the right order:
+     *   1) view's attribute, 2) style, 3) textAppearance
+     *
+     * Fallback to the default font path defined in config if not found in the view's attribute
+     * hierarchy.
+     *
+     * @param context     Activity Context
+     * @param attrs       View Attributes
+     * @param attributeId if -1 returns null.
+     * @return null if attribute is not defined or added to View
+     */
+    public static String pullFontPathFromAttributesHierarchyWithDefault(Context context, AttributeSet attrs, int attributeId, CalligraphyConfig config) {
+
+        String fontPath = pullFontPathFromAttributesHierarchy(context, attrs, attributeId);
+
+        if (TextUtils.isEmpty(fontPath) && (config != null)) {
+            fontPath = config.getFontPath();
+        }
+
+        return fontPath;
+    }
+
+    /**
+     * Tries to pull the fontPath in the right order from attributes hierarchy:
+     *   1) view's attribute, 2) style, 3) textAppearance
+     *
+     * @param context     Activity Context
+     * @param attrs       View Attributes
+     * @param attributeId if -1 returns null.
+     * @return null if attribute is not defined or added to View
+     */
+    public static String pullFontPathFromAttributesHierarchy(Context context, AttributeSet attrs, int attributeId) {
+        // Try view xml attributes
+        String textViewFont = CalligraphyUtils.pullFontPathFromView(context, attrs, attributeId);
+
+        // Try view style attributes
+        if (TextUtils.isEmpty(textViewFont)) {
+            textViewFont = CalligraphyUtils.pullFontPathFromStyle(context, attrs, attributeId);
+        }
+
+        // Try View TextAppearance
+        if (TextUtils.isEmpty(textViewFont)) {
+            textViewFont = CalligraphyUtils.pullFontPathFromTextAppearance(context, attrs, attributeId);
+        }
+
+        return textViewFont;
+    }
+
     /**
      * Tries to pull the Custom Attribute directly from the TextView.
      *

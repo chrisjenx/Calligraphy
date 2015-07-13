@@ -2,6 +2,7 @@ package uk.co.chrisjenx.calligraphy;
 
 import android.os.Build;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -138,13 +139,8 @@ public class CalligraphyConfig {
         return mAttrId;
     }
 
-    /**
-     *
-     * @param viewClass class to be ignored by Calligraphy
-     * @return true if class should not be injected, false otherwise
-     */
-    public boolean isIgnoredClass(Class<?> viewClass) {
-        return mIgnoredClassSet.contains(viewClass);
+    public Set<Class<?>> getIgnoredClassSet() {
+        return mIgnoredClassSet;
     }
 
     public static class Builder {

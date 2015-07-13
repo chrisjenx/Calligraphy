@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.TextView;
 
 /**
@@ -348,6 +349,16 @@ public final class CalligraphyUtils {
             }
         }
         return sToolbarCheck;
+    }
+
+    /**
+     *
+     * @param view view to check for ignore
+     * @param config current Calligraphy config
+     * @return
+     */
+    static boolean isIgnoredClass(View view, CalligraphyConfig config) {
+        return config.getIgnoredClassSet().contains(view.getClass());
     }
 
     private CalligraphyUtils() {

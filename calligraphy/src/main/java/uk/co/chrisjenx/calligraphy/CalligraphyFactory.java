@@ -114,7 +114,7 @@ class CalligraphyFactory {
     }
 
     void onViewCreatedInternal(View view, final Context context, AttributeSet attrs) {
-        if (!CalligraphyConfig.get().isIgnoredClass(view.getClass()) &&
+        if (!CalligraphyUtils.isIgnoredClass(view, CalligraphyConfig.get()) &&
                 !CalligraphyUtils.pullIgnoredFromView(context, attrs) &&
                 view instanceof TextView) {
 

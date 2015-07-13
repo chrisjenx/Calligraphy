@@ -171,6 +171,27 @@ public final class CalligraphyUtils {
     }
 
     /**
+     * Tries to pull the Ingored Attribute directly from the View.
+     * @param context     Activity Context
+     * @param attrs       View Attributes
+     * @return false if attribute is not defined or added to View
+     */
+    static boolean pullIgnoredFromView(Context context, AttributeSet attrs) {
+        if (attrs == null)
+            return false;
+
+        final String attributeName;
+        try {
+            attributeName = context.getResources().getResourceEntryName(R.attr.calligraphyIgnore);
+        } catch (Resources.NotFoundException e) {
+            // invalid attribute ID
+            return false;
+        }
+
+        return attrs.getAttributeBooleanValue(null, attributeName, false);
+    }
+
+    /**
      * Tries to pull the Font Path from the View Style as this is the next decendent after being
      * defined in the View's xml.
      *

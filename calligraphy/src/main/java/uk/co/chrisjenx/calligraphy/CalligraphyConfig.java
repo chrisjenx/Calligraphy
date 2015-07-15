@@ -37,7 +37,25 @@ public class CalligraphyConfig {
             DEFAULT_STYLES.put(CheckBox.class, android.R.attr.checkboxStyle);
             DEFAULT_STYLES.put(RadioButton.class, android.R.attr.radioButtonStyle);
             DEFAULT_STYLES.put(ToggleButton.class, android.R.attr.buttonStyleToggle);
+            if (CalligraphyUtils.canAddV7AppCompatViews()) {
+                addAppCompatViews();
+            }
         }
+    }
+
+    /**
+     * AppCompat will inflate special versions of views for Material tinting etc,
+     * this adds those classes to the style lookup map
+     */
+    private static void addAppCompatViews() {
+        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatTextView.class, android.R.attr.textViewStyle);
+        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatButton.class, android.R.attr.buttonStyle);
+        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatEditText.class, android.R.attr.editTextStyle);
+        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatAutoCompleteTextView.class, android.R.attr.autoCompleteTextViewStyle);
+        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatMultiAutoCompleteTextView.class, android.R.attr.autoCompleteTextViewStyle);
+        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatCheckBox.class, android.R.attr.checkboxStyle);
+        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatRadioButton.class, android.R.attr.radioButtonStyle);
+        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatCheckedTextView.class, android.R.attr.checkedTextViewStyle);
     }
 
     private static CalligraphyConfig sInstance;

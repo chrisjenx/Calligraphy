@@ -13,10 +13,10 @@ allprojects {
     jcenter()
   }
   // Is Release Build?
+  version = getProperty('VERSION_NAME');
   ext {
     isReleaseVersion = has("release")
     versionCodeInt = getProperty('VERSION_CODE').toInteger()
-    version = VERSION_NAME
   }
 }
 

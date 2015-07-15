@@ -1,5 +1,8 @@
 #Changelog
 
+#2.1.1 (16/07/2015)-SNAPSHOT
+- Added AppCompat Styles (AppComatTextView will now pickup textViewStyle etc). Thanks @paul-turner
+
 #2.1.0 (27/04/2015)
 - Fixed #155, We now clone correctly.
 - Added Styles for Custom Views. (`builder.addCustomStyle(ToggleButton.class, android.R.attr.buttonStyleToggle)`)

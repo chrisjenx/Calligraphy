@@ -17,12 +17,14 @@
         tools:ignore="MissingPrefix">
 
         <TextView
+            android:id="@+id/basic_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/default_theme"/>
 
         <TextView
             fontPath="fonts/Roboto-Bold.ttf"
+            android:labelFor="@id/basic_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/defined_fontpath_view"/>

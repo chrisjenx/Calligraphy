@@ -13,6 +13,7 @@
     <string name="defined_custom_view">\nThis is a custom TextView with Oswald font.\n</string>
     <string name="defined_view_stub">\nThis is a TextView inflated from a ViewStub.\n</string>
     <string name="defined_view_stub_font_path">\nThis is a TextView inflated from a ViewStub w/ fontPath declared.\n</string>
+    <string name="defined_font_path_text_style">\nThis has a font path set to Roboto, on the View and it is Bold because of the textStyle\n</string>
 
     <string name="checkbox_custom">Custom Oswald checkbox</string>
 

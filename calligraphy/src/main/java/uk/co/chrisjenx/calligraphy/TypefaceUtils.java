@@ -1,10 +1,14 @@
 package uk.co.chrisjenx.calligraphy;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.util.Log;
 
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,6 +24,8 @@ public final class TypefaceUtils {
 
     private static final Map<String, Typeface> sCachedFonts = new HashMap<String, Typeface>();
     private static final Map<Typeface, CalligraphyTypefaceSpan> sCachedSpans = new HashMap<Typeface, CalligraphyTypefaceSpan>();
+    private static final List<String> sMissingFontPaths = new ArrayList<>();
+    private static final List<String> sValidFontPaths = new ArrayList<>();
 
     /**
      * A helper loading a custom font.
@@ -74,5 +80,20 @@ public final class TypefaceUtils {
     }
 
     private TypefaceUtils() {
+    }
+
+    public static boolean checkFontExists(Context context, String fontPath) {
+        if (sMissingFontPaths.contains(fontPath)) return false;
+        if (sValidFontPaths.contains(fontPath)) return true;
+        AssetManager mg = context.getAssets();
+        try {
+            InputStream is = mg.open(fontPath);
+            is.close();
+            sValidFontPaths.add(fontPath);
+            return true;
+        } catch (Exception ex) {
+            sMissingFontPaths.add(fontPath);
+            return false;
+        }
     }
 }

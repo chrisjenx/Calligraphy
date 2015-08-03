@@ -10,7 +10,10 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"/>
+        android:background="@color/primary_material_light"
+        android:minHeight="?attr/actionBarSize"
+        android:translationZ="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <FrameLayout
         android:id="@+id/container"

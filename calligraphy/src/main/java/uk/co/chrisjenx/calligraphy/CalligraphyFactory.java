@@ -170,8 +170,8 @@ class CalligraphyFactory {
             mToolbarReference = new WeakReference<>(toolbar);
             orignalTitle = toolbar.getTitle();
             orignalSubTitle = toolbar.getSubtitle();
-            toolbar.setTitle("Title");
-            toolbar.setSubtitle("SubTitle");
+            toolbar.setTitle(" ");
+            toolbar.setSubtitle("  ");
         }
 
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

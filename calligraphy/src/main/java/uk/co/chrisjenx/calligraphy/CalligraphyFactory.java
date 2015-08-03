@@ -5,14 +5,15 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import java.lang.reflect.Method;
+import java.lang.ref.WeakReference;
 
 class CalligraphyFactory {
 
@@ -148,28 +149,61 @@ class CalligraphyFactory {
         // AppCompat API21+ The ActionBar doesn't inflate default Title/SubTitle, we need to scan the
         // Toolbar(Which underlies the ActionBar) for its children.
         if (CalligraphyUtils.canCheckForV7Toolbar() && view instanceof android.support.v7.widget.Toolbar) {
-            final ViewGroup parent = (ViewGroup) view;
-            parent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-                @Override
-                public void onGlobalLayout() {
-                    int childCount = parent.getChildCount();
-                    if (childCount != 0) {
-                        // Process children, defer draw as it has set the typeface.
-                        for (int i = 0; i < childCount; i++) {
-                            onViewCreated(parent.getChildAt(i), context, null);
-                        }
-                    }
+            final Toolbar toolbar = (Toolbar) view;
+            toolbar.getViewTreeObserver().addOnGlobalLayoutListener(new ToolbarLayoutListener(this, context, toolbar));
+        }
 
-                    // Our dark deed is done
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                        //noinspection deprecation
-                        parent.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    } else {
-                        parent.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    }
+    }
+
+    private static class ToolbarLayoutListener implements ViewTreeObserver.OnGlobalLayoutListener {
+
+        private final WeakReference<CalligraphyFactory> mCalligraphyFactory;
+        private final WeakReference<Context> mContextRef;
+        private final WeakReference<Toolbar> mToolbarReference;
+        private final CharSequence orignalTitle;
+        private final CharSequence orignalSubTitle;
+
+        private ToolbarLayoutListener(final CalligraphyFactory calligraphyFactory,
+                                      final Context context, Toolbar toolbar) {
+            mCalligraphyFactory = new WeakReference<>(calligraphyFactory);
+            mContextRef = new WeakReference<>(context);
+            mToolbarReference = new WeakReference<>(toolbar);
+            orignalTitle = toolbar.getTitle();
+            orignalSubTitle = toolbar.getSubtitle();
+            toolbar.setTitle("Title");
+            toolbar.setSubtitle("SubTitle");
+        }
+
+        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+        @Override public void onGlobalLayout() {
+            final Toolbar toolbar = mToolbarReference.get();
+            final Context context = mContextRef.get();
+            final CalligraphyFactory factory = mCalligraphyFactory.get();
+            if (toolbar == null) return;
+            if (factory == null || context == null) {
+                removeSelf(toolbar);
+                return;
+            }
+
+            int childCount = toolbar.getChildCount();
+            if (childCount != 0) {
+                // Process children, defer draw as it has set the typeface.
+                for (int i = 0; i < childCount; i++) {
+                    factory.onViewCreated(toolbar.getChildAt(i), context, null);
                 }
-            });
+            }
+            removeSelf(toolbar);
+            toolbar.setTitle(orignalTitle);
+            toolbar.setSubtitle(orignalSubTitle);
+        }
+
+        private void removeSelf(final Toolbar toolbar) {// Our dark deed is done
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                //noinspection deprecation
+                toolbar.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+            } else {
+                toolbar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
         }
 
         // Try to set typeface for custom views using interface method or via reflection if available

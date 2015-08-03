@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-  provided 'com.android.support:appcompat-v7:22.2.0'
+  provided 'com.android.support:appcompat-v7:22.2.1'
 }
 
 apply from: rootProject.file('gradle/deploy.gradle')

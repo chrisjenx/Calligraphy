@@ -4,7 +4,7 @@
 
     <!-- Base application theme. -->
     <!--<style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">-->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
         <!-- Action Bar Theme -->
@@ -16,10 +16,15 @@
     <!-- AppTheme ActionBar Style -->
     <style name="AppTheme.ActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:titleTextStyle">@style/AppTheme.ActionBar.TextAppearance</item>
+        <item name="android:subtitleTextStyle">@style/AppTheme.ActionBar.TextAppearance.SubTitle</item>
     </style>
 
-    <style name="AppTheme.ActionBar.TextAppearance" parent="android:TextAppearance.Holo.Widget.ActionBar.Title.Inverse">
+    <style name="AppTheme.ActionBar.TextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
         <item name="fontPath">fonts/Oswald-Stencbab.ttf</item>
+    </style>
+
+    <style name="AppTheme.ActionBar.TextAppearance.SubTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Subtitle.Inverse">
+        <item name="fontPath">fonts/gtw.ttf</item>
     </style>
 
 

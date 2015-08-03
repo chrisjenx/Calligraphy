@@ -1,9 +1,23 @@
-<FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="uk.co.chrisjenx.calligraphy.sample.MainActivity"
+    tools:ignore="MergeRootFrame">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"/>
+
+    <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="uk.co.chrisjenx.calligraphy.sample.MainActivity"
-        tools:ignore="MergeRootFrame">
-</FrameLayout>
+        android:layout_marginTop="?attr/actionBarSize"
+        />
+
+
+</merge>

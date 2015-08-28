@@ -159,7 +159,7 @@ SpannableStringBuilder sBuilder = new SpannableStringBuilder();
 sBuilder.append("Hello!") // Bold this
         .append("I use Calligraphy"); // Default TextView font.
 // Create the Typeface you want to apply to certain text
-CalligraphyTypefaceSpan typefaceSpan = new CalligraphyTypefaceSpan(TypefaceUtils.load(getAssets(), "fonts/Roboto-Bold.ttf");
+CalligraphyTypefaceSpan typefaceSpan = new CalligraphyTypefaceSpan(TypefaceUtils.load(getAssets(), "fonts/Roboto-Bold.ttf"));
 // Apply typeface to the Spannable 0 - 6 "Hello!" This can of course by dynamic.
 sBuilder.setSpan(typefaceSpan, 0, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 setText(sBuilder, TextView.BufferType.SPANNABLE);

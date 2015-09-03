@@ -11,8 +11,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -104,6 +107,10 @@ public class CalligraphyConfig {
      * Class Styles. Build from DEFAULT_STYLES and the builder.
      */
     private final Map<Class<? extends TextView>, Integer> mClassStyleAttributeMap;
+    /**
+     * Calligraphy factory plugins to notify on view creation. Can be null.
+     */
+    private final List<CalligraphyFactoryPlugin> mfactoryPlugins;
 
     protected CalligraphyConfig(Builder builder) {
         mIsFontSet = builder.isFontSet;
@@ -114,6 +121,7 @@ public class CalligraphyConfig {
         final Map<Class<? extends TextView>, Integer> tempMap = new HashMap<>(DEFAULT_STYLES);
         tempMap.putAll(builder.mStyleClassMap);
         mClassStyleAttributeMap = Collections.unmodifiableMap(tempMap);
+        mfactoryPlugins = builder.factoryPlugins;
     }
 
     /**
@@ -149,6 +157,13 @@ public class CalligraphyConfig {
         return mAttrId;
     }
 
+    /**
+     * @return factory plugins to notify on view creation. Can be null.
+     */
+    List<CalligraphyFactoryPlugin> getFactoryPlugins() {
+        return mfactoryPlugins;
+    }
+
     public static class Builder {
         /**
          * Default AttrID if not set.
@@ -178,6 +193,10 @@ public class CalligraphyConfig {
          * Additional Class Styles. Can be empty.
          */
         private Map<Class<? extends TextView>, Integer> mStyleClassMap = new HashMap<>();
+        /**
+         * Custom CalligraphyFactory plugins. Can be null.
+         */
+        private List<CalligraphyFactoryPlugin> factoryPlugins;
 
         /**
          * This defaults to R.attr.fontPath. So only override if you want to use your own attrId.
@@ -275,9 +294,27 @@ public class CalligraphyConfig {
             return this;
         }
 
+        /**
+         * Register a new CalligraphyFactoryPlugin. CalligraphyFactory's plugins will be called
+         * after a view has been created. The plugin can process custom attributes.
+         *
+         * @param calligraphyFactoryPlugin        the new plugin to register
+         * @return this builder.
+         */
+        public Builder addFactoryPlugin(CalligraphyFactoryPlugin calligraphyFactoryPlugin) {
+            if (factoryPlugins == null) {
+                factoryPlugins = new ArrayList<>();
+            }
+
+            factoryPlugins.add(calligraphyFactoryPlugin);
+
+            return this;
+        }
+
         public CalligraphyConfig build() {
             this.isFontSet = !TextUtils.isEmpty(fontAssetPath);
             return new CalligraphyConfig(this);
         }
+
     }
 }

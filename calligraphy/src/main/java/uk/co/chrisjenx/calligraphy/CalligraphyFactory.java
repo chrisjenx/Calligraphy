@@ -3,6 +3,7 @@ package uk.co.chrisjenx.calligraphy;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -86,8 +87,13 @@ class CalligraphyFactory {
      */
     protected static boolean matchesResourceIdName(View view, String matches) {
         if (view.getId() == View.NO_ID) return false;
-        final String resourceEntryName = view.getResources().getResourceEntryName(view.getId());
-        return resourceEntryName.equalsIgnoreCase(matches);
+        try {
+            final String resourceEntryName = view.getResources().getResourceEntryName(view.getId());
+            return resourceEntryName.equalsIgnoreCase(matches);
+        } catch (Resources.NotFoundException ex) {
+            // If the view is not found, return false, same as if we were not given an id
+            return false;
+        }
     }
 
     private final int mAttributeId;

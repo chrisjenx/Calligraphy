@@ -101,6 +101,10 @@ public class CalligraphyConfig {
      */
     private final boolean mCustomViewCreation;
     /**
+     * Use Reflection to try to set typeface for custom views if they has setTypeface method
+     */
+    private final boolean mCustomViewTypefaceSupport;
+    /**
      * Class Styles. Build from DEFAULT_STYLES and the builder.
      */
     private final Map<Class<? extends TextView>, Integer> mClassStyleAttributeMap;
@@ -111,6 +115,7 @@ public class CalligraphyConfig {
         mAttrId = builder.attrId;
         mReflection = builder.reflection;
         mCustomViewCreation = builder.customViewCreation;
+        mCustomViewTypefaceSupport = builder.customViewTypefaceSupport;
         final Map<Class<? extends TextView>, Integer> tempMap = new HashMap<>(DEFAULT_STYLES);
         tempMap.putAll(builder.mStyleClassMap);
         mClassStyleAttributeMap = Collections.unmodifiableMap(tempMap);
@@ -138,6 +143,10 @@ public class CalligraphyConfig {
         return mCustomViewCreation;
     }
 
+    public boolean isCustomViewTypefaceSupport() {
+        return mCustomViewTypefaceSupport;
+    }
+
     /* default */ Map<Class<? extends TextView>, Integer> getClassStyles() {
         return mClassStyleAttributeMap;
     }
@@ -162,6 +171,10 @@ public class CalligraphyConfig {
          * Use Reflection to intercept CustomView inflation with the correct Context.
          */
         private boolean customViewCreation = true;
+        /**
+         * Use Reflection during view creation to try change typeface via setTypeface method if it exists
+         */
+        private boolean customViewTypefaceSupport = false;
         /**
          * The fontAttrId to look up the font path from.
          */
@@ -250,6 +263,11 @@ public class CalligraphyConfig {
          */
         public Builder disableCustomViewInflation() {
             this.customViewCreation = false;
+            return this;
+        }
+
+        public Builder setCustomViewTypefaceSupport(boolean support) {
+            this.customViewTypefaceSupport = support;
             return this;
         }
 

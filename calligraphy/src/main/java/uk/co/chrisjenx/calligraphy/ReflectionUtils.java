@@ -1,5 +1,7 @@
 package uk.co.chrisjenx.calligraphy;
 
+import android.util.Log;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -9,6 +11,8 @@ import java.lang.reflect.Method;
  * For Calligraphy.
  */
 class ReflectionUtils {
+
+    private static final String TAG = ReflectionUtils.class.getSimpleName();
 
     static Field getField(Class clazz, String fieldName) {
         try {
@@ -50,8 +54,8 @@ class ReflectionUtils {
         try {
             if (method == null) return;
             method.invoke(object, args);
-        } catch (IllegalAccessException | InvocationTargetException ignored) {
-            ignored.printStackTrace();
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            Log.d(TAG, "Can't invoke method using reflection", e);
         }
     }
 }

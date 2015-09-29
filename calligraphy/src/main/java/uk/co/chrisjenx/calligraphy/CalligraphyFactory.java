@@ -3,6 +3,7 @@ package uk.co.chrisjenx.calligraphy;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
+
+import java.lang.reflect.Method;
 
 class CalligraphyFactory {
 
@@ -124,18 +127,8 @@ class CalligraphyFactory {
             // Try to get typeface attribute value
             // Since we're not using namespace it's a little bit tricky
 
-            // Try view xml attributes
-            String textViewFont = CalligraphyUtils.pullFontPathFromView(context, attrs, mAttributeId);
-
-            // Try view style attributes
-            if (TextUtils.isEmpty(textViewFont)) {
-                textViewFont = CalligraphyUtils.pullFontPathFromStyle(context, attrs, mAttributeId);
-            }
-
-            // Try View TextAppearance
-            if (TextUtils.isEmpty(textViewFont)) {
-                textViewFont = CalligraphyUtils.pullFontPathFromTextAppearance(context, attrs, mAttributeId);
-            }
+            // Check xml attrs, style attrs and text appearance for font path
+            String textViewFont = resolveFontPath(context, attrs);
 
             // Try theme attributes
             if (TextUtils.isEmpty(textViewFont)) {
@@ -178,7 +171,41 @@ class CalligraphyFactory {
                 }
             });
         }
+
+        // Try to set typeface using setTypeface method if exists via reflection
+        if (CalligraphyConfig.get().isCustomViewTypefaceSupport() && !(view instanceof TextView)) {
+            final Method setTypeface = ReflectionUtils.getMethod(view.getClass(), "setTypeface");
+            if (setTypeface != null) {
+                String fontPath = resolveFontPath(context, attrs);
+                // Try to get default font path
+                if (TextUtils.isEmpty(fontPath)) {
+                    fontPath = CalligraphyConfig.get().getFontPath();
+                }
+                if (!TextUtils.isEmpty(fontPath)) {
+                    Typeface tf = TypefaceUtils.load(context.getAssets(), fontPath);
+                    ReflectionUtils.invokeMethod(view, setTypeface, tf);
+                }
+            }
+        }
     }
 
+    /**
+     * Resolving font path from xml attrs, style attrs or text appearance
+     */
+    private String resolveFontPath(Context context, AttributeSet attrs) {
+        // Try view xml attributes
+        String textViewFont = CalligraphyUtils.pullFontPathFromView(context, attrs, mAttributeId);
 
+        // Try view style attributes
+        if (TextUtils.isEmpty(textViewFont)) {
+            textViewFont = CalligraphyUtils.pullFontPathFromStyle(context, attrs, mAttributeId);
+        }
+
+        // Try View TextAppearance
+        if (TextUtils.isEmpty(textViewFont)) {
+            textViewFont = CalligraphyUtils.pullFontPathFromTextAppearance(context, attrs, mAttributeId);
+        }
+
+        return textViewFont;
+    }
 }

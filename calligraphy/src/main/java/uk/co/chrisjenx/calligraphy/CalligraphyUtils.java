@@ -34,7 +34,7 @@ public final class CalligraphyUtils {
             if (!(s instanceof Spannable)) {
                 s = new SpannableString(s);
             }
-            ((Spannable) s).setSpan(TypefaceUtils.getSpan(typeface), 0, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ((Spannable) s).setSpan(new CalligraphyTypefaceSpan(typeface), 0, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         return s;
     }
@@ -142,6 +142,50 @@ public final class CalligraphyUtils {
             return;
         }
         applyFontToTextView(context, textView, config, deferred);
+    }
+
+    public static String resolveFontPath(Context context, AttributeSet attrs, int styleAttrId, CalligraphyConfig config) {
+        return resolveFontPath(context, attrs, styleAttrId, config.getAttrId());
+    }
+
+    public static String resolveFontPath(Context context, AttributeSet attrs, int styleAttrId, int attributeId) {
+        return resolveFontPath(context, attrs, styleAttrId, -1, attributeId);
+    }
+
+    public static String resolveFontPath(Context context, AttributeSet attrs, final int styleAttrId, final int subStyleAttrId, int attributeId) {
+        return resolveFontPath(context, attrs, attributeId, null, new StyleProvider() {
+            @Override
+            public int[] onProvideStyleForTextView(TextView textView) {
+                return new int[] {styleAttrId, subStyleAttrId};
+            }
+        });
+    }
+
+    static String resolveFontPath(Context context, AttributeSet attrs, int attributeId, TextView textView, StyleProvider styleProvider) {
+        // Try view xml attributes
+        String textViewFont = CalligraphyUtils.pullFontPathFromView(context, attrs, attributeId);
+
+        // Try view style attributes
+        if (TextUtils.isEmpty(textViewFont)) {
+            textViewFont = CalligraphyUtils.pullFontPathFromStyle(context, attrs, attributeId);
+        }
+
+        // Try View TextAppearance
+        if (TextUtils.isEmpty(textViewFont)) {
+            textViewFont = CalligraphyUtils.pullFontPathFromTextAppearance(context, attrs, attributeId);
+        }
+
+        // Try theme attributes
+        if (TextUtils.isEmpty(textViewFont)) {
+            final int[] styleForTextView = styleProvider.onProvideStyleForTextView(textView);
+            if (styleForTextView[1] != -1) {
+                textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], styleForTextView[1], attributeId);
+            } else {
+                textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], attributeId);
+            }
+        }
+
+        return textViewFont;
     }
 
     /**

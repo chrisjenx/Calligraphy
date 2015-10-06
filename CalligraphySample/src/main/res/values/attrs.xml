@@ -2,5 +2,6 @@
 <resources>
 
     <attr name="textFieldStyle" format="reference"/>
+    <attr name="customTextStyle" format="reference"/>
 
 </resources>

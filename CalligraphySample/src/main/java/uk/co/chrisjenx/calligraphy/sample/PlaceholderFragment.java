@@ -8,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyUtils;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -37,6 +40,14 @@ public class PlaceholderFragment extends Fragment {
 
         ViewStub stubWithFontPath = ButterKnife.findById(view, R.id.stub_with_font_path);
         stubWithFontPath.inflate();
+
+        final TextView textViewInCode = new TextView(getActivity(), null, R.attr.customTextStyle);
+        textViewInCode.setText("Text view instantiated from code");
+        final String resolvedFontPath = CalligraphyUtils.resolveFontPath(getActivity(), null, R.attr.customTextStyle, CalligraphyConfig.get());
+        CalligraphyUtils.applyFontToTextView(getActivity(), textViewInCode, CalligraphyConfig.get(), resolvedFontPath);
+
+        final ViewGroup container = (ViewGroup) view.findViewById(R.id.fragment_main_samples);
+        container.addView(textViewInCode);
     }
 
     @OnClick({R.id.button_bold})

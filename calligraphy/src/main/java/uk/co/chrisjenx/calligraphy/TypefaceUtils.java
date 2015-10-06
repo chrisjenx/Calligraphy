@@ -19,7 +19,6 @@ import java.util.Map;
 public final class TypefaceUtils {
 
     private static final Map<String, Typeface> sCachedFonts = new HashMap<String, Typeface>();
-    private static final Map<Typeface, CalligraphyTypefaceSpan> sCachedSpans = new HashMap<Typeface, CalligraphyTypefaceSpan>();
 
     /**
      * A helper loading a custom font.
@@ -42,24 +41,6 @@ public final class TypefaceUtils {
                 return null;
             }
             return sCachedFonts.get(filePath);
-        }
-    }
-
-    /**
-     * A helper loading custom spans so we don't have to keep creating hundreds of spans.
-     *
-     * @param typeface not null typeface
-     * @return will return null of typeface passed in is null.
-     */
-    public static CalligraphyTypefaceSpan getSpan(final Typeface typeface) {
-        if (typeface == null) return null;
-        synchronized (sCachedSpans) {
-            if (!sCachedSpans.containsKey(typeface)) {
-                final CalligraphyTypefaceSpan span = new CalligraphyTypefaceSpan(typeface);
-                sCachedSpans.put(typeface, span);
-                return span;
-            }
-            return sCachedSpans.get(typeface);
         }
     }
 

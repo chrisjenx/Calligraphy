@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
-class CalligraphyFactory {
+class CalligraphyFactory implements StyleProvider {
 
     private static final String ACTION_BAR_TITLE = "action_bar_title";
     private static final String ACTION_BAR_SUBTITLE = "action_bar_subtitle";
@@ -113,7 +113,7 @@ class CalligraphyFactory {
         return view;
     }
 
-    void onViewCreatedInternal(View view, final Context context, AttributeSet attrs) {
+    void onViewCreatedInternal(final View view, final Context context, AttributeSet attrs) {
         if (view instanceof TextView) {
             // Fast path the setting of TextView's font, means if we do some delayed setting of font,
             // which has already been set by use we skip this TextView (mainly for inflating custom,
@@ -124,27 +124,7 @@ class CalligraphyFactory {
             // Try to get typeface attribute value
             // Since we're not using namespace it's a little bit tricky
 
-            // Try view xml attributes
-            String textViewFont = CalligraphyUtils.pullFontPathFromView(context, attrs, mAttributeId);
-
-            // Try view style attributes
-            if (TextUtils.isEmpty(textViewFont)) {
-                textViewFont = CalligraphyUtils.pullFontPathFromStyle(context, attrs, mAttributeId);
-            }
-
-            // Try View TextAppearance
-            if (TextUtils.isEmpty(textViewFont)) {
-                textViewFont = CalligraphyUtils.pullFontPathFromTextAppearance(context, attrs, mAttributeId);
-            }
-
-            // Try theme attributes
-            if (TextUtils.isEmpty(textViewFont)) {
-                final int[] styleForTextView = getStyleForTextView((TextView) view);
-                if (styleForTextView[1] != -1)
-                    textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], styleForTextView[1], mAttributeId);
-                else
-                    textViewFont = CalligraphyUtils.pullFontPathFromTheme(context, styleForTextView[0], mAttributeId);
-            }
+            String textViewFont = CalligraphyUtils.resolveFontPath(context, attrs, mAttributeId, (TextView) view, this);
 
             // Still need to defer the Native action bar, appcompat-v7:21+ uses the Toolbar underneath. But won't match these anyway.
             final boolean deferred = matchesResourceIdName(view, ACTION_BAR_TITLE) || matchesResourceIdName(view, ACTION_BAR_SUBTITLE);
@@ -180,5 +160,8 @@ class CalligraphyFactory {
         }
     }
 
-
+    @Override
+    public int[] onProvideStyleForTextView(TextView textView) {
+        return getStyleForTextView(textView);
+    }
 }

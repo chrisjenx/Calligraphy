@@ -34,7 +34,7 @@ public final class CalligraphyUtils {
             if (!(s instanceof Spannable)) {
                 s = new SpannableString(s);
             }
-            ((Spannable) s).setSpan(TypefaceUtils.getSpan(typeface), 0, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ((Spannable) s).setSpan(new CalligraphyTypefaceSpan(typeface), 0, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         return s;
     }

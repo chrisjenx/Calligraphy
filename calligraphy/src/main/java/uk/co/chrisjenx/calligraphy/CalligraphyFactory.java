@@ -172,21 +172,30 @@ class CalligraphyFactory {
             });
         }
 
-        // Try to set typeface using setTypeface method if exists via reflection
-        if (CalligraphyConfig.get().isCustomViewTypefaceSupport() && !(view instanceof TextView)) {
+        // Try to set typeface for custom views using interface method or via reflection if available
+        if (view instanceof HasTypeface) {
+            Typeface typeface = getDefaultTypeface(context, resolveFontPath(context, attrs));
+            if (typeface != null) {
+                ((HasTypeface) view).setTypeface(typeface);
+            }
+        } else if (CalligraphyConfig.get().isCustomViewTypefaceSupport() && CalligraphyConfig.get().isCustomViewHasTypeface(view)) {
             final Method setTypeface = ReflectionUtils.getMethod(view.getClass(), "setTypeface");
-            if (setTypeface != null) {
-                String fontPath = resolveFontPath(context, attrs);
-                // Try to get default font path
-                if (TextUtils.isEmpty(fontPath)) {
-                    fontPath = CalligraphyConfig.get().getFontPath();
-                }
-                if (!TextUtils.isEmpty(fontPath)) {
-                    Typeface tf = TypefaceUtils.load(context.getAssets(), fontPath);
-                    ReflectionUtils.invokeMethod(view, setTypeface, tf);
-                }
+            String fontPath = resolveFontPath(context, attrs);
+            Typeface typeface = getDefaultTypeface(context, fontPath);
+            if (setTypeface != null && typeface != null) {
+                ReflectionUtils.invokeMethod(view, setTypeface, typeface);
             }
         }
+    }
+
+    private Typeface getDefaultTypeface(Context context, String fontPath) {
+        if (TextUtils.isEmpty(fontPath)) {
+            fontPath = CalligraphyConfig.get().getFontPath();
+        }
+        if (!TextUtils.isEmpty(fontPath)) {
+            return TypefaceUtils.load(context.getAssets(), fontPath);
+        }
+        return null;
     }
 
     /**

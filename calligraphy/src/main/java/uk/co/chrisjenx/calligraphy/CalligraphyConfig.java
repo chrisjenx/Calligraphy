@@ -2,6 +2,7 @@ package uk.co.chrisjenx.calligraphy;
 
 import android.os.Build;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -13,7 +14,9 @@ import android.widget.ToggleButton;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by chris on 20/12/2013
@@ -109,6 +112,8 @@ public class CalligraphyConfig {
      */
     private final Map<Class<? extends TextView>, Integer> mClassStyleAttributeMap;
 
+    private final Set<Class<?>> hasTypefaceViews;
+
     protected CalligraphyConfig(Builder builder) {
         mIsFontSet = builder.isFontSet;
         mFontPath = builder.fontAssetPath;
@@ -119,6 +124,7 @@ public class CalligraphyConfig {
         final Map<Class<? extends TextView>, Integer> tempMap = new HashMap<>(DEFAULT_STYLES);
         tempMap.putAll(builder.mStyleClassMap);
         mClassStyleAttributeMap = Collections.unmodifiableMap(tempMap);
+        hasTypefaceViews = Collections.unmodifiableSet(builder.mHasTypefaceClasses);
     }
 
     /**
@@ -145,6 +151,10 @@ public class CalligraphyConfig {
 
     public boolean isCustomViewTypefaceSupport() {
         return mCustomViewTypefaceSupport;
+    }
+
+    public boolean isCustomViewHasTypeface(View view) {
+        return hasTypefaceViews.contains(view.getClass());
     }
 
     /* default */ Map<Class<? extends TextView>, Integer> getClassStyles() {
@@ -191,6 +201,8 @@ public class CalligraphyConfig {
          * Additional Class Styles. Can be empty.
          */
         private Map<Class<? extends TextView>, Integer> mStyleClassMap = new HashMap<>();
+
+        private Set<Class<?>> mHasTypefaceClasses = new HashSet<>();
 
         /**
          * This defaults to R.attr.fontPath. So only override if you want to use your own attrId.
@@ -266,11 +278,6 @@ public class CalligraphyConfig {
             return this;
         }
 
-        public Builder setCustomViewTypefaceSupport(boolean support) {
-            this.customViewTypefaceSupport = support;
-            return this;
-        }
-
         /**
          * Add a custom style to get looked up. If you use a custom class that has a parent style
          * which is not part of the default android styles you will need to add it here.
@@ -290,6 +297,15 @@ public class CalligraphyConfig {
         public Builder addCustomStyle(final Class<? extends TextView> styleClass, final int styleResourceAttribute) {
             if (styleClass == null || styleResourceAttribute == 0) return this;
             mStyleClassMap.put(styleClass, styleResourceAttribute);
+            return this;
+        }
+
+        /**
+         * Registering custom view with setTypeface method to apply typeface during inflation via reflection
+         */
+        public Builder addCustomViewWithSetTypeface(Class<?> clazz) {
+            customViewTypefaceSupport = true;
+            mHasTypefaceClasses.add(clazz);
             return this;
         }
 

@@ -111,7 +111,10 @@ public class CalligraphyConfig {
      * Class Styles. Build from DEFAULT_STYLES and the builder.
      */
     private final Map<Class<? extends TextView>, Integer> mClassStyleAttributeMap;
-
+    /**
+     * Collection of custom non-{@code TextView}'s registered for applying typeface during inflation
+     * @see uk.co.chrisjenx.calligraphy.CalligraphyConfig.Builder#addCustomViewWithSetTypeface(Class)
+     */
     private final Set<Class<?>> hasTypefaceViews;
 
     protected CalligraphyConfig(Builder builder) {
@@ -301,7 +304,7 @@ public class CalligraphyConfig {
         }
 
         /**
-         * Registering custom view with setTypeface method to apply typeface during inflation via reflection
+         * Register custom non-{@code TextView}'s which implement {@code setTypeface} so they can have the Typeface applied during inflation.
          */
         public Builder addCustomViewWithSetTypeface(Class<?> clazz) {
             customViewTypefaceSupport = true;

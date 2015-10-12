@@ -2,6 +2,7 @@ package uk.co.chrisjenx.calligraphy;
 
 import android.os.Build;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -13,7 +14,9 @@ import android.widget.ToggleButton;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by chris on 20/12/2013
@@ -101,9 +104,18 @@ public class CalligraphyConfig {
      */
     private final boolean mCustomViewCreation;
     /**
+     * Use Reflection to try to set typeface for custom views if they has setTypeface method
+     */
+    private final boolean mCustomViewTypefaceSupport;
+    /**
      * Class Styles. Build from DEFAULT_STYLES and the builder.
      */
     private final Map<Class<? extends TextView>, Integer> mClassStyleAttributeMap;
+    /**
+     * Collection of custom non-{@code TextView}'s registered for applying typeface during inflation
+     * @see uk.co.chrisjenx.calligraphy.CalligraphyConfig.Builder#addCustomViewWithSetTypeface(Class)
+     */
+    private final Set<Class<?>> hasTypefaceViews;
 
     protected CalligraphyConfig(Builder builder) {
         mIsFontSet = builder.isFontSet;
@@ -111,9 +123,11 @@ public class CalligraphyConfig {
         mAttrId = builder.attrId;
         mReflection = builder.reflection;
         mCustomViewCreation = builder.customViewCreation;
+        mCustomViewTypefaceSupport = builder.customViewTypefaceSupport;
         final Map<Class<? extends TextView>, Integer> tempMap = new HashMap<>(DEFAULT_STYLES);
         tempMap.putAll(builder.mStyleClassMap);
         mClassStyleAttributeMap = Collections.unmodifiableMap(tempMap);
+        hasTypefaceViews = Collections.unmodifiableSet(builder.mHasTypefaceClasses);
     }
 
     /**
@@ -136,6 +150,14 @@ public class CalligraphyConfig {
 
     public boolean isCustomViewCreation() {
         return mCustomViewCreation;
+    }
+
+    public boolean isCustomViewTypefaceSupport() {
+        return mCustomViewTypefaceSupport;
+    }
+
+    public boolean isCustomViewHasTypeface(View view) {
+        return hasTypefaceViews.contains(view.getClass());
     }
 
     /* default */ Map<Class<? extends TextView>, Integer> getClassStyles() {
@@ -163,6 +185,10 @@ public class CalligraphyConfig {
          */
         private boolean customViewCreation = true;
         /**
+         * Use Reflection during view creation to try change typeface via setTypeface method if it exists
+         */
+        private boolean customViewTypefaceSupport = false;
+        /**
          * The fontAttrId to look up the font path from.
          */
         private int attrId = R.attr.fontPath;
@@ -178,6 +204,8 @@ public class CalligraphyConfig {
          * Additional Class Styles. Can be empty.
          */
         private Map<Class<? extends TextView>, Integer> mStyleClassMap = new HashMap<>();
+
+        private Set<Class<?>> mHasTypefaceClasses = new HashSet<>();
 
         /**
          * This defaults to R.attr.fontPath. So only override if you want to use your own attrId.
@@ -272,6 +300,15 @@ public class CalligraphyConfig {
         public Builder addCustomStyle(final Class<? extends TextView> styleClass, final int styleResourceAttribute) {
             if (styleClass == null || styleResourceAttribute == 0) return this;
             mStyleClassMap.put(styleClass, styleResourceAttribute);
+            return this;
+        }
+
+        /**
+         * Register custom non-{@code TextView}'s which implement {@code setTypeface} so they can have the Typeface applied during inflation.
+         */
+        public Builder addCustomViewWithSetTypeface(Class<?> clazz) {
+            customViewTypefaceSupport = true;
+            mHasTypefaceClasses.add(clazz);
             return this;
         }
 

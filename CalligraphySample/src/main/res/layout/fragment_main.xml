@@ -72,6 +72,11 @@
             android:layout_height="wrap_content"
             android:text="@string/defined_custom_view"/>
 
+        <uk.co.chrisjenx.calligraphy.sample.CustomViewWithTypefaceSupport
+            fontPath="fonts/Oswald-Stencbab.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <ViewStub
             android:id="@+id/stub"
             android:layout_width="wrap_content"

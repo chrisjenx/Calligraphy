@@ -36,9 +36,10 @@ class CalligraphyFactory {
             styleIds[1] = android.R.attr.subtitleTextStyle;
         }
         if (styleIds[0] == -1) {
+            final CalligraphyConfig config = CalligraphyConfig.from(view.getContext());
             // Use TextAppearance as default style
-            styleIds[0] = CalligraphyConfig.get().getClassStyles().containsKey(view.getClass())
-                    ? CalligraphyConfig.get().getClassStyles().get(view.getClass())
+            styleIds[0] = config.getClassStyles().containsKey(view.getClass())
+                    ? config.getClassStyles().get(view.getClass())
                     : android.R.attr.textAppearance;
         }
         return styleIds;
@@ -117,6 +118,7 @@ class CalligraphyFactory {
     }
 
     void onViewCreatedInternal(View view, final Context context, AttributeSet attrs) {
+        final CalligraphyConfig config = CalligraphyConfig.from(context);
         if (view instanceof TextView) {
             // Fast path the setting of TextView's font, means if we do some delayed setting of font,
             // which has already been set by use we skip this TextView (mainly for inflating custom,
@@ -142,7 +144,7 @@ class CalligraphyFactory {
             // Still need to defer the Native action bar, appcompat-v7:21+ uses the Toolbar underneath. But won't match these anyway.
             final boolean deferred = matchesResourceIdName(view, ACTION_BAR_TITLE) || matchesResourceIdName(view, ACTION_BAR_SUBTITLE);
 
-            CalligraphyUtils.applyFontToTextView(context, (TextView) view, CalligraphyConfig.get(), textViewFont, deferred);
+            CalligraphyUtils.applyFontToTextView(context, (TextView) view, config, textViewFont, deferred);
         }
 
         // AppCompat API21+ The ActionBar doesn't inflate default Title/SubTitle, we need to scan the
@@ -178,7 +180,7 @@ class CalligraphyFactory {
             if (typeface != null) {
                 ((HasTypeface) view).setTypeface(typeface);
             }
-        } else if (CalligraphyConfig.get().isCustomViewTypefaceSupport() && CalligraphyConfig.get().isCustomViewHasTypeface(view)) {
+        } else if (config.isCustomViewTypefaceSupport() && config.isCustomViewHasTypeface(view)) {
             final Method setTypeface = ReflectionUtils.getMethod(view.getClass(), "setTypeface");
             String fontPath = resolveFontPath(context, attrs);
             Typeface typeface = getDefaultTypeface(context, fontPath);
@@ -190,7 +192,7 @@ class CalligraphyFactory {
 
     private Typeface getDefaultTypeface(Context context, String fontPath) {
         if (TextUtils.isEmpty(fontPath)) {
-            fontPath = CalligraphyConfig.get().getFontPath();
+            fontPath = CalligraphyConfig.from(context).getFontPath();
         }
         if (!TextUtils.isEmpty(fontPath)) {
             return TypefaceUtils.load(context.getAssets(), fontPath);

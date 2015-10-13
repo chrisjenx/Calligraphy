@@ -13,22 +13,38 @@ import android.view.View;
  */
 public class CalligraphyContextWrapper extends ContextWrapper {
 
+    static final String CALLIGRAPHY_CONFIG_SERVICE = CalligraphyConfig.class.getName();
+
     private CalligraphyLayoutInflater mInflater;
 
     private final int mAttributeId;
+    private final CalligraphyConfig mCalligraphyConfig;
 
     /**
-     * Uses the default configuration from {@link uk.co.chrisjenx.calligraphy.CalligraphyConfig}
+     * Convenience for calling {@link #wrap(Context, CalligraphyConfig)} with the
+     * {@linkplain CalligraphyConfig#get default configuration}.
      *
      * Remember if you are defining default in the
      * {@link uk.co.chrisjenx.calligraphy.CalligraphyConfig} make sure this is initialised before
      * the activity is created.
-     *
-     * @param base ContextBase to Wrap.
-     * @return ContextWrapper to pass back to the activity.
      */
     public static ContextWrapper wrap(Context base) {
-        return new CalligraphyContextWrapper(base);
+        return wrap(base, CalligraphyConfig.get());
+    }
+
+    /**
+     * Configures Calligraphy to be used in the {@code context} with the provided {@code config}.
+     *
+     * <p>You would rarely need to use this method directly, so unless you need a different
+     * configuration in multiple contexts in you app, prefer defining a
+     * {@linkplain CalligraphyConfig#initDefault default configuration} and use
+     * {@link #wrap(Context)} instead.
+     *
+     * @return Context to use as the {@linkplain Activity#attachBaseContext base context} of your
+     * Activity or for initializing a view hierarchy.
+     */
+    public static ContextWrapper wrap(Context base, CalligraphyConfig config) {
+        return new CalligraphyContextWrapper(base, config);
     }
 
     /**
@@ -72,18 +88,10 @@ public class CalligraphyContextWrapper extends ContextWrapper {
         return (CalligraphyActivityFactory) activity.getLayoutInflater();
     }
 
-    /**
-     * Uses the default configuration from {@link uk.co.chrisjenx.calligraphy.CalligraphyConfig}
-     *
-     * Remember if you are defining default in the
-     * {@link uk.co.chrisjenx.calligraphy.CalligraphyConfig} make sure this is initialised before
-     * the activity is created.
-     *
-     * @param base ContextBase to Wrap
-     */
-    CalligraphyContextWrapper(Context base) {
+    CalligraphyContextWrapper(Context base, CalligraphyConfig config) {
         super(base);
-        mAttributeId = CalligraphyConfig.get().getAttrId();
+        mAttributeId = config.getAttrId();
+        mCalligraphyConfig = config;
     }
 
     /**
@@ -102,6 +110,7 @@ public class CalligraphyContextWrapper extends ContextWrapper {
     public CalligraphyContextWrapper(Context base, int attributeId) {
         super(base);
         mAttributeId = attributeId;
+        mCalligraphyConfig = null;
     }
 
     @Override
@@ -111,6 +120,9 @@ public class CalligraphyContextWrapper extends ContextWrapper {
                 mInflater = new CalligraphyLayoutInflater(LayoutInflater.from(getBaseContext()), this, mAttributeId, false);
             }
             return mInflater;
+        }
+        if (CALLIGRAPHY_CONFIG_SERVICE.equals(name)) {
+            return mCalligraphyConfig != null ? mCalligraphyConfig : CalligraphyConfig.get();
         }
         return super.getSystemService(name);
     }

@@ -22,5 +22,8 @@
 
     <string name="button_default">Default Font (show dialog)</string>
     <string name="button_defined">Bold Button (show toast)</string>
+    <string name="button_non_default_config">Context specific Calligraphy config (show dialog)</string>
+    <string name="dialog_non_default_config_title">Context specific Calligraphy config</string>
+    <string name="dialog_non_default_config_message">\nUsing non-global Calligraphy config for this dialog with Oswald as the default font.\n</string>
 
 </resources>

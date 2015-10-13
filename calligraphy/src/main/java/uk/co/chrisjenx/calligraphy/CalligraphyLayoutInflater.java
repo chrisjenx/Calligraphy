@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
 
     private final int mAttributeId;
     private final CalligraphyFactory mCalligraphyFactory;
+    private final CalligraphyConfig mCalligraphyConfig;
     // Reflection Hax
     private boolean mSetPrivateFactory = false;
     private Field mConstructorArgs = null;
@@ -34,12 +36,14 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
         super(context);
         mAttributeId = attributeId;
         mCalligraphyFactory = new CalligraphyFactory(attributeId);
+        mCalligraphyConfig = CalligraphyConfig.from(context);
         setUpLayoutFactories(false);
     }
 
     protected CalligraphyLayoutInflater(LayoutInflater original, Context newContext, int attributeId, final boolean cloned) {
         super(original, newContext);
         mAttributeId = attributeId;
+        mCalligraphyConfig = CalligraphyConfig.from(newContext);
         mCalligraphyFactory = new CalligraphyFactory(attributeId);
         setUpLayoutFactories(cloned);
     }
@@ -105,7 +109,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
         // Already tried to set the factory.
         if (mSetPrivateFactory) return;
         // Reflection (Or Old Device) skip.
-        if (!CalligraphyConfig.get().isReflection()) return;
+        if (!mCalligraphyConfig.isReflection()) return;
         // Skip if not attached to an activity.
         if (!(getContext() instanceof Factory2)) {
             mSetPrivateFactory = true;
@@ -195,7 +199,7 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
         // significant difference to performance on Android 4.0+.
 
         // If CustomViewCreation is off skip this.
-        if (!CalligraphyConfig.get().isCustomViewCreation()) return view;
+        if (!mCalligraphyConfig.isCustomViewCreation()) return view;
         if (view == null && name.indexOf('.') > -1) {
             if (mConstructorArgs == null)
                 mConstructorArgs = ReflectionUtils.getField(LayoutInflater.class, "mConstructorArgs");

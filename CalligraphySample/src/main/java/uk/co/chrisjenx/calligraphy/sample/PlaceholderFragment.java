@@ -1,6 +1,7 @@
 package uk.co.chrisjenx.calligraphy.sample;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -56,5 +59,20 @@ public class PlaceholderFragment extends Fragment {
             }
         });
         builder.create().show();
+    }
+
+    @OnClick(R.id.button_non_default_config)
+    public void onClickNonDefaultConfig() {
+        final Context calligraphyContext =
+            CalligraphyContextWrapper.wrap(getActivity(), new CalligraphyConfig.Builder()
+                    .setDefaultFontPath("fonts/Oswald-Stencbab.ttf")
+                    .setFontAttrId(R.attr.fontPath)
+                    .addCustomViewWithSetTypeface(CustomViewWithTypefaceSupport.class)
+                    .addCustomStyle(TextField.class, R.attr.textFieldStyle)
+                    .build());
+        new android.support.v7.app.AlertDialog.Builder(calligraphyContext)
+                .setTitle(R.string.dialog_non_default_config_title)
+                .setView(R.layout.dialog_non_default_config)
+                .show();
     }
 }

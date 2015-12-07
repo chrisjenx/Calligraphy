@@ -14,11 +14,11 @@ public class CalligraphyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/Roboto-ThinItalic.ttf")
-                        .setFontAttrId(R.attr.fontPath)
-                        .addCustomViewWithSetTypeface(CustomViewWithTypefaceSupport.class)
-                        .addCustomStyle(TextField.class, R.attr.textFieldStyle)
-                        .build()
+                .setDefaultFontPath("fonts/Roboto-ThinItalic.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .addCustomViewWithSetTypeface(CustomViewWithTypefaceSupport.class)
+                .addCustomStyle(TextField.class, R.attr.textFieldStyle)
+                .build()
         );
     }
 }

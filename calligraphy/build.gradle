@@ -1,25 +1,26 @@
 apply plugin: 'com.android.library'
 
 android {
-  compileSdkVersion 22
-  buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
 
-  defaultConfig {
-    minSdkVersion 7
-    targetSdkVersion 22
-    versionCode project.ext.versionCodeInt
-    versionName version
-  }
-
-  buildTypes {
-    release {
-      minifyEnabled false
+    defaultConfig {
+        minSdkVersion 7
+        targetSdkVersion 23
+        versionCode project.ext.versionCodeInt
+        versionName version
     }
-  }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
 }
 
 dependencies {
-  provided 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
 }
 
 apply from: rootProject.file('gradle/deploy.gradle')

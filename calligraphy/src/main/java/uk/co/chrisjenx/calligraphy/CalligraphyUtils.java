@@ -13,6 +13,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.SparseArray;
 import android.util.TypedValue;
 import android.widget.TextView;
 
@@ -21,6 +22,8 @@ import android.widget.TextView;
  * Project: Calligraphy
  */
 public final class CalligraphyUtils {
+
+    private static final SparseArray<int[]> ATTRIBUTE_ARRAY_CACHE = new SparseArray<>(10);
 
     /**
      * Applies a custom typeface span to the text.
@@ -182,7 +185,7 @@ public final class CalligraphyUtils {
     static String pullFontPathFromStyle(Context context, AttributeSet attrs, int attributeId) {
         if (attributeId == -1 || attrs == null)
             return null;
-        final TypedArray typedArray = context.obtainStyledAttributes(attrs, new int[]{attributeId});
+        final TypedArray typedArray = context.obtainStyledAttributes(attrs, getAttributeArray(attributeId));
         if (typedArray != null) {
             try {
                 // First defined attribute
@@ -213,7 +216,7 @@ public final class CalligraphyUtils {
         }
 
         int textAppearanceId = -1;
-        final TypedArray typedArrayAttr = context.obtainStyledAttributes(attrs, new int[]{android.R.attr.textAppearance});
+        final TypedArray typedArrayAttr = context.obtainStyledAttributes(attrs, getAttributeArray(android.R.attr.textAppearance));
         if (typedArrayAttr != null) {
             try {
                 textAppearanceId = typedArrayAttr.getResourceId(0, -1);
@@ -225,7 +228,7 @@ public final class CalligraphyUtils {
             }
         }
 
-        final TypedArray textAppearanceAttrs = context.obtainStyledAttributes(textAppearanceId, new int[]{attributeId});
+        final TypedArray textAppearanceAttrs = context.obtainStyledAttributes(textAppearanceId, getAttributeArray(attributeId));
         if (textAppearanceAttrs != null) {
             try {
                 return textAppearanceAttrs.getString(0);
@@ -255,7 +258,7 @@ public final class CalligraphyUtils {
         final TypedValue value = new TypedValue();
 
         theme.resolveAttribute(styleAttrId, value, true);
-        final TypedArray typedArray = theme.obtainStyledAttributes(value.resourceId, new int[]{attributeId});
+        final TypedArray typedArray = theme.obtainStyledAttributes(value.resourceId, getAttributeArray(attributeId));
         try {
             String font = typedArray.getString(0);
             return font;
@@ -285,7 +288,7 @@ public final class CalligraphyUtils {
 
         theme.resolveAttribute(styleAttrId, value, true);
         int subStyleResId = -1;
-        final TypedArray parentTypedArray = theme.obtainStyledAttributes(value.resourceId, new int[]{subStyleAttrId});
+        final TypedArray parentTypedArray = theme.obtainStyledAttributes(value.resourceId, getAttributeArray(subStyleAttrId));
         try {
             subStyleResId = parentTypedArray.getResourceId(0, -1);
         } catch (Exception ignore) {
@@ -296,7 +299,7 @@ public final class CalligraphyUtils {
         }
 
         if (subStyleResId == -1) return null;
-        final TypedArray subTypedArray = context.obtainStyledAttributes(subStyleResId, new int[]{attributeId});
+        final TypedArray subTypedArray = context.obtainStyledAttributes(subStyleResId, getAttributeArray(attributeId));
         if (subTypedArray != null) {
             try {
                 return subTypedArray.getString(0);
@@ -347,6 +350,16 @@ public final class CalligraphyUtils {
         return sAppCompatViewCheck;
     }
 
+    private static int[] getAttributeArray(int attributeId) {
+        int[] array = ATTRIBUTE_ARRAY_CACHE.get(attributeId);
+
+        if (array == null) {
+            array = new int[]{attributeId};
+            ATTRIBUTE_ARRAY_CACHE.put(attributeId, array);
+        }
+
+        return array;
+    }
 
     private CalligraphyUtils() {
     }

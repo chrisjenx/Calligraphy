@@ -94,10 +94,10 @@ class CalligraphyFactory {
         return resourceEntryName.equalsIgnoreCase(matches);
     }
 
-    private final int mAttributeId;
+    private final int[] mAttributeId;
 
     public CalligraphyFactory(int attributeId) {
-        this.mAttributeId = attributeId;
+        this.mAttributeId = new int[]{attributeId};
     }
 
     /**

@@ -22,6 +22,8 @@ import android.widget.TextView;
  */
 public final class CalligraphyUtils {
 
+    public static final int[] ANDROID_ATTR_TEXT_APPEARANCE = new int[]{android.R.attr.textAppearance};
+
     /**
      * Applies a custom typeface span to the text.
      *
@@ -152,13 +154,13 @@ public final class CalligraphyUtils {
      * @param attributeId if -1 returns null.
      * @return null if attribute is not defined or added to View
      */
-    static String pullFontPathFromView(Context context, AttributeSet attrs, int attributeId) {
-        if (attributeId == -1 || attrs == null)
+    static String pullFontPathFromView(Context context, AttributeSet attrs, int[] attributeId) {
+        if (attributeId == null || attrs == null)
             return null;
 
         final String attributeName;
         try {
-            attributeName = context.getResources().getResourceEntryName(attributeId);
+            attributeName = context.getResources().getResourceEntryName(attributeId[0]);
         } catch (Resources.NotFoundException e) {
             // invalid attribute ID
             return null;
@@ -179,10 +181,10 @@ public final class CalligraphyUtils {
      * @param attributeId if -1 returns null.
      * @return null if attribute is not defined or found in the Style
      */
-    static String pullFontPathFromStyle(Context context, AttributeSet attrs, int attributeId) {
-        if (attributeId == -1 || attrs == null)
+    static String pullFontPathFromStyle(Context context, AttributeSet attrs, int[] attributeId) {
+        if (attributeId == null || attrs == null)
             return null;
-        final TypedArray typedArray = context.obtainStyledAttributes(attrs, new int[]{attributeId});
+        final TypedArray typedArray = context.obtainStyledAttributes(attrs, attributeId);
         if (typedArray != null) {
             try {
                 // First defined attribute
@@ -207,13 +209,13 @@ public final class CalligraphyUtils {
      * @param attributeId if -1 returns null.
      * @return returns null if attribute is not defined or if no TextAppearance is found.
      */
-    static String pullFontPathFromTextAppearance(final Context context, AttributeSet attrs, int attributeId) {
-        if (attributeId == -1 || attrs == null) {
+    static String pullFontPathFromTextAppearance(final Context context, AttributeSet attrs, int[] attributeId) {
+        if (attributeId == null || attrs == null) {
             return null;
         }
 
         int textAppearanceId = -1;
-        final TypedArray typedArrayAttr = context.obtainStyledAttributes(attrs, new int[]{android.R.attr.textAppearance});
+        final TypedArray typedArrayAttr = context.obtainStyledAttributes(attrs, ANDROID_ATTR_TEXT_APPEARANCE);
         if (typedArrayAttr != null) {
             try {
                 textAppearanceId = typedArrayAttr.getResourceId(0, -1);
@@ -225,7 +227,7 @@ public final class CalligraphyUtils {
             }
         }
 
-        final TypedArray textAppearanceAttrs = context.obtainStyledAttributes(textAppearanceId, new int[]{attributeId});
+        final TypedArray textAppearanceAttrs = context.obtainStyledAttributes(textAppearanceId, attributeId);
         if (textAppearanceAttrs != null) {
             try {
                 return textAppearanceAttrs.getString(0);
@@ -247,15 +249,15 @@ public final class CalligraphyUtils {
      * @param attributeId if -1 returns null.
      * @return null if no theme or attribute defined.
      */
-    static String pullFontPathFromTheme(Context context, int styleAttrId, int attributeId) {
-        if (styleAttrId == -1 || attributeId == -1)
+    static String pullFontPathFromTheme(Context context, int styleAttrId, int[] attributeId) {
+        if (styleAttrId == -1 || attributeId == null)
             return null;
 
         final Resources.Theme theme = context.getTheme();
         final TypedValue value = new TypedValue();
 
         theme.resolveAttribute(styleAttrId, value, true);
-        final TypedArray typedArray = theme.obtainStyledAttributes(value.resourceId, new int[]{attributeId});
+        final TypedArray typedArray = theme.obtainStyledAttributes(value.resourceId, attributeId);
         try {
             String font = typedArray.getString(0);
             return font;
@@ -276,8 +278,8 @@ public final class CalligraphyUtils {
      * @param attributeId    if -1 returns null.
      * @return null if no theme or attribute defined.
      */
-    static String pullFontPathFromTheme(Context context, int styleAttrId, int subStyleAttrId, int attributeId) {
-        if (styleAttrId == -1 || attributeId == -1)
+    static String pullFontPathFromTheme(Context context, int styleAttrId, int subStyleAttrId, int[] attributeId) {
+        if (styleAttrId == -1 || attributeId == null)
             return null;
 
         final Resources.Theme theme = context.getTheme();
@@ -296,7 +298,7 @@ public final class CalligraphyUtils {
         }
 
         if (subStyleResId == -1) return null;
-        final TypedArray subTypedArray = context.obtainStyledAttributes(subStyleResId, new int[]{attributeId});
+        final TypedArray subTypedArray = context.obtainStyledAttributes(subStyleResId, attributeId);
         if (subTypedArray != null) {
             try {
                 return subTypedArray.getString(0);
@@ -346,7 +348,6 @@ public final class CalligraphyUtils {
         }
         return sAppCompatViewCheck;
     }
-
 
     private CalligraphyUtils() {
     }

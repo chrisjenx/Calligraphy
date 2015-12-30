@@ -9,6 +9,7 @@ android {
         targetSdkVersion 23
         versionCode project.ext.versionCodeInt
         versionName version
+        consumerProguardFiles 'consumer-proguard-rules.txt'
     }
 
     buildTypes {

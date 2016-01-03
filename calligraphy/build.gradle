@@ -9,12 +9,13 @@ android {
         targetSdkVersion 23
         versionCode project.ext.versionCodeInt
         versionName version
+        consumerProguardFiles 'consumer-proguard-rules.txt'
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'consumer-proguard-rules.txt'
         }
     }
 }

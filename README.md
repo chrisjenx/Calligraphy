@@ -166,6 +166,19 @@ setText(sBuilder, TextView.BufferType.SPANNABLE);
 ```
 Of course this is just an example. Your mileage may vary.
 
+### Exceptions / Pitfalls
+
+To our knowledge (try: `grep -r -e "void set[^(]*(Typeface " <android source dir>`) there are two standard Android widgets that have multiple methods to set typefaces. They are:
+
+ - android.support.v7.widget.SwitchCompat
+ - android.widget.Switch
+
+Both have a method called `setSwitchTypeface` that sets the typeface within the switch (e.g. on/off, yes/no). `SetTypeface` sets the typeface of the label. You will need to create your own subclass that overrides `setTypeface` and calls both `super.setTypeface` and `super.setSwitchTypeface`.
+
+
+
+
+
 #Colaborators
 
 - [@mironov-nsk](https://github.com/mironov-nsk)

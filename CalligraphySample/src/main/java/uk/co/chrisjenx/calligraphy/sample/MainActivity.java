@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                toolbar.setTitle("Calligraphy Added");
+//                toolbar.setTitle("Calligraphy Added");
                 toolbar.setSubtitle("Added subtitle");
             }
         }, 1000);

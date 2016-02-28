@@ -169,7 +169,7 @@ class CalligraphyFactory {
         }
 
     }
-    
+
     private Typeface getDefaultTypeface(Context context, String fontPath) {
         if (TextUtils.isEmpty(fontPath)) {
             fontPath = CalligraphyConfig.get().getFontPath();
@@ -202,10 +202,11 @@ class CalligraphyFactory {
 
     private static class ToolbarLayoutListener implements ViewTreeObserver.OnGlobalLayoutListener {
 
+        static String BLANK = " ";
+
         private final WeakReference<CalligraphyFactory> mCalligraphyFactory;
         private final WeakReference<Context> mContextRef;
         private final WeakReference<Toolbar> mToolbarReference;
-        private final CharSequence originalTitle;
         private final CharSequence originalSubTitle;
 
         private ToolbarLayoutListener(final CalligraphyFactory calligraphyFactory,
@@ -213,10 +214,8 @@ class CalligraphyFactory {
             mCalligraphyFactory = new WeakReference<>(calligraphyFactory);
             mContextRef = new WeakReference<>(context);
             mToolbarReference = new WeakReference<>(toolbar);
-            originalTitle = toolbar.getTitle();
             originalSubTitle = toolbar.getSubtitle();
-            toolbar.setTitle(" ");
-            toolbar.setSubtitle("  ");
+            toolbar.setSubtitle(BLANK);
         }
 
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -238,7 +237,6 @@ class CalligraphyFactory {
                 }
             }
             removeSelf(toolbar);
-            toolbar.setTitle(originalTitle);
             toolbar.setSubtitle(originalSubTitle);
         }
 

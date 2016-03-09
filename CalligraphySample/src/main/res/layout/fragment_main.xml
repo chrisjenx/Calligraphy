@@ -66,6 +66,12 @@
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.FontPathView"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/defined_in_appears_linespacing"
+            android:textAppearance="@style/TextAppearance.FontPathView.WithSpacing"/>
+
         <uk.co.chrisjenx.calligraphy.sample.CustomTextView
             fontPath="fonts/Oswald-Stencbab.ttf"
             android:layout_width="wrap_content"

@@ -144,6 +144,7 @@ class CalligraphyFactory {
             final boolean deferred = matchesResourceIdName(view, ACTION_BAR_TITLE) || matchesResourceIdName(view, ACTION_BAR_SUBTITLE);
 
             CalligraphyUtils.applyFontToTextView(context, (TextView) view, CalligraphyConfig.get(), textViewFont, deferred);
+            CalligraphyUtils.applyExtraAttributesToTextView(context, (TextView) view, attrs);
         }
 
         // AppCompat API21+ The ActionBar doesn't inflate default Title/SubTitle, we need to scan the

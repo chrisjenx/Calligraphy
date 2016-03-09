@@ -60,6 +60,10 @@
         <item name="android:textColor">#444</item>
     </style>
 
+    <style name="TextAppearance.FontPathView.WithSpacing" parent="TextAppearance.FontPathView">
+        <item name="android:lineSpacingExtra">20dp</item>
+    </style>
+
     <!-- Custom Class Styles -->
     <style name="TextField" parent="android:Widget.Holo.Light.TextView">
         <item name="fontPath">fonts/gtw.ttf</item>

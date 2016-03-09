@@ -24,6 +24,11 @@ public final class CalligraphyUtils {
 
     public static final int[] ANDROID_ATTR_TEXT_APPEARANCE = new int[]{android.R.attr.textAppearance};
 
+    static final int[] EXTRA_TEXT_APPEARANCE = {
+        android.R.attr.lineSpacingExtra,
+        android.R.attr.lineSpacingMultiplier
+    };
+
     /**
      * Applies a custom typeface span to the text.
      *
@@ -310,6 +315,39 @@ public final class CalligraphyUtils {
             }
         }
         return null;
+    }
+
+    static void applyExtraAttributesToTextView(final Context context, final TextView view, final AttributeSet attrs) {
+        int textAppearanceId = -1;
+        final TypedArray typedArrayAttr = context.obtainStyledAttributes(attrs, ANDROID_ATTR_TEXT_APPEARANCE);
+        if (typedArrayAttr != null) {
+            try {
+                textAppearanceId = typedArrayAttr.getResourceId(0, -1);
+            } catch (Exception ignored) {
+                // Failed for some reason
+                return;
+            } finally {
+                typedArrayAttr.recycle();
+            }
+        }
+
+        final TypedArray appearance = context.obtainStyledAttributes(textAppearanceId, EXTRA_TEXT_APPEARANCE);
+        if (appearance != null) {
+            int lineSpacingExtra = 0;
+            float lineSpacingMultiplier = 1;
+            for (int n = 0; n < appearance.getIndexCount(); n++) {
+                switch (EXTRA_TEXT_APPEARANCE[n]) {
+                    case android.R.attr.lineSpacingExtra:
+                        lineSpacingExtra = appearance.getDimensionPixelSize(n, lineSpacingExtra);
+                        break;
+                    case android.R.attr.lineSpacingMultiplier:
+                        lineSpacingMultiplier = appearance.getFloat(n, lineSpacingMultiplier);
+                        break;
+                }
+            }
+            appearance.recycle();
+            view.setLineSpacing(lineSpacingExtra, lineSpacingMultiplier);
+        }
     }
 
     private static Boolean sToolbarCheck = null;

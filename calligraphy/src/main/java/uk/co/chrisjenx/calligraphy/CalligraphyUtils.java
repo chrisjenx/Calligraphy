@@ -346,7 +346,9 @@ public final class CalligraphyUtils {
                 }
             }
             appearance.recycle();
-            view.setLineSpacing(lineSpacingExtra, lineSpacingMultiplier);
+            if (view.getLineSpacingExtra() == 0 && view.getLineSpacingMultiplier() == 1) {
+                view.setLineSpacing(lineSpacingExtra, lineSpacingMultiplier);
+            }
         }
     }
 

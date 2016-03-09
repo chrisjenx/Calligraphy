@@ -179,7 +179,7 @@ Both have a method called `setSwitchTypeface` that sets the typeface within the 
 
 
 
-#Colaborators
+#Collaborators
 
 - [@mironov-nsk](https://github.com/mironov-nsk)
 - [@Roman Zhilich](https://github.com/RomanZhilich)

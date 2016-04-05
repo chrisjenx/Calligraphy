@@ -1,6 +1,6 @@
 #Changelog
 
-#2.1.1 (29/02/2016)-SNAPSHOT
+#2.2.0 (05/04/2016)
 - Added AppCompat Styles (AppCompatTextView will now pickup textViewStyle etc). Thanks @paul-turner
 - Fix for Toolbar not inflating `TextView`s upfront.
 

@@ -22,7 +22,14 @@ dependencies {
 ```
 ### Add Fonts
 
-Add your custom fonts to `assets/` all font definitions are relative to this path. 
+Add your custom fonts to `assets/`. All font definitions are relative to this path.
+
+Projects that use Gradle should create the assets directory under `src/main/` in your project directory.
+As it's popular to use multi-project build with Gradle the path is usually `app/src/main/assets/`, where `app` is the project name.
+
+Projects that use Apache Ant use the `assets.dir` property which is usually set to `assets/` relative to your project directory.
+
+You might consider creating a `fonts/` subdirectory in the assets directory (as in examples).
 
 ### Usage
 

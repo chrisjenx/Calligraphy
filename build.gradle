@@ -4,7 +4,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.0.0-beta6'
+    classpath 'com.android.tools.build:gradle:2.1.0-beta1'
   }
 }
 
@@ -21,6 +21,6 @@ allprojects {
 }
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '2.10'
+  gradleVersion = '2.12'
   distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
 }

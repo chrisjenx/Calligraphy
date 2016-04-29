@@ -49,7 +49,7 @@ public void onCreate() {
 ```
 
 _Note: You don't need to define `CalligraphyConfig` but the library will apply
-no default font and use the default attribute of `R.id.fontPath`._
+no default font and use the default attribute of `R.attr.fontPath`._
 
 ### Inject into Context
 

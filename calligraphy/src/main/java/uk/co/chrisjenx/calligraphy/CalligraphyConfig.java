@@ -52,13 +52,13 @@ public class CalligraphyConfig {
      */
     private static void addAppCompatViews() {
         DEFAULT_STYLES.put(android.support.v7.widget.AppCompatTextView.class, android.R.attr.textViewStyle);
-        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatButton.class, android.R.attr.buttonStyle);
-        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatEditText.class, android.R.attr.editTextStyle);
-        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatAutoCompleteTextView.class, android.R.attr.autoCompleteTextViewStyle);
-        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatMultiAutoCompleteTextView.class, android.R.attr.autoCompleteTextViewStyle);
-        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatCheckBox.class, android.R.attr.checkboxStyle);
-        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatRadioButton.class, android.R.attr.radioButtonStyle);
-        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatCheckedTextView.class, android.R.attr.checkedTextViewStyle);
+        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatButton.class, android.support.v7.appcompat.R.attr.buttonStyle);
+        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatEditText.class, android.support.v7.appcompat.R.attr.editTextStyle);
+        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatAutoCompleteTextView.class, android.support.v7.appcompat.R.attr.autoCompleteTextViewStyle);
+        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatMultiAutoCompleteTextView.class, android.support.v7.appcompat.R.attr.autoCompleteTextViewStyle);
+        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatCheckBox.class, android.support.v7.appcompat.R.attr.checkboxStyle);
+        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatRadioButton.class, android.support.v7.appcompat.R.attr.radioButtonStyle);
+        DEFAULT_STYLES.put(android.support.v7.widget.AppCompatCheckedTextView.class, android.support.v7.appcompat.R.attr.checkedTextViewStyle);
     }
 
     private static CalligraphyConfig sInstance;

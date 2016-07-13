@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.0"
 
     defaultConfig {
         minSdkVersion 7
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode project.ext.versionCodeInt
         versionName version
         consumerProguardFiles 'consumer-proguard-rules.txt'
@@ -21,7 +21,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:24.0.0'
 }
 
 apply from: rootProject.file('gradle/deploy.gradle')

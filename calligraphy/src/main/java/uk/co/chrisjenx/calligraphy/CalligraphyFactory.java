@@ -237,7 +237,9 @@ class CalligraphyFactory {
                 }
             }
             removeSelf(toolbar);
-            toolbar.setSubtitle(originalSubTitle);
+            if (TextUtils.equals(toolbar.getSubtitle(), BLANK)) {
+                toolbar.setSubtitle(originalSubTitle);
+            }
         }
 
         private void removeSelf(final Toolbar toolbar) {// Our dark deed is done

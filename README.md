@@ -175,6 +175,18 @@ To our knowledge (try: `grep -r -e "void set[^(]*(Typeface " <android source dir
 
 Both have a method called `setSwitchTypeface` that sets the typeface within the switch (e.g. on/off, yes/no). `SetTypeface` sets the typeface of the label. You will need to create your own subclass that overrides `setTypeface` and calls both `super.setTypeface` and `super.setSwitchTypeface`.
 
+### I'm getting java.lang.ClassCastException
+
+If you're getting exceptions like in [this](https://github.com/chrisjenx/Calligraphy/issues/211) issue. Please check that you're overriding your activities's `attachBaseContext` method but not your application's `attachBaseContext` method.
+
+### Custom fonts work on some View's but doesn't work on some others.
+
+Check that you're getting your `LayoutInflater` s from right context. Meaning get `LayoutInflater`s from activities's base context, not from appliation's context or activities's application context.
+
+```java
+LayoutInflater trueLayoutInflater = (LayoutInflater)myActivity.getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+LayoutInflater falseLayoutInflater = (LayoutInflater)myActivity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+```
 
 
 

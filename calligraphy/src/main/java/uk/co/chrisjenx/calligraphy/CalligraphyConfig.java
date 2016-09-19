@@ -214,7 +214,7 @@ public class CalligraphyConfig {
          * @return this builder.
          */
         public Builder setFontAttrId(int fontAssetAttrId) {
-            this.attrId = fontAssetAttrId != INVALID_ATTR_ID ? fontAssetAttrId : INVALID_ATTR_ID;
+            this.attrId = fontAssetAttrId;
             return this;
         }
 

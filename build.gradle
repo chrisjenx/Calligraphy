@@ -2,15 +2,18 @@
 buildscript {
   repositories {
     jcenter()
+    mavenCentral()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.1.2'
+    classpath 'com.android.tools.build:gradle:2.2.3'
   }
 }
 
 allprojects {
   repositories {
     jcenter()
+    mavenCentral()
+    maven { url "https://jitpack.io" }
   }
   // Is Release Build?
   version = getProperty('VERSION_NAME');

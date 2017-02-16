@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
+import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 
@@ -204,14 +205,14 @@ class CalligraphyFactory {
 
         static String BLANK = " ";
 
-        private final WeakReference<CalligraphyFactory> mCalligraphyFactory;
+        private final SoftReference<CalligraphyFactory> mCalligraphyFactory;
         private final WeakReference<Context> mContextRef;
         private final WeakReference<Toolbar> mToolbarReference;
         private final CharSequence originalSubTitle;
 
         private ToolbarLayoutListener(final CalligraphyFactory calligraphyFactory,
                                       final Context context, Toolbar toolbar) {
-            mCalligraphyFactory = new WeakReference<>(calligraphyFactory);
+            mCalligraphyFactory = new SoftReference<>(calligraphyFactory);
             mContextRef = new WeakReference<>(context);
             mToolbarReference = new WeakReference<>(toolbar);
             originalSubTitle = toolbar.getSubtitle();

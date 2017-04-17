@@ -9,7 +9,7 @@ Are you fed up of Custom Views to set fonts? Or traversing the ViewTree to find 
 
 ![alt text](https://github.com/chrisjenx/Calligraphy/raw/master/screenshot.png "ScreenShot Of Font Samples")
 
-##Getting started
+## Getting started
 
 ### Dependency
 
@@ -128,7 +128,7 @@ http://schemas.android.com/tools"`. See https://code.google.com/p/android/issues
 ```
 
 
-#FAQ
+# FAQ
 
 ### Font Resolution 
 
@@ -184,7 +184,7 @@ Both have a method called `setSwitchTypeface` that sets the typeface within the 
 
 
 
-#Collaborators
+# Collaborators
 
 - [@mironov-nsk](https://github.com/mironov-nsk)
 - [@Roman Zhilich](https://github.com/RomanZhilich)
@@ -193,13 +193,13 @@ Both have a method called `setSwitchTypeface` that sets the typeface within the 
 - [@loganj](https://github.com/loganj)
 - [@dlew](https://github.com/dlew)
 
-#Note
+# Note
 
 This library was created because it is currently not possible to declare a custom font in XML files in Android.
 
 If you feel this should be possible to do, please star [this issue](https://code.google.com/p/android/issues/detail?id=88945) on the official Android bug tracker.
 
-#Licence
+# Licence
 
     Copyright 2013 Christopher Jenkins
     

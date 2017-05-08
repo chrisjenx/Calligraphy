@@ -1,18 +1,14 @@
 package uk.co.chrisjenx.calligraphy;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 
 class CalligraphyFactory {
@@ -149,30 +145,7 @@ class CalligraphyFactory {
         // AppCompat API21+ The ActionBar doesn't inflate default Title/SubTitle, we need to scan the
         // Toolbar(Which underlies the ActionBar) for its children.
         if (CalligraphyUtils.canCheckForV7Toolbar() && view instanceof android.support.v7.widget.Toolbar) {
-            final Toolbar toolbar = (Toolbar) view;
-            boolean hadTitle = toolbar.getTitle() != null;
-            boolean hadSubtitle = toolbar.getSubtitle() != null;
-            // The toolbar inflates both the title and the subtitle views lazily but luckily they do it
-            // synchronously when you set a title and a subtitle so we set a title and a subtitle to something if
-            // needed and then get the views
-            if (!hadTitle) {
-                toolbar.setTitle(" ");
-            }
-            if (!hadSubtitle) {
-                toolbar.setSubtitle(" ");
-            }
-            int childCount = toolbar.getChildCount();
-            if (childCount != 0) {
-                for (int i = 0; i < childCount; i++) {
-                    onViewCreated(toolbar.getChildAt(i), context, null);
-                }
-            }
-            if (!hadTitle) {
-                toolbar.setTitle(null);
-            }
-            if (!hadSubtitle) {
-                toolbar.setSubtitle(null);
-            }
+            applyFontToToolbar((Toolbar) view, context);
         }
 
         // Try to set typeface for custom views using interface method or via reflection if available
@@ -220,5 +193,30 @@ class CalligraphyFactory {
         }
 
         return textViewFont;
+    }
+
+    /**
+     * Will forceably set text on the views then remove ones that didn't have copy.
+     *
+     * @param view    toolbar view.
+     * @param context current parent context.
+     */
+    private void applyFontToToolbar(final Toolbar view, final Context context) {
+        final boolean hasTitle = view.getTitle() != null;
+        final boolean hasSubtitle = view.getSubtitle() != null;
+        // The toolbar inflates both the title and the subtitle views lazily but luckily they do it
+        // synchronously when you set a title and a subtitle so we set a title and a subtitle to something if
+        // needed and then get the views
+        if (!hasTitle) view.setTitle(" ");
+        if (!hasSubtitle) view.setSubtitle(" ");
+
+        // Iterate through the children to run post inflation on them
+        final int childCount = view.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            onViewCreated(view.getChildAt(i), view.getContext(), null);
+        }
+        // Remove views from view if they didn't have copy set.
+        if (!hasTitle) view.setTitle(null);
+        if (!hasSubtitle) view.setSubtitle(null);
     }
 }

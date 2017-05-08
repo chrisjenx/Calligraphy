@@ -145,7 +145,7 @@ class CalligraphyFactory {
         // AppCompat API21+ The ActionBar doesn't inflate default Title/SubTitle, we need to scan the
         // Toolbar(Which underlies the ActionBar) for its children.
         if (CalligraphyUtils.canCheckForV7Toolbar() && view instanceof android.support.v7.widget.Toolbar) {
-            applyFontToToolbar((Toolbar) view, context);
+            applyFontToToolbar((Toolbar) view);
         }
 
         // Try to set typeface for custom views using interface method or via reflection if available
@@ -198,12 +198,11 @@ class CalligraphyFactory {
     /**
      * Will forceably set text on the views then remove ones that didn't have copy.
      *
-     * @param view    toolbar view.
-     * @param context current parent context.
+     * @param view toolbar view.
      */
-    private void applyFontToToolbar(final Toolbar view, final Context context) {
-        final boolean hasTitle = view.getTitle() != null;
-        final boolean hasSubtitle = view.getSubtitle() != null;
+    private void applyFontToToolbar(final Toolbar view) {
+        final boolean hasTitle = !TextUtils.isEmpty(view.getTitle());
+        final boolean hasSubtitle = !TextUtils.isEmpty(view.getSubtitle());
         // The toolbar inflates both the title and the subtitle views lazily but luckily they do it
         // synchronously when you set a title and a subtitle so we set a title and a subtitle to something if
         // needed and then get the views

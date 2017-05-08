@@ -143,6 +143,24 @@ class CalligraphyFactory {
             // Still need to defer the Native action bar, appcompat-v7:21+ uses the Toolbar underneath. But won't match these anyway.
             final boolean deferred = matchesResourceIdName(view, ACTION_BAR_TITLE) || matchesResourceIdName(view, ACTION_BAR_SUBTITLE);
 
+            if (textViewFont != null &&
+                    !"".equalsIgnoreCase(textViewFont.trim()) &&
+                    ! TypefaceUtils.checkFontExists(context, textViewFont)) {
+                String fontPostFix = "Regular";
+                TextView textView = (TextView) view;
+                Typeface typeface = textView.getTypeface();
+                if (typeface != null) {
+                    if (typeface.isBold()) {
+                        fontPostFix = "Bold";
+                    }
+                    if (typeface.isItalic()) {
+                        fontPostFix += "Italic";
+                    }
+                    int ix = textViewFont.lastIndexOf(".");
+                    textViewFont = textViewFont.substring(0, ix) + "-" + fontPostFix + textViewFont.substring(ix);
+                }
+            }
+
             CalligraphyUtils.applyFontToTextView(context, (TextView) view, CalligraphyConfig.get(), textViewFont, deferred);
         }
 

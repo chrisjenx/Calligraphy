@@ -127,7 +127,15 @@ http://schemas.android.com/tools"`. See https://code.google.com/p/android/issues
 </style>
 ```
 
-
+### Custom font with textStyle ( bold | italic | normal )
+copy fonts to assets folder by  following the name pattern (example for font Roboto)
+```
+        Normal =>       fonts/<FontName>-Regular.<Font Extension>           (eg:- fonts/Roboto-Regular.ttf)
+        Bold =>         fonts/<FontName>-Bold.<Font Extension>              (eg:- fonts/Roboto-Bold.ttf)
+        Italic =>       fonts/<FontName>-Italic.<Font Extension>            (eg:- fonts/Roboto-Italic.ttf)
+        BoldItalic =>   fonts/<FontName>-BoldItalic.<Font Extension>        (eg:- fonts/Roboto-BoldItalic.ttf)
+```
+use `fonts/<FontName>.<Font Extension>` ( eg:- `fonts/Roboto.ttf`) as value for your style/view/theme fontPath attribute.And make sure that there is no actual file with name `fonts/<FontName>.<Font Extension>` ( eg:- `fonts/Roboto.ttf`) in the assets folder
 #FAQ
 
 ### Font Resolution 

@@ -192,6 +192,7 @@ Both have a method called `setSwitchTypeface` that sets the typeface within the 
 - [@Codebutler](https://github.com/codebutler)
 - [@loganj](https://github.com/loganj)
 - [@dlew](https://github.com/dlew)
+- [@ansman](https://github.com/ansman)
 
 # Note
 

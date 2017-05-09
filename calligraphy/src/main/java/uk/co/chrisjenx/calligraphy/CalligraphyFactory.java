@@ -201,13 +201,13 @@ class CalligraphyFactory {
      * @param view toolbar view.
      */
     private void applyFontToToolbar(final Toolbar view) {
-        final boolean hasTitle = !TextUtils.isEmpty(view.getTitle());
-        final boolean hasSubtitle = !TextUtils.isEmpty(view.getSubtitle());
+        final CharSequence previousTitle = view.getTitle();
+        final CharSequence previousSubtitle = view.getSubtitle();
         // The toolbar inflates both the title and the subtitle views lazily but luckily they do it
-        // synchronously when you set a title and a subtitle so we set a title and a subtitle to something if
-        // needed and then get the views
-        if (!hasTitle) view.setTitle(" ");
-        if (!hasSubtitle) view.setSubtitle(" ");
+        // synchronously when you set a title and a subtitle programmatically.
+        // So we set a title and a subtitle to something, then get the views, then revert.
+        view.setTitle(" ");
+        view.setSubtitle(" ");
 
         // Iterate through the children to run post inflation on them
         final int childCount = view.getChildCount();
@@ -215,7 +215,7 @@ class CalligraphyFactory {
             onViewCreated(view.getChildAt(i), view.getContext(), null);
         }
         // Remove views from view if they didn't have copy set.
-        if (!hasTitle) view.setTitle(null);
-        if (!hasSubtitle) view.setSubtitle(null);
+        view.setTitle(previousTitle);
+        view.setSubtitle(previousSubtitle);
     }
 }

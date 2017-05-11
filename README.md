@@ -17,7 +17,7 @@ Include the dependency [Download (.aar)](http://search.maven.org/remotecontent?f
 
 ```groovy
 dependencies {
-    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+    compile 'uk.co.chrisjenx:calligraphy:2.3.0'
 }
 ```
 ### Add Fonts

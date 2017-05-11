@@ -1,18 +1,14 @@
 package uk.co.chrisjenx.calligraphy;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 
 class CalligraphyFactory {
@@ -149,8 +145,7 @@ class CalligraphyFactory {
         // AppCompat API21+ The ActionBar doesn't inflate default Title/SubTitle, we need to scan the
         // Toolbar(Which underlies the ActionBar) for its children.
         if (CalligraphyUtils.canCheckForV7Toolbar() && view instanceof android.support.v7.widget.Toolbar) {
-            final Toolbar toolbar = (Toolbar) view;
-            toolbar.getViewTreeObserver().addOnGlobalLayoutListener(new ToolbarLayoutListener(this, context, toolbar));
+            applyFontToToolbar((Toolbar) view);
         }
 
         // Try to set typeface for custom views using interface method or via reflection if available
@@ -200,55 +195,27 @@ class CalligraphyFactory {
         return textViewFont;
     }
 
-    private static class ToolbarLayoutListener implements ViewTreeObserver.OnGlobalLayoutListener {
+    /**
+     * Will forceably set text on the views then remove ones that didn't have copy.
+     *
+     * @param view toolbar view.
+     */
+    private void applyFontToToolbar(final Toolbar view) {
+        final CharSequence previousTitle = view.getTitle();
+        final CharSequence previousSubtitle = view.getSubtitle();
+        // The toolbar inflates both the title and the subtitle views lazily but luckily they do it
+        // synchronously when you set a title and a subtitle programmatically.
+        // So we set a title and a subtitle to something, then get the views, then revert.
+        view.setTitle(" ");
+        view.setSubtitle(" ");
 
-        static String BLANK = " ";
-
-        private final WeakReference<CalligraphyFactory> mCalligraphyFactory;
-        private final WeakReference<Context> mContextRef;
-        private final WeakReference<Toolbar> mToolbarReference;
-        private final CharSequence originalSubTitle;
-
-        private ToolbarLayoutListener(final CalligraphyFactory calligraphyFactory,
-                                      final Context context, Toolbar toolbar) {
-            mCalligraphyFactory = new WeakReference<>(calligraphyFactory);
-            mContextRef = new WeakReference<>(context);
-            mToolbarReference = new WeakReference<>(toolbar);
-            originalSubTitle = toolbar.getSubtitle();
-            toolbar.setSubtitle(BLANK);
+        // Iterate through the children to run post inflation on them
+        final int childCount = view.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            onViewCreated(view.getChildAt(i), view.getContext(), null);
         }
-
-        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-        @Override public void onGlobalLayout() {
-            final Toolbar toolbar = mToolbarReference.get();
-            final Context context = mContextRef.get();
-            final CalligraphyFactory factory = mCalligraphyFactory.get();
-            if (toolbar == null) return;
-            if (factory == null || context == null) {
-                removeSelf(toolbar);
-                return;
-            }
-
-            int childCount = toolbar.getChildCount();
-            if (childCount != 0) {
-                // Process children, defer draw as it has set the typeface.
-                for (int i = 0; i < childCount; i++) {
-                    factory.onViewCreated(toolbar.getChildAt(i), context, null);
-                }
-            }
-            removeSelf(toolbar);
-            toolbar.setSubtitle(originalSubTitle);
-        }
-
-        private void removeSelf(final Toolbar toolbar) {// Our dark deed is done
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                //noinspection deprecation
-                toolbar.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-            } else {
-                toolbar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            }
-        }
-
+        // Remove views from view if they didn't have copy set.
+        view.setTitle(previousTitle);
+        view.setSubtitle(previousSubtitle);
     }
-
 }

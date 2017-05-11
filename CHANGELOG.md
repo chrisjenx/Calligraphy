@@ -1,5 +1,8 @@
 # Changelog
 
+# 2.3.0 (WIP)
+- Fix Toolbar TextView's layout race condition. [@ansman](https://github.com/ansman)
+
 # 2.2.0 (05/04/2016)
 - Added AppCompat Styles (AppCompatTextView will now pickup textViewStyle etc). Thanks @paul-turner
 - Fix for Toolbar not inflating `TextView`s upfront.

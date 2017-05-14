@@ -2,13 +2,13 @@ apply plugin: 'com.android.library'
 apply from: rootProject.file('gradle/deploy.gradle')
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion project.compileSdkVersion
+    buildToolsVersion project.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode project.ext.versionCodeInt
+        minSdkVersion project.minSdkVersion
+        targetSdkVersion project.targetSdkVersion
+        versionCode project.versionCodeInt
         versionName version
         consumerProguardFiles 'consumer-proguard-rules.txt'
     }

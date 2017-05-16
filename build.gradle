@@ -1,25 +1,32 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
-    }
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:2.3.2'
+  }
 }
 
 allprojects {
-    repositories {
-        jcenter()
-    }
-    // Is Release Build?
-    version = getProperty('VERSION_NAME');
-    ext {
-        isReleaseVersion = has("release")
-        versionCodeInt = getProperty('VERSION_CODE').toInteger()
-    }
+  repositories {
+    jcenter()
+  }
+  // Is Release Build?
+  version = getProperty('VERSION_NAME');
+
+  ext {
+    isReleaseVersion = has("release")
+    versionCodeInt = getProperty('VERSION_CODE').toInteger()
+    supportLibraryVersion = '25.3.1'
+    buildToolsVersion = '25.0.3'
+    compileSdkVersion = 25
+    minSdkVersion = 9
+    targetSdkVersion = 25
+  }
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.4.1'
+  gradleVersion = '3.5'
+  distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-bin.zip"
 }

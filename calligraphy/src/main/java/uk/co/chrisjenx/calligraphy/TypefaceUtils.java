@@ -2,6 +2,7 @@ package uk.co.chrisjenx.calligraphy;
 
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.HashMap;
@@ -20,6 +21,7 @@ public final class TypefaceUtils {
 
     private static final Map<String, Typeface> sCachedFonts = new HashMap<String, Typeface>();
     private static final Map<Typeface, CalligraphyTypefaceSpan> sCachedSpans = new HashMap<Typeface, CalligraphyTypefaceSpan>();
+    private static Map<String, String> sFontPathSubstitutionMap = null;
 
     /**
      * A helper loading a custom font.
@@ -28,9 +30,15 @@ public final class TypefaceUtils {
      * @param filePath     The path of the file.
      * @return Return {@link android.graphics.Typeface} or null if the path is invalid.
      */
-    public static Typeface load(final AssetManager assetManager, final String filePath) {
+    public static Typeface load(final AssetManager assetManager, String filePath) {
         synchronized (sCachedFonts) {
             try {
+                // If a valid fontPath substitution map exists, check if the filePath should be
+                // updated in order to load a different font.
+                if (sFontPathSubstitutionMap != null
+                        && sFontPathSubstitutionMap.containsKey(filePath)) {
+                    filePath = sFontPathSubstitutionMap.get(filePath);
+                }
                 if (!sCachedFonts.containsKey(filePath)) {
                     final Typeface typeface = Typeface.createFromAsset(assetManager, filePath);
                     sCachedFonts.put(filePath, typeface);
@@ -74,5 +82,9 @@ public final class TypefaceUtils {
     }
 
     private TypefaceUtils() {
+    }
+
+    static void setFontPathSubstitutionMap(@Nullable Map<String, String> fontPathSubstitutionMap) {
+        sFontPathSubstitutionMap = fontPathSubstitutionMap;
     }
 }

@@ -1,5 +1,6 @@
 package uk.co.chrisjenx.calligraphy;
 
+import android.content.res.AssetManager;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
@@ -71,6 +72,7 @@ public class CalligraphyConfig {
      */
     public static void initDefault(CalligraphyConfig calligraphyConfig) {
         sInstance = calligraphyConfig;
+        TypefaceUtils.setFontPathSubstitutionMap(sInstance.getFontPathSubstitutionMap());
     }
 
     /**
@@ -116,6 +118,11 @@ public class CalligraphyConfig {
      * @see uk.co.chrisjenx.calligraphy.CalligraphyConfig.Builder#addCustomViewWithSetTypeface(Class)
      */
     private final Set<Class<?>> hasTypefaceViews;
+    /**
+     * A map of font paths that should be used to dynamically substitute a new fontPath for the
+     * fontPath that's specified in XML / passed to {@link TypefaceUtils#load(AssetManager, String)}
+     */
+    private Map<String, String> mFontPathSubstitutionMap = null;
 
     protected CalligraphyConfig(Builder builder) {
         mIsFontSet = builder.isFontSet;
@@ -128,6 +135,7 @@ public class CalligraphyConfig {
         tempMap.putAll(builder.mStyleClassMap);
         mClassStyleAttributeMap = Collections.unmodifiableMap(tempMap);
         hasTypefaceViews = Collections.unmodifiableSet(builder.mHasTypefaceClasses);
+        mFontPathSubstitutionMap = builder.fontPathSubstitutionMap;
     }
 
     /**
@@ -171,6 +179,10 @@ public class CalligraphyConfig {
         return mAttrId;
     }
 
+    public Map<String, String> getFontPathSubstitutionMap() {
+        return mFontPathSubstitutionMap;
+    }
+
     public static class Builder {
         /**
          * Default AttrID if not set.
@@ -206,6 +218,8 @@ public class CalligraphyConfig {
         private Map<Class<? extends TextView>, Integer> mStyleClassMap = new HashMap<>();
 
         private Set<Class<?>> mHasTypefaceClasses = new HashSet<>();
+
+        private Map<String, String> fontPathSubstitutionMap = null;
 
         /**
          * This defaults to R.attr.fontPath. So only override if you want to use your own attrId.
@@ -309,6 +323,11 @@ public class CalligraphyConfig {
         public Builder addCustomViewWithSetTypeface(Class<?> clazz) {
             customViewTypefaceSupport = true;
             mHasTypefaceClasses.add(clazz);
+            return this;
+        }
+
+        public Builder setFontPathSubstitutionMap(Map<String, String> fontPathSubstitutionMap) {
+            this.fontPathSubstitutionMap = fontPathSubstitutionMap;
             return this;
         }
 

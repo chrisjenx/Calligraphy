@@ -35,12 +35,19 @@ public final class TypefaceUtils {
             try {
                 // If a valid fontPath substitution map exists, check if the filePath should be
                 // updated in order to load a different font.
+                boolean loadFromFile = false;
                 if (sFontPathSubstitutionMap != null
                         && sFontPathSubstitutionMap.containsKey(filePath)) {
                     filePath = sFontPathSubstitutionMap.get(filePath);
+                    loadFromFile = true;
                 }
                 if (!sCachedFonts.containsKey(filePath)) {
-                    final Typeface typeface = Typeface.createFromAsset(assetManager, filePath);
+                    final Typeface typeface;
+                    if (loadFromFile) {
+                        typeface = Typeface.createFromFile(filePath);
+                    } else {
+                        typeface = Typeface.createFromAsset(assetManager, filePath);
+                    }
                     sCachedFonts.put(filePath, typeface);
                     return typeface;
                 }

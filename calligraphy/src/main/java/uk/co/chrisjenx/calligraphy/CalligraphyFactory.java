@@ -169,7 +169,7 @@ class CalligraphyFactory {
         if (TextUtils.isEmpty(fontPath)) {
             fontPath = CalligraphyConfig.get().getFontPath();
         }
-        if (!TextUtils.isEmpty(fontPath)) {
+        if (TextUtils.isEmpty(fontPath)) {
             Typeface typeface = CalligraphyConfig.get().getTypeface();
             if (typeface != null) return typeface;
         }

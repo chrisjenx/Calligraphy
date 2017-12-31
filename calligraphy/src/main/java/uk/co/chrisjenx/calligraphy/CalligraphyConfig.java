@@ -1,5 +1,6 @@
 package uk.co.chrisjenx.calligraphy;
 
+import android.graphics.Typeface;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
@@ -92,6 +93,10 @@ public class CalligraphyConfig {
      */
     private final String mFontPath;
     /**
+     * Default typeface to setup if no font path is provided
+     */
+    private final Typeface mTypeface;
+    /**
      * Default Font Path Attr Id to lookup
      */
     private final int mAttrId;
@@ -120,6 +125,7 @@ public class CalligraphyConfig {
     protected CalligraphyConfig(Builder builder) {
         mIsFontSet = builder.isFontSet;
         mFontPath = builder.fontAssetPath;
+        mTypeface = builder.typeface;
         mAttrId = builder.attrId;
         mReflection = builder.reflection;
         mCustomViewCreation = builder.customViewCreation;
@@ -135,6 +141,13 @@ public class CalligraphyConfig {
      */
     public String getFontPath() {
         return mFontPath;
+    }
+
+    /**
+     * @return typeface provided by the config, might be null
+     */
+    public Typeface getTypeface() {
+        return mTypeface;
     }
 
     /**
@@ -201,6 +214,10 @@ public class CalligraphyConfig {
          */
         private String fontAssetPath = null;
         /**
+         * The default typeface
+         */
+        private Typeface typeface = null;
+        /**
          * Additional Class Styles. Can be empty.
          */
         private Map<Class<? extends TextView>, Integer> mStyleClassMap = new HashMap<>();
@@ -226,8 +243,20 @@ public class CalligraphyConfig {
          * @return this builder.
          */
         public Builder setDefaultFontPath(String defaultFontAssetPath) {
-            this.isFontSet = !TextUtils.isEmpty(defaultFontAssetPath);
+            this.isFontSet = isFontSet || !TextUtils.isEmpty(defaultFontAssetPath);
             this.fontAssetPath = defaultFontAssetPath;
+            return this;
+        }
+
+        /**
+         * Set the default type if you don't define in font path or else where in your styles.
+         *
+         * @param typeface typeface to set, passing null will fallback to fontpath
+         * @return
+         */
+        public Builder setDefaultTypeface(Typeface typeface) {
+            this.isFontSet = isFontSet || typeface != null;
+            this.typeface = typeface;
             return this;
         }
 

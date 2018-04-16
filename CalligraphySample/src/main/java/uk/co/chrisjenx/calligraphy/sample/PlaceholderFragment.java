@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.widget.Toast;
 
 import butterknife.ButterKnife;
@@ -31,20 +30,14 @@ public class PlaceholderFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-
-        ViewStub stub = ButterKnife.findById(view, R.id.stub);
-        stub.inflate();
-
-        ViewStub stubWithFontPath = ButterKnife.findById(view, R.id.stub_with_font_path);
-        stubWithFontPath.inflate();
     }
 
-    @OnClick({R.id.button_bold})
+    @OnClick(R.id.button_bold)
     public void onClickBoldButton() {
         Toast.makeText(getActivity(), "Custom Typeface toast text", Toast.LENGTH_SHORT).show();
     }
 
-    @OnClick({R.id.button_default})
+    @OnClick(R.id.button_default)
     public void onClickDefaultButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("Custom Typeface Dialog");

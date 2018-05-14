@@ -13,7 +13,7 @@ interface CalligraphyActivityFactory {
     /**
      * Used to Wrap the Activity onCreateView method.
      *
-     * You implement this method like so in you base activity.
+     * You implement this method like so in your base activity.
      * <pre>
      * {@code
      * public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {

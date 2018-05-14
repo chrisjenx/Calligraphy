@@ -151,7 +151,7 @@ have to define a custom attribute.
 ### Why no jar?
 
 We needed to ship a custom ID with Calligraphy to improve the Font Injection flow. This
-unfortunately means that is has to be an `aar`. But you're using Gradle now anyway right?
+unfortunately means that it has to be an `aar`. But you're using Gradle now anyway right?
 
 ### Multiple Typeface's per TextView / Spannables
 

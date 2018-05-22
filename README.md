@@ -1,3 +1,5 @@
+# This version of Calligraphy has reached its end-of-life and is no longer maintained. Please migrate to [Calligraphy 3](https://github.com/InflationX/Calligraphy)!
+
 Calligraphy
 ===========
 

@@ -1,5 +1,6 @@
 package uk.co.chrisjenx.calligraphy;
 
+import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
@@ -74,13 +75,26 @@ public class CalligraphyConfig {
     }
 
     /**
-     * The current Calligraphy Config.
+     * The default Calligraphy config.
      * If not set it will create a default config.
      */
     public static CalligraphyConfig get() {
         if (sInstance == null)
             sInstance = new CalligraphyConfig(new Builder());
         return sInstance;
+    }
+
+    /**
+     * Obtains the CalligraphyConfig from the given context.
+     */
+    static CalligraphyConfig from(Context context) {
+        //noinspection ResourceType
+        final CalligraphyConfig config = (CalligraphyConfig) context
+            .getSystemService(CalligraphyContextWrapper.CALLIGRAPHY_CONFIG_SERVICE);
+        if (config == null) {
+            throw new AssertionError("CalligraphyConfig not found.");
+        }
+        return config;
     }
 
     /**

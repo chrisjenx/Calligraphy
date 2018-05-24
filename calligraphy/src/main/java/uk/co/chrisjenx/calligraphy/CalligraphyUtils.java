@@ -122,7 +122,11 @@ public final class CalligraphyUtils {
     static void applyFontToTextView(final Context context, final TextView textView, final CalligraphyConfig config, boolean deferred) {
         if (context == null || textView == null || config == null) return;
         if (!config.isFontSet()) return;
-        applyFontToTextView(context, textView, config.getFontPath(), deferred);
+        if (!TextUtils.isEmpty(config.getFontPath())) {
+            applyFontToTextView(context, textView, config.getFontPath(), deferred);
+        } else {
+            applyFontToTextView(textView, config.getTypeface(), deferred);
+        }
     }
 
     /**

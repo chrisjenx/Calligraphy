@@ -141,17 +141,6 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
     /**
      * The LayoutInflater onCreateView is the fourth port of call for LayoutInflation.
      * BUT only for none CustomViews.
-     */
-    @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    protected View onCreateView(View parent, String name, AttributeSet attrs) throws ClassNotFoundException {
-        return mCalligraphyFactory.onViewCreated(super.onCreateView(parent, name, attrs),
-                getContext(), attrs);
-    }
-
-    /**
-     * The LayoutInflater onCreateView is the fourth port of call for LayoutInflation.
-     * BUT only for none CustomViews.
      * Basically if this method doesn't inflate the View nothing probably will.
      */
     @Override
@@ -162,11 +151,11 @@ class CalligraphyLayoutInflater extends LayoutInflater implements CalligraphyAct
         for (String prefix : sClassPrefixList) {
             try {
                 view = createView(name, prefix, attrs);
+                if (view != null) break;
             } catch (ClassNotFoundException ignored) {
             }
         }
-        // In this case we want to let the base class take a crack
-        // at it.
+        // In this case we want to let the base class take a crack at it.
         if (view == null) view = super.onCreateView(name, attrs);
 
         return mCalligraphyFactory.onViewCreated(view, view.getContext(), attrs);

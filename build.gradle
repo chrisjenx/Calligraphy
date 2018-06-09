@@ -11,8 +11,8 @@ buildscript {
 
 allprojects {
   repositories {
-    jcenter()
     google()
+    jcenter()
   }
   // Is Release Build?
   version = getProperty('VERSION_NAME')

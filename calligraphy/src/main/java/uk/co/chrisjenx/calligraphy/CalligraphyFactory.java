@@ -2,10 +2,13 @@ package uk.co.chrisjenx.calligraphy;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,6 +16,7 @@ import java.lang.reflect.Method;
 
 class CalligraphyFactory {
 
+    private static final String TAG = CalligraphyFactory.class.getSimpleName();
     private static final String ACTION_BAR_TITLE = "action_bar_title";
     private static final String ACTION_BAR_SUBTITLE = "action_bar_subtitle";
 
@@ -86,8 +90,18 @@ class CalligraphyFactory {
      */
     protected static boolean matchesResourceIdName(View view, String matches) {
         if (view.getId() == View.NO_ID) return false;
-        final String resourceEntryName = view.getResources().getResourceEntryName(view.getId());
+        final String resourceEntryName = getResourceEntryName(view);
         return resourceEntryName.equalsIgnoreCase(matches);
+    }
+
+    @NonNull
+    private static String getResourceEntryName(@NonNull View view) {
+        try {
+            return view.getResources().getResourceEntryName(view.getId());
+        } catch (Resources.NotFoundException exception) {
+            Log.w(TAG, "An error occurred when trying to get resource entry name.", exception);
+            return "";
+        }
     }
 
     private final int[] mAttributeId;
